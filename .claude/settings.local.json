@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Recurse app, components, hooks, lib, public, styles | Where-Object { -not $_.PSIsContainer } | Select-Object @{n='Path';e={$_.FullName.Replace\\(\"$PWD\\\\\",''\\)}}, Length)",
+      "PowerShell(npm install --legacy-peer-deps)",
+      "PowerShell(npm install xlsx --legacy-peer-deps --no-audit --no-fund 2>&1)",
+      "mcp__Claude_Preview__preview_start",
+      "PowerShell(Test-Path data\\\\runtime\\\\shared-data.json; if \\(Test-Path data\\\\runtime\\\\shared-data.json\\) { \\(Get-Content data\\\\runtime\\\\shared-data.json -Raw -Encoding UTF8 | ConvertFrom-Json\\).vehicles | ForEach-Object name }; try { \\(Invoke-RestMethod \"http://localhost:3000/api/shared-data?type=vehicles\"\\).data | ForEach-Object name } catch { \"api error: $_\" })",
+      "Bash(node -e ' *)",
+      "Bash(cd \"C:/Users/Triple-Zeta/Downloads/gtfs乗換案内\" && cp \"C:/Users/Triple-Zeta/Downloads/徒歩リスト.xlsx\" \"data/徒歩リスト.xlsx\" && echo \"copied\")",
+      "Bash(node scripts/convert-walk.mjs)",
+      "Bash(node -e \"const w=require\\('./data/embedded-walk.json'\\); console.log\\('segments:',w.segments.length\\); console.log\\(JSON.stringify\\(w.segments.slice\\(0,8\\),null,0\\)\\);\")",
+      "Bash(ls .claude/)",
+      "Bash(cat .claude/launch.json)",
+      "Bash(node -e \"console.log\\(JSON.stringify\\(require\\('./package.json'\\).scripts,null,1\\)\\)\")",
+      "Bash(node scripts/_test-multimodal.mjs)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -X POST http://localhost:3000/api/operation-requests -H \"Content-Type: application/json\" -d \"{\\\\\"action\\\\\":\\\\\"request\\\\\",\\\\\"tripShortName\\\\\":\\\\\"T1\\\\\"}\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/api/search-log)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/api/operation-requests)"
+    ]
+  }
+}

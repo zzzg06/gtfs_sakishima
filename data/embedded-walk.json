@@ -1,0 +1,524 @@
+{
+ "generatedAt": "2026-06-12T00:32:56.870Z",
+ "source": "徒歩リスト.xlsx",
+ "segments": [
+  {
+   "id": "W01",
+   "a": "笠丘",
+   "b": "船上湯本",
+   "time": 2,
+   "consecutive": false
+  },
+  {
+   "id": "W02",
+   "a": "咲島港",
+   "b": "(バス)咲島港駅",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W03",
+   "a": "富田",
+   "b": "(バス)富田駅前",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W04",
+   "a": "中原台",
+   "b": "(バス)中原台駅前",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W05",
+   "a": "八つ橋",
+   "b": "(バス)八つ橋駅前",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W06",
+   "a": "助が丘",
+   "b": "(バス)助が丘駅南口",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W07",
+   "a": "助が丘",
+   "b": "(バス)助が丘駅北口",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W08",
+   "a": "咲西浜",
+   "b": "(バス)咲西浜",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W09",
+   "a": "島北出坂",
+   "b": "(バス)島北出坂駅西口",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W10",
+   "a": "島北出坂",
+   "b": "(バス)島北出坂駅東口",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W11",
+   "a": "海央皇",
+   "b": "(バス)砥島",
+   "time": 2,
+   "consecutive": false
+  },
+  {
+   "id": "W12",
+   "a": "海央皇",
+   "b": "(バス)高速海央皇",
+   "time": 2,
+   "consecutive": false
+  },
+  {
+   "id": "W13",
+   "a": "上砥",
+   "b": "(バス)上砥駅前",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W14",
+   "a": "船上湯本",
+   "b": "(バス)船上湯本駅前",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W15",
+   "a": "天玉寺",
+   "b": "(バス)天玉寺駅前",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W16",
+   "a": "咲東崎",
+   "b": "(バス)影崎",
+   "time": 2,
+   "consecutive": false
+  },
+  {
+   "id": "W17",
+   "a": "新咲市場",
+   "b": "(バス)新咲市場",
+   "time": 2,
+   "consecutive": false
+  },
+  {
+   "id": "W18",
+   "a": "大岩",
+   "b": "(バス)大岩駅入口",
+   "time": 2,
+   "consecutive": false
+  },
+  {
+   "id": "W19",
+   "a": "大岩",
+   "b": "(バス)大学西門",
+   "time": 2,
+   "consecutive": false
+  },
+  {
+   "id": "W20",
+   "a": "葛敷",
+   "b": "(バス)葛敷一丁目",
+   "time": 2,
+   "consecutive": false
+  },
+  {
+   "id": "W21",
+   "a": "葛敷",
+   "b": "(バス)咲島ﾊﾞｽﾀｰﾐﾅﾙ",
+   "time": 2,
+   "consecutive": false
+  },
+  {
+   "id": "W22",
+   "a": "木古川",
+   "b": "(バス)木古川駅西口",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W23",
+   "a": "木古川",
+   "b": "(バス)木古川駅東口",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W24",
+   "a": "神在月",
+   "b": "(バス)入九葉神社前",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W25",
+   "a": "笠丘",
+   "b": "(バス)笠丘駅前",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W26",
+   "a": "笠丘",
+   "b": "(バス)笠丘駅入口",
+   "time": 2,
+   "consecutive": false
+  },
+  {
+   "id": "W27",
+   "a": "(バス)寺見",
+   "b": "(バス)寺前海岸",
+   "time": 2,
+   "consecutive": false
+  },
+  {
+   "id": "W28",
+   "a": "(バス)咲東崎灯台",
+   "b": "(バス)咲東崎灯台公園",
+   "time": 2,
+   "consecutive": false
+  },
+  {
+   "id": "W29",
+   "a": "(バス)助が丘駅北口",
+   "b": "(バス)助が丘駅南口",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W30",
+   "a": "(バス)木古川駅西口",
+   "b": "(バス)木古川駅東口",
+   "time": 1,
+   "consecutive": false
+  },
+  {
+   "id": "W31",
+   "a": "(バス)砥島",
+   "b": "(バス)高速海央皇",
+   "time": 3,
+   "consecutive": false
+  },
+  {
+   "id": "Y01",
+   "a": "上砥",
+   "b": "船上湯本",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y02",
+   "a": "葛敷",
+   "b": "八つ橋",
+   "time": 4,
+   "consecutive": true
+  },
+  {
+   "id": "Y03",
+   "a": "葛敷",
+   "b": "木古川",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y04",
+   "a": "大岩",
+   "b": "新咲市場",
+   "time": 4,
+   "consecutive": true
+  },
+  {
+   "id": "Y05",
+   "a": "咲島港",
+   "b": "(バス)湊大橋西詰",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y06",
+   "a": "富田",
+   "b": "(バス)豆島渡船前",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y07",
+   "a": "富田",
+   "b": "(バス)豆島渡船入口",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y08",
+   "a": "中原台",
+   "b": "(バス)大学寮横",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y09",
+   "a": "中原台",
+   "b": "(バス)富田駅前",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y10",
+   "a": "八つ橋",
+   "b": "(バス)湊大橋西詰",
+   "time": 4,
+   "consecutive": true
+  },
+  {
+   "id": "Y11",
+   "a": "八つ橋",
+   "b": "(バス)葛敷一丁目",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y12",
+   "a": "八つ橋",
+   "b": "(バス)咲島ﾊﾞｽﾀｰﾐﾅﾙ",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y13",
+   "a": "八つ橋",
+   "b": "(バス)咲島警察署",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y14",
+   "a": "助が丘",
+   "b": "(バス)助浜交差点",
+   "time": 4,
+   "consecutive": true
+  },
+  {
+   "id": "Y15",
+   "a": "助が丘",
+   "b": "(バス)咲島営業所",
+   "time": 5,
+   "consecutive": true
+  },
+  {
+   "id": "Y16",
+   "a": "助が丘",
+   "b": "(バス)助が丘団地裏",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y17",
+   "a": "咲西浜",
+   "b": "(バス)助が丘団地裏",
+   "time": 5,
+   "consecutive": true
+  },
+  {
+   "id": "Y18",
+   "a": "咲西浜",
+   "b": "(バス)下砥",
+   "time": 6,
+   "consecutive": true
+  },
+  {
+   "id": "Y19",
+   "a": "島北出坂",
+   "b": "(バス)下砥",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y20",
+   "a": "島北出坂",
+   "b": "(バス)中砥",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y21",
+   "a": "島北出坂",
+   "b": "(バス)出坂団地北",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y22",
+   "a": "上砥",
+   "b": "(バス)船上湯本駅前",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y23",
+   "a": "船上湯本",
+   "b": "(バス)上砥駅前",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y24",
+   "a": "船上湯本",
+   "b": "(バス)笠丘駅入口",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y25",
+   "a": "船上湯本",
+   "b": "(バス)笠丘駅前",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y26",
+   "a": "天玉寺",
+   "b": "(バス)出浦",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y27",
+   "a": "天玉寺",
+   "b": "(バス)天玉寺",
+   "time": 1,
+   "consecutive": true
+  },
+  {
+   "id": "Y28",
+   "a": "天玉寺",
+   "b": "(バス)寺前海岸",
+   "time": 4,
+   "consecutive": true
+  },
+  {
+   "id": "Y29",
+   "a": "咲東崎",
+   "b": "(バス)咲東崎灯台",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y30",
+   "a": "咲東崎",
+   "b": "(バス)咲東崎灯台公園",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y31",
+   "a": "新咲市場",
+   "b": "(バス)福田",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y32",
+   "a": "大岩",
+   "b": "(バス)大学裏",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y33",
+   "a": "葛敷",
+   "b": "(バス)大学寮横",
+   "time": 4,
+   "consecutive": true
+  },
+  {
+   "id": "Y34",
+   "a": "葛敷",
+   "b": "(バス)高速木古川入口",
+   "time": 5,
+   "consecutive": true
+  },
+  {
+   "id": "Y35",
+   "a": "木古川",
+   "b": "(バス)咲島農協前",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y36",
+   "a": "木古川",
+   "b": "(バス)上瀬橋",
+   "time": 3,
+   "consecutive": true
+  },
+  {
+   "id": "Y37",
+   "a": "笠丘",
+   "b": "(バス)船上湯本駅前",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y38",
+   "a": "(バス)助浜交差点",
+   "b": "(バス)助が丘団地裏",
+   "time": 4,
+   "consecutive": true
+  },
+  {
+   "id": "Y39",
+   "a": "(バス)助浜交差点",
+   "b": "(バス)助が丘駅南口",
+   "time": 4,
+   "consecutive": true
+  },
+  {
+   "id": "Y40",
+   "a": "(バス)助浜交差点",
+   "b": "(バス)湊大橋西詰",
+   "time": 4,
+   "consecutive": true
+  },
+  {
+   "id": "Y41",
+   "a": "(バス)湊大橋西詰",
+   "b": "(バス)咲島警察署",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y42",
+   "a": "(バス)咲島営業所",
+   "b": "(バス)高速木古川入口",
+   "time": 2,
+   "consecutive": true
+  },
+  {
+   "id": "Y43",
+   "a": "(バス)中原台駅前",
+   "b": "(バス)大学寮横",
+   "time": 2,
+   "consecutive": true
+  }
+ ]
+}
