@@ -786,19 +786,56 @@ export function TrainLocationBoard() {
           {b.stopsAway === 0 ? "まもなく" : `あと ${b.stopsAway} 停留所`}
         </span>
       </div>
-      <div className="flex flex-col">
-        {b.beyondWindow && (
-          <div className="pl-3.5 text-xs text-muted-foreground">⋮ {b.stopsAway} 停留所以上手前から接近中</div>
-        )}
-        {b.strip.map((s) => (
-          <div key={s.index} className="flex items-center gap-2 py-0.5">
-            <span
-              className={`h-2.5 w-2.5 flex-shrink-0 rounded-full ${s.isTarget ? "bg-green-700" : "border-2 border-muted-foreground/40 bg-background"}`}
-            />
-            <span className={s.isTarget ? "text-sm font-bold text-green-700" : "text-sm"}>{s.name}</span>
-            {s.current && <img src="/vehicles/bus.png" alt="バス" draggable={false} className="ml-1 h-7 w-auto" />}
-          </div>
-        ))}
+      {/* 停留所は横一列（左=手前 → 右=選択停）。停留所名は縦書きにして列幅を細く保つ */}
+      <div className="overflow-x-auto pb-1">
+        <div className="flex items-start">
+          {b.beyondWindow && (
+            <div className="flex w-8 flex-shrink-0 flex-col items-center">
+              <div className="h-8" />
+              <div className="relative flex h-3.5 w-full items-center justify-center">
+                <span className="absolute right-0 top-1/2 h-1 w-1/2 -translate-y-1/2 bg-green-700/40" />
+                <span className="relative z-10 text-xs leading-none text-muted-foreground">⋯</span>
+              </div>
+              <div
+                className="mt-1 whitespace-nowrap text-[10px] leading-tight text-muted-foreground"
+                style={{ writingMode: "vertical-rl" }}
+              >
+                {b.stopsAway}停以上手前
+              </div>
+            </div>
+          )}
+          {b.strip.map((s, i) => (
+            <div key={s.index} className="flex w-12 flex-shrink-0 flex-col items-center">
+              {/* バス（現在位置）。高さ固定枠で全列のラインを水平にそろえる */}
+              <div className="flex h-8 items-end justify-center">
+                {s.current && <img src="/vehicles/bus.png" alt="バス" draggable={false} className="h-7 w-auto" />}
+              </div>
+              {/* 横線＋停留所の丸 */}
+              <div className="relative flex h-3.5 w-full items-center justify-center">
+                {(i > 0 || b.beyondWindow) && (
+                  <span className="absolute left-0 top-1/2 h-1 w-1/2 -translate-y-1/2 bg-green-700/40" />
+                )}
+                {i < b.strip.length - 1 && (
+                  <span className="absolute right-0 top-1/2 h-1 w-1/2 -translate-y-1/2 bg-green-700/40" />
+                )}
+                <span
+                  className={`relative z-10 flex-shrink-0 rounded-full ${
+                    s.isTarget ? "h-3.5 w-3.5 bg-green-700" : "h-2.5 w-2.5 border-2 border-muted-foreground/40 bg-background"
+                  }`}
+                />
+              </div>
+              {/* 停留所名（縦書き） */}
+              <div
+                className={`mt-1 whitespace-nowrap text-xs leading-tight ${
+                  s.isTarget ? "font-bold text-green-700" : "text-muted-foreground"
+                }`}
+                style={{ writingMode: "vertical-rl" }}
+              >
+                {s.name}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
