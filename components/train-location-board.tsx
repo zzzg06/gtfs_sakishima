@@ -5,35 +5,27 @@ import { gtfsParser } from "@/lib/gtfs-parser"
 import { delayManager } from "@/lib/delay-manager"
 import { computeTrainRunStates, type TrainRunState, type TrainDelay } from "@/lib/train-position"
 import { RAIL_LINES } from "@/lib/rail-lines"
-import { locateOnNetwork } from "@/lib/locate-on-network"
+import {
+  locateRtmMarkers,
+  resolveRtmStatesWithSchedule,
+  type RtmBusMarker,
+  type RtmMarker,
+} from "@/lib/rtm-locate"
 import { stationCoordinateManager, type StationCoordinates } from "@/lib/station-coordinates"
 import { buildApproachingBus, buildStrip, dedupeConsecutive, type ApproachingBus } from "@/lib/bus-locate"
 import { vehicleManager } from "@/lib/vehicle-manager"
-import { resolveScheduledLeg, type OperationSchedule, type ScheduleLeg } from "@/lib/estimate-delay"
-import { isBusOperationNumber, isSameOperation, resolveOperationNumber } from "@/lib/operation-number"
+import { buildOperationSchedule, type ScheduleLeg } from "@/lib/estimate-delay"
+import {
+  headsignMatches,
+  isSameOperation,
+  matchOperationByHeadsign,
+  normalizeHeadsign,
+  resolveOperationNumber,
+} from "@/lib/operation-number"
 import { Train, Bus, RefreshCw, X } from "lucide-react"
 
-interface RtmTrain {
-  id: string
-  runNo: string
-  type: string
-  dest: string
-  icon?: string
-  x: number
-  y: number
-  z: number
-}
-
-// Dynmapのバスマーカー（前回座標つき。接近中判定の進行方向に使う）
-interface RtmBus extends RtmTrain {
-  prev?: { x: number; z: number }
-}
-
-// マーカーがバスか（運用番号が B0x／「バス」を含む、または車種アイコンが bus）。
-// 列車は K0x。判定は lib/operation-number の接頭辞ルールに従う。
-function isBusMarker(tr: RtmTrain): boolean {
-  return isBusOperationNumber(tr.runNo || "") || tr.icon === "bus"
-}
+type RtmTrain = RtmMarker
+type RtmBus = RtmBusMarker
 
 // 運用の複数便から、現在時刻にいちばん近い便を選ぶ（4時間サイクルの繰り返しを考慮）。
 function pickCurrentLeg(legs: ScheduleLeg[], nowMinutes: number, offsetsHours = [0, 4, 8, 12]): ScheduleLeg | null {
@@ -340,58 +332,12 @@ export function TrainLocationBoard() {
         }
         setRtmError(null)
         setCoords(loadedCoords)
-        const states: TrainRunState[] = []
-        const unmapped: RtmTrain[] = []
-        const buses: RtmBus[] = []
-        for (const tr of (res.trains as RtmTrain[]) || []) {
-          // バス([バス]運用)は鉄道盤・列車実位置から除外し、バス専用ビューへ回す
-          if (isBusMarker(tr)) {
-            const prev = prevPos.current.get(tr.id)
-            prevPos.current.set(tr.id, { x: tr.x, z: tr.z })
-            buses.push({ ...tr, prev })
-            continue
-          }
-          const loc = locateOnNetwork(tr.x, tr.z, loadedCoords)
-          // 駅間が広い/曲線区間ほど直線への垂直距離が大きくなるため、区間長に応じた可変しきい値
-          const thresh = loc ? Math.max(60, loc.chordLen * 0.6) : 0
-          if (!loc || loc.perpDist > thresh) {
-            unmapped.push(tr)
-            continue
-          }
-          const a = loadedCoords[loc.aName]
-          const b = loadedCoords[loc.bName]
-          const prev = prevPos.current.get(tr.id)
-          prevPos.current.set(tr.id, { x: tr.x, z: tr.z })
-          // 方向は一定以上動いたときだけ更新し、それ以外は前回方向を保持（微小な揺れでの反転防止）
-          let direction = lastDir.current.get(tr.id) ?? 0
-          if (prev && a && b) {
-            const mvx = tr.x - prev.x
-            const mvz = tr.z - prev.z
-            if (Math.hypot(mvx, mvz) >= 2) {
-              const dot = mvx * (b.x - a.x) + mvz * (b.z - a.z)
-              direction = dot >= 0 ? 0 : 1
-              lastDir.current.set(tr.id, direction)
-            }
-          }
-          states.push({
-            operationId: tr.runNo,
-            tripId: tr.id,
-            routeId: "__rtm__",
-            routeName: tr.type,
-            routeType: 1,
-            headsign: tr.dest,
-            direction,
-            status: "on-time",
-            delayMinutes: 0,
-            atStation: loc.atStation,
-            fromStopId: "",
-            toStopId: "",
-            fromStop: loc.atStation ? loc.station || loc.aName : loc.aName,
-            toStop: loc.atStation ? loc.station || loc.aName : loc.bName,
-            nextStop: undefined,
-            progress: loc.t,
-          })
-        }
+        const { states, unmapped, buses } = locateRtmMarkers({
+          markers: (res.trains as RtmTrain[]) || [],
+          coords: loadedCoords,
+          prevPos: prevPos.current,
+          lastDir: lastDir.current,
+        })
         setRtmStates(states)
         setRtmUnmapped(unmapped)
         setRtmBuses(buses)
@@ -456,54 +402,12 @@ export function TrainLocationBoard() {
       .map((name) => ({ name, reading: readingById.get(name) || "" }))
       .sort((a, b) => a.name.localeCompare(b.name, "ja"))
 
-    // 運用番号(trip_short_name)→便の停車順＋発着分。Dynmap遅延推定(estimate-delay)に使う。
-    // 連続同名駅(分岐)はマージ(到着=最初/出発=最後)。
-    const toMin = (t?: string) => {
-      if (!t) return Number.NaN
-      const [h, m, s] = t.split(":").map(Number)
-      return (h || 0) * 60 + (m || 0) + (s || 0) / 60
-    }
-    const routeById = new Map(routes.map((r) => [r.route_id, r]))
-    const operationSchedule: OperationSchedule = {}
-    // 運用番号の突き合わせ候補（Dynmapの K0x / B0x を時刻表側の運用番号に対応づけるため）
-    const busOperationIds = new Set<string>()
-    const trainOperationIds = new Set<string>()
-    for (const t of trips) {
-      const op = t.trip_short_name
-      if (!op) continue
-      const seq = byTrip.get(t.trip_id)
-      if (!seq || seq.length < 2) continue
-      const r = routeById.get(t.route_id)
-      const leg: ScheduleLeg = {
-        stops: [],
-        arrive: [],
-        depart: [],
-        pass: [],
-        routeId: t.route_id,
-        routeName: r?.route_short_name || r?.route_long_name || "",
-        headsign: t.trip_headsign || "",
-      }
-      for (const st of seq) {
-        const name = stopNameById.get(st.stop_id) || st.stop_id
-        const arr = toMin(st.arrival_time || st.departure_time)
-        const dep = toMin(st.departure_time || st.arrival_time)
-        if (leg.stops[leg.stops.length - 1] === name) {
-          leg.depart[leg.depart.length - 1] = dep // 同名連続はマージ
-          // 同名連続のどれかが停車なら停車扱い（通過のみのときだけ通過）
-          if (!st.pass) leg.pass![leg.pass!.length - 1] = false
-        } else {
-          leg.stops.push(name)
-          leg.arrive.push(arr)
-          leg.depart.push(dep)
-          leg.pass!.push(!!st.pass)
-        }
-      }
-      if (leg.stops.length >= 2) {
-        ;(operationSchedule[op] ||= []).push(leg)
-        if (r?.route_type === 3) busOperationIds.add(op)
-        else trainOperationIds.add(op)
-      }
-    }
+    // 運用番号(trip_short_name)→便の停車順＋発着分。Dynmap遅延推定・運用突き合わせに使う。
+    const {
+      schedule: operationSchedule,
+      busOperationIds,
+      trainOperationIds,
+    } = buildOperationSchedule({ trips, stopTimes, routes, stopNameById })
 
     return {
       trips,
@@ -517,8 +421,8 @@ export function TrainLocationBoard() {
       busRouteBySystem,
       busStops,
       operationSchedule,
-      busOperationIds: [...busOperationIds],
-      trainOperationIds: [...trainOperationIds],
+      busOperationIds,
+      trainOperationIds,
     }
   }, [ready])
 
@@ -540,34 +444,16 @@ export function TrainLocationBoard() {
   // ダイヤ予測と同様に解決して上書きする（折り返しは時刻で判別。手入力遅延の代替）。
   const rtmStatesWithDelay = useMemo<TrainRunState[]>(() => {
     if (!stat) return rtmStates
-    return rtmStates.map((s) => {
-      // 運用番号は表記ゆれ（K01 と K1）を数字で突き合わせ、時刻表側の運用番号に正規化する。
-      // 列車はゼロ詰めの違いだけを吸収し、番号が一致しないものは対応づけない。
-      const opId = resolveOperationNumber(s.operationId, stat.trainOperationIds) || s.operationId
-      const r = resolveScheduledLeg(
-        { operationId: opId, fromStop: s.fromStop, toStop: s.toStop, atStation: s.atStation, progress: s.progress },
-        stat.operationSchedule,
-        now,
-      )
-      if (!r.matched) return s // 時刻表に無い運用はDynmapラベルの種別/行先・移動方向のまま
-      return {
-        ...s,
-        // 車両割当や運用詳細が時刻表の運用番号で引けるよう、正規化後の番号を使う
-        operationId: opId,
-        routeId: r.routeId || s.routeId,
-        routeName: r.routeName || s.routeName,
-        headsign: r.headsign ?? s.headsign,
-        status: r.status,
-        delayMinutes: r.delayMinutes,
-        // 進行順(折り返し解決済み)で from→to を上書き → placeInSegment が正しい線区ローカル向きを出す
-        fromStop: s.atStation ? s.fromStop : r.travelFrom || s.fromStop,
-        toStop: s.atStation ? s.toStop : r.travelTo || s.toStop,
-        nextStop: s.atStation ? r.nextStop ?? s.nextStop : r.upcoming?.[0]?.name ?? s.nextStop,
-        // 運用がダイヤ上にあれば、車両詳細で到着予想時刻を出す（遅延込み）
-        upcoming: r.upcoming && r.upcoming.length > 0 ? r.upcoming : s.upcoming,
-      }
+    return resolveRtmStatesWithSchedule({
+      states: rtmStates,
+      operationSchedule: stat.operationSchedule,
+      trainOperationIds: stat.trainOperationIds,
+      scheduleStates: runStates,
+      coords,
+      positionById: prevPos.current,
+      nowMinutes: now,
     })
-  }, [rtmStates, stat, now])
+  }, [rtmStates, stat, now, runStates, coords])
 
   // フォーカス対象の運用が現在走行中なら、その列車の線区へ切替＋スクロールし、運用詳細を開く。
   // 表示元(source)確定後、該当状態が算出できた時点で一度だけ実行する。
@@ -656,11 +542,26 @@ export function TrainLocationBoard() {
     const unlocated: RtmBus[] = []
     if (source === "dynmap") {
       for (const bus of rtmBuses) {
-        // 運用番号(B0x)から時刻表のバス運用を突き合わせる。完全一致が無ければ番号が最も近い運用を採用し、
-        // その運用の便（現在時刻に最も近い便）の停車順で測位する。
-        const opId = resolveOperationNumber(bus.runNo || "", stat.busOperationIds, { nearest: true })
+        // 運用の特定は (1)運用番号(B0x)の数字一致 → (2)Dynmapの行先と一致する運行中の運用
+        // → (3)番号が最も近い運用 の順。特定できたらその運用の便（現在時刻に最も近い便）の停車順で測位する。
+        const opId =
+          resolveOperationNumber(bus.runNo || "", stat.busOperationIds) ||
+          matchOperationByHeadsign(bus.dest, true, runStates, coords, bus) ||
+          resolveOperationNumber(bus.runNo || "", stat.busOperationIds, { nearest: true })
         const legs = opId ? stat.operationSchedule[opId] : undefined
-        const leg = legs && legs.length > 0 ? pickCurrentLeg(legs, now) : null
+        // 便の選択もDynmapの行先を優先する（1運用に複数の行先があるため、幕と一致する便を採る）。
+        // 一致する便が無ければ現在時刻に最も近い便。
+        const destKey = normalizeHeadsign(bus.dest || "")
+        const exactDest = destKey ? legs?.filter((l) => normalizeHeadsign(l.headsign) === destKey) : undefined
+        const sameDest =
+          exactDest && exactDest.length > 0
+            ? exactDest
+            : destKey
+              ? legs?.filter((l) => headsignMatches(l.headsign, bus.dest || ""))
+              : undefined
+        const leg =
+          (sameDest && sameDest.length > 0 ? pickCurrentLeg(sameDest, now) : null) ??
+          (legs && legs.length > 0 ? pickCurrentLeg(legs, now) : null)
         let seq = leg ? leg.stops : undefined
         if (!seq) {
           // 運用が突き合わせできない場合は従来どおり系統ラベル(マーカーの種別)の代表停車順を使う

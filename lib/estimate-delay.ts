@@ -47,6 +47,92 @@ export interface ResolveResult {
   upcoming?: UpcomingArrival[] // これから停車する駅と到着予想時刻（遅延・サイクル込み）
 }
 
+// GTFSから「運用番号(trip_short_name)→便」の一覧を組み立てる。
+// Dynmap実位置の遅延推定・運用突き合わせで使う（在線盤と運行状況マップで共通）。
+// 連続同名駅(分岐)はマージし(到着=最初/出発=最後)、通過フラグは「どれかが停車なら停車」。
+export interface BuildScheduleTrip {
+  trip_id: string
+  route_id: string
+  trip_short_name?: string
+  trip_headsign?: string
+}
+export interface BuildScheduleStopTime {
+  trip_id: string
+  arrival_time: string
+  departure_time: string
+  stop_id: string
+  stop_sequence: number
+  pass?: boolean
+}
+export interface BuildScheduleRoute {
+  route_id: string
+  route_short_name?: string
+  route_long_name?: string
+  route_type: number
+}
+
+export function buildOperationSchedule(params: {
+  trips: BuildScheduleTrip[]
+  stopTimes: BuildScheduleStopTime[] // 通過込み(getAllStopTimes)
+  routes: BuildScheduleRoute[]
+  stopNameById: Map<string, string>
+}): { schedule: OperationSchedule; trainOperationIds: string[]; busOperationIds: string[] } {
+  const { trips, stopTimes, routes, stopNameById } = params
+  const toMin = (t?: string) => {
+    if (!t) return Number.NaN
+    const [h, m, s] = t.split(":").map(Number)
+    return (h || 0) * 60 + (m || 0) + (s || 0) / 60
+  }
+  const byTrip = new Map<string, BuildScheduleStopTime[]>()
+  for (const st of stopTimes) {
+    const a = byTrip.get(st.trip_id)
+    if (a) a.push(st)
+    else byTrip.set(st.trip_id, [st])
+  }
+  for (const a of byTrip.values()) a.sort((x, y) => x.stop_sequence - y.stop_sequence)
+
+  const routeById = new Map(routes.map((r) => [r.route_id, r]))
+  const schedule: OperationSchedule = {}
+  const busOperationIds = new Set<string>()
+  const trainOperationIds = new Set<string>()
+  for (const t of trips) {
+    const op = t.trip_short_name
+    if (!op) continue
+    const seq = byTrip.get(t.trip_id)
+    if (!seq || seq.length < 2) continue
+    const r = routeById.get(t.route_id)
+    const leg: ScheduleLeg = {
+      stops: [],
+      arrive: [],
+      depart: [],
+      pass: [],
+      routeId: t.route_id,
+      routeName: r?.route_short_name || r?.route_long_name || "",
+      headsign: t.trip_headsign || "",
+    }
+    for (const st of seq) {
+      const name = stopNameById.get(st.stop_id) || st.stop_id
+      const arr = toMin(st.arrival_time || st.departure_time)
+      const dep = toMin(st.departure_time || st.arrival_time)
+      if (leg.stops[leg.stops.length - 1] === name) {
+        leg.depart[leg.depart.length - 1] = dep
+        if (!st.pass) leg.pass![leg.pass!.length - 1] = false
+      } else {
+        leg.stops.push(name)
+        leg.arrive.push(arr)
+        leg.depart.push(dep)
+        leg.pass!.push(!!st.pass)
+      }
+    }
+    if (leg.stops.length >= 2) {
+      ;(schedule[op] ||= []).push(leg)
+      if (r?.route_type === 3) busOperationIds.add(op)
+      else trainOperationIds.add(op)
+    }
+  }
+  return { schedule, trainOperationIds: [...trainOperationIds], busOperationIds: [...busOperationIds] }
+}
+
 // |delay| がこれを超える候補は誤マッチとみなして採用しない（分）
 const MAX_REASONABLE_DELAY = 90
 // この分以内の差は定刻とみなす（ユーザー要望: 1分許容）

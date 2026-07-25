@@ -6,6 +6,9 @@
 // - 列車: 接頭辞 K
 // 数字が完全一致する運用を優先し、バスは一致が無ければ番号が最も近い運用を採用する（nearest）。
 
+import type { TrainRunState } from "./train-position"
+import type { StationCoordinates } from "./station-coordinates"
+
 export type OperationKind = "train" | "bus" | "other"
 
 export interface ParsedOperationNumber {
@@ -71,4 +74,59 @@ export function resolveOperationNumber(
     }
   }
   return nearest?.id ?? null
+}
+
+// 行先(幕)の表記ゆれを吸収する。「咲島港駅ゆき」「咲島港駅行き」「咲島港駅 行」→「咲島港駅」
+export function normalizeHeadsign(s: string): string {
+  return (s || "")
+    .normalize("NFKC")
+    .replace(/\s/g, "")
+    .replace(/^\(バス\)/, "")
+    .replace(/(行き|ゆき|行)$/, "")
+}
+
+// 行先が同じとみなせるか。完全一致のほか、「時計回り中原台駅前ゆき」と「中原台駅前（市街地循環）行き」の
+// ように片方が他方を含む場合も一致とする（部分一致）。
+export function headsignMatchLevel(a: string, b: string): 0 | 1 | null {
+  const x = normalizeHeadsign(a)
+  const y = normalizeHeadsign(b)
+  if (!x || !y) return null
+  if (x === y) return 0
+  if (x.length >= 2 && y.length >= 2 && (x.includes(y) || y.includes(x))) return 1
+  return null
+}
+
+export function headsignMatches(a: string, b: string): boolean {
+  return headsignMatchLevel(a, b) !== null
+}
+
+// Dynmapに表示されている行先から運用を特定する（運用番号で突き合わせできないときの補助）。
+// 運行中の便のうち種別(列車/バス)が同じで行先が一致するものを採り（完全一致を部分一致より優先）、
+// 複数該当する場合はマーカーの実座標にいちばん近い便を選ぶ。
+export function matchOperationByHeadsign(
+  dest: string,
+  isBus: boolean,
+  states: TrainRunState[],
+  coords: StationCoordinates,
+  pos?: { x: number; z: number },
+): string | null {
+  if (!normalizeHeadsign(dest)) return null
+  const scored = states
+    .filter((s) => (s.routeType === 3) === isBus)
+    .map((s) => ({ s, level: headsignMatchLevel(dest, s.headsign || "") }))
+    .filter((c): c is { s: TrainRunState; level: 0 | 1 } => c.level !== null)
+  if (scored.length === 0) return null
+  const bestLevel = Math.min(...scored.map((c) => c.level))
+  const cands = scored.filter((c) => c.level === bestLevel).map((c) => c.s)
+  if (cands.length === 1 || !pos) return cands[0].operationId
+  let best: { id: string; dist: number } | null = null
+  for (const s of cands) {
+    const a = coords[s.fromStop]
+    if (!a) continue
+    const b = coords[s.toStop] || a
+    const t = s.atStation ? 0 : s.progress
+    const dist = Math.hypot(pos.x - (a.x + (b.x - a.x) * t), pos.z - (a.z + (b.z - a.z) * t))
+    if (!best || dist < best.dist) best = { id: s.operationId, dist }
+  }
+  return best?.id ?? cands[0].operationId
 }
