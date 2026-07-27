@@ -217,9 +217,9 @@ export function resolveScheduledLeg(
 
   if (!best) return { matched: false, delayMinutes: 0, status: "on-time" }
   const b: Candidate = best
-  const dm = Math.round(b.delay)
-  const status: TrainDelay["status"] =
-    dm > DELAY_TOLERANCE ? "delayed" : dm < -DELAY_TOLERANCE ? "early" : "on-time"
+  // 早着は扱わない（ユーザー要望）。定刻より早い場合は遅延0・定刻として扱う。
+  const dm = Math.max(0, Math.round(b.delay))
+  const status: TrainDelay["status"] = dm > DELAY_TOLERANCE ? "delayed" : "on-time"
 
   // これからの停車駅と到着予想時刻（採用便の i+1 以降、通過駅は除外、遅延・サイクル込み）
   const upcoming: UpcomingArrival[] = []
@@ -227,7 +227,8 @@ export function resolveScheduledLeg(
     if (b.leg.pass?.[j]) continue
     const sched = Number.isFinite(b.leg.arrive[j]) ? b.leg.arrive[j] : b.leg.depart[j]
     if (!Number.isFinite(sched)) continue
-    upcoming.push({ name: b.leg.stops[j], time: fmtClock(sched + b.offH * 60 + b.delay) })
+    // 到着予想も早着ぶんは見込まない（dm=0以上）
+    upcoming.push({ name: b.leg.stops[j], time: fmtClock(sched + b.offH * 60 + dm) })
   }
 
   return {

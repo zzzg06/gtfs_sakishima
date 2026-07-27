@@ -179,8 +179,9 @@ export class DelayManager {
         return "定刻運行中"
       case "delayed":
         return `約${delayInfo.delayMinutes}分遅れ${delayInfo.reason ? ` (${delayInfo.reason})` : ""}`
+      // 早着は扱わない（定刻表示）
       case "early":
-        return `約${Math.abs(delayInfo.delayMinutes)}分早着`
+        return "定刻運行中"
       case "cancelled":
         return `運休${delayInfo.reason ? ` (${delayInfo.reason})` : ""}`
       default:

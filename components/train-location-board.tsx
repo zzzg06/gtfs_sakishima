@@ -16,10 +16,9 @@ import { buildApproachingBus, buildStrip, dedupeConsecutive, type ApproachingBus
 import { vehicleManager } from "@/lib/vehicle-manager"
 import { buildOperationSchedule, type ScheduleLeg } from "@/lib/estimate-delay"
 import {
-  headsignMatches,
+  headsignMatchLevel,
   isSameOperation,
   matchOperationByHeadsign,
-  normalizeHeadsign,
   resolveOperationNumber,
 } from "@/lib/operation-number"
 import { Train, Bus, RefreshCw, X } from "lucide-react"
@@ -27,21 +26,46 @@ import { Train, Bus, RefreshCw, X } from "lucide-react"
 type RtmTrain = RtmMarker
 type RtmBus = RtmBusMarker
 
-// 運用の複数便から、現在時刻にいちばん近い便を選ぶ（4時間サイクルの繰り返しを考慮）。
-function pickCurrentLeg(legs: ScheduleLeg[], nowMinutes: number, offsetsHours = [0, 4, 8, 12]): ScheduleLeg | null {
-  let best: { leg: ScheduleLeg; dist: number } | null = null
-  for (const leg of legs) {
-    const start = leg.depart[0]
-    const end = leg.arrive[leg.arrive.length - 1]
-    if (!Number.isFinite(start) || !Number.isFinite(end)) continue
-    for (const offH of offsetsHours) {
-      const a = start + offH * 60
-      const b = end + offH * 60
-      const dist = nowMinutes < a ? a - nowMinutes : nowMinutes > b ? nowMinutes - b : 0
-      if (!best || dist < best.dist) best = { leg, dist }
-    }
+// 便の運転時間帯と現在時刻の隔たり（分）。運転中なら0。4時間サイクルの繰り返しを考慮する。
+function legTimeDistance(leg: ScheduleLeg, nowMinutes: number, offsetsHours = [0, 4, 8, 12]): number {
+  const start = leg.depart[0]
+  const end = leg.arrive[leg.arrive.length - 1]
+  if (!Number.isFinite(start) || !Number.isFinite(end)) return Number.POSITIVE_INFINITY
+  let best = Number.POSITIVE_INFINITY
+  for (const offH of offsetsHours) {
+    const a = start + offH * 60
+    const b = end + offH * 60
+    const dist = nowMinutes < a ? a - nowMinutes : nowMinutes > b ? nowMinutes - b : 0
+    if (dist < best) best = dist
   }
-  return best?.leg ?? null
+  return best
+}
+
+// 運用の複数便から、いま走っている便を選ぶ。
+// (1)Dynmapの幕(行先)に一致する便を候補にする（完全一致・部分一致は同格に扱う）
+// (2)候補のうち運転時間帯にある便を優先し、(3)完全一致>部分一致、(4)現在時刻に近い順。
+// 幕に一致する便が1つも無ければ、運転時間帯・時刻の近さだけで選ぶ。
+// ※「出入08 → 咲71」のように系統をまたぐ便があり、幕「咲島港駅ゆき」に対して
+//   完全一致の咲71(運転時間帯外)より、部分一致でもいま走っている出入便を優先したい。
+function pickBusLeg(legs: ScheduleLeg[], nowMinutes: number, dest: string): ScheduleLeg | null {
+  const scored = legs
+    .map((leg) => ({
+      leg,
+      dist: legTimeDistance(leg, nowMinutes),
+      level: headsignMatchLevel(dest || "", leg.headsign) ?? 2, // 0=完全一致 1=部分一致 2=不一致
+    }))
+    .filter((c) => Number.isFinite(c.dist))
+  if (scored.length === 0) return null
+  const matched = scored.filter((c) => c.level <= 1)
+  const pool = matched.length > 0 ? matched : scored
+  pool.sort((a, b) => {
+    const aRun = a.dist === 0
+    const bRun = b.dist === 0
+    if (aRun !== bRun) return aRun ? -1 : 1
+    if (a.level !== b.level) return a.level - b.level
+    return a.dist - b.dist
+  })
+  return pool[0].leg
 }
 
 // 線区間の接続（分岐）。指定駅に、別線区へ伸びる分岐線＋その線区へ飛ぶリンクを表示する。
@@ -85,12 +109,11 @@ function nowMinutesLocal(): number {
   return d.getHours() * 60 + d.getMinutes() + d.getSeconds() / 60
 }
 
+// 早着は表示しない（定刻扱い）
 function delayInfo(s: TrainDelay["status"], m: number): { text: string; color: string; delayed: boolean } {
   switch (s) {
     case "delayed":
       return { text: `+${m}分`, color: "#dc2626", delayed: true }
-    case "early":
-      return { text: `-${Math.abs(m)}分`, color: "#2563eb", delayed: true }
     case "cancelled":
       return { text: "運休", color: "#6b7280", delayed: true }
     default:
@@ -542,26 +565,47 @@ export function TrainLocationBoard() {
     const unlocated: RtmBus[] = []
     if (source === "dynmap") {
       for (const bus of rtmBuses) {
-        // 運用の特定は (1)運用番号(B0x)の数字一致 → (2)Dynmapの行先と一致する運行中の運用
-        // → (3)番号が最も近い運用 の順。特定できたらその運用の便（現在時刻に最も近い便）の停車順で測位する。
-        const opId =
-          resolveOperationNumber(bus.runNo || "", stat.busOperationIds) ||
-          matchOperationByHeadsign(bus.dest, true, runStates, coords, bus) ||
-          resolveOperationNumber(bus.runNo || "", stat.busOperationIds, { nearest: true })
-        const legs = opId ? stat.operationSchedule[opId] : undefined
-        // 便の選択もDynmapの行先を優先する（1運用に複数の行先があるため、幕と一致する便を採る）。
-        // 一致する便が無ければ現在時刻に最も近い便。
-        const destKey = normalizeHeadsign(bus.dest || "")
-        const exactDest = destKey ? legs?.filter((l) => normalizeHeadsign(l.headsign) === destKey) : undefined
-        const sameDest =
-          exactDest && exactDest.length > 0
-            ? exactDest
-            : destKey
-              ? legs?.filter((l) => headsignMatches(l.headsign, bus.dest || ""))
-              : undefined
-        const leg =
-          (sameDest && sameDest.length > 0 ? pickCurrentLeg(sameDest, now) : null) ??
-          (legs && legs.length > 0 ? pickCurrentLeg(legs, now) : null)
+        // 運用の特定:
+        // (1)運用番号(B0x)の数字一致。その運用の便が幕(行先)と噛み合えばそれを採用
+        // (2)噛み合わない（ダイヤと違う運用に入っている等）ときは、幕と一致する運行中の運用へ
+        // (3)どちらも決まらなければ番号が最も近い運用
+        // 便は「幕と一致する便 → 運転時間帯にある便 → 時刻が近い便」の順で選ぶ（pickBusLeg）。
+        const pickLegOf = (op?: string | null) => {
+          const legs = op ? stat.operationSchedule[op] : undefined
+          return legs && legs.length > 0 ? pickBusLeg(legs, now, bus.dest || "") : null
+        }
+        let opId: string | null = resolveOperationNumber(bus.runNo || "", stat.busOperationIds)
+        let leg = pickLegOf(opId)
+        if (!leg || headsignMatchLevel(bus.dest || "", leg.headsign) === null) {
+          const destOp = matchOperationByHeadsign(bus.dest, true, runStates, coords, bus)
+          const destLeg = pickLegOf(destOp)
+          if (destOp && destLeg) {
+            opId = destOp
+            leg = destLeg
+          } else {
+            // 運行中の運用に該当が無ければ、全バス運用の便から幕(行先)が一致する便を探す。
+            // ダイヤ上の時間帯とずれて走っていても、行先が示す系統の停車順で測位できるようにする。
+            let best: { op: string; leg: ScheduleLeg; level: number; dist: number } | null = null
+            for (const op of stat.busOperationIds) {
+              for (const l of stat.operationSchedule[op] || []) {
+                const level = headsignMatchLevel(bus.dest || "", l.headsign)
+                if (level === null) continue
+                const dist = legTimeDistance(l, now)
+                if (!best || level < best.level || (level === best.level && dist < best.dist)) {
+                  best = { op, leg: l, level, dist }
+                }
+              }
+            }
+            if (best) {
+              opId = best.op
+              leg = best.leg
+            }
+          }
+        }
+        if (!opId) {
+          opId = resolveOperationNumber(bus.runNo || "", stat.busOperationIds, { nearest: true })
+          leg = pickLegOf(opId)
+        }
         let seq = leg ? leg.stops : undefined
         if (!seq) {
           // 運用が突き合わせできない場合は従来どおり系統ラベル(マーカーの種別)の代表停車順を使う
@@ -582,7 +626,9 @@ export function TrainLocationBoard() {
           lookBack: 4,
         })
         if (r.kind === "approaching") approaching.push(r.bus)
-        else if (r.kind === "unlocated") unlocated.push(bus)
+        // 位置不明でも、突き合わせた便の系統・行先が分かっていればそれを見せる
+        else if (r.kind === "unlocated")
+          unlocated.push({ ...bus, type: leg?.routeName || bus.type, dest: leg?.headsign || bus.dest })
         // not-approaching（通過済み等）は表示しない
       }
     } else {

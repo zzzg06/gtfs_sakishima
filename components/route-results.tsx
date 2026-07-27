@@ -575,11 +575,10 @@ function RouteCard({
     const delayInfo = delayManager.getDelayInfoForTrip(tripId)
     if (!delayInfo) return "#16a34a" // green-600 (定刻)
 
+    // 早着は扱わない（定刻と同じ扱い）
     switch (delayInfo.status) {
       case "delayed":
         return "#dc2626" // red-600
-      case "early":
-        return "#2563eb" // blue-600
       case "cancelled":
         return "#6b7280" // gray-500
       default:
@@ -597,12 +596,6 @@ function RouteCard({
         return (
           <Badge variant="destructive" className="text-xs ml-2">
             遅れあり
-          </Badge>
-        )
-      case "early":
-        return (
-          <Badge variant="outline" className="text-xs ml-2 bg-blue-50 text-blue-700 border-blue-300">
-            早着
           </Badge>
         )
       case "cancelled":

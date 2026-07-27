@@ -482,7 +482,7 @@ export function RouteStatusMap() {
               {placed.map((p) => {
                 const { pos, state: t, cx, cy } = p
                 const angle = (Math.atan2(pos.dirY, pos.dirX) * 180) / Math.PI
-                const delayed = t.delayMinutes !== 0
+                const delayed = t.delayMinutes > 0 // 早着は扱わない
                 const isSel = selected?.operationId === t.operationId && selected?.tripId === t.tripId
                 return (
                   <g
@@ -592,7 +592,7 @@ export function RouteStatusMap() {
                 {selected.routeName}
                 {selected.headsign ? ` ${selected.headsign}` : ""} ／{" "}
                 {selected.atStation ? `${selected.fromStop} 停車中` : `${selected.fromStop}→${selected.toStop} 走行中`}
-                {selected.delayMinutes !== 0 ? ` ／ ${selected.delayMinutes > 0 ? "+" : ""}${selected.delayMinutes}分` : ""}
+                {selected.delayMinutes > 0 ? ` ／ +${selected.delayMinutes}分` : ""}
               </p>
             </div>
             <button
