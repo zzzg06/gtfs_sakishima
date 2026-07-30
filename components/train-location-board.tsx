@@ -17,11 +17,14 @@ import { vehicleManager } from "@/lib/vehicle-manager"
 import { buildOperationSchedule, type ScheduleLeg } from "@/lib/estimate-delay"
 import {
   headsignMatchLevel,
+  isBusOperationNumber,
   isSameOperation,
   matchOperationByHeadsign,
   resolveOperationNumber,
 } from "@/lib/operation-number"
-import { Train, Bus, RefreshCw, X } from "lucide-react"
+import { abbrevSyubetsu, delayInfo, routeColor, vehicleIconUrl } from "@/lib/train-display"
+import { TrainDetailModal } from "@/components/train-detail-modal"
+import { Train, Bus, RefreshCw } from "lucide-react"
 
 type RtmTrain = RtmMarker
 type RtmBus = RtmBusMarker
@@ -97,38 +100,10 @@ const REFRESH_MS = 10000
 // 通過運転で在線区間とみなす線内スパンの上限（隣接=1）。環状の逆回り誤一致を避けるため。
 const MAX_SPAN = 4
 
-function routeColor(c?: string): string {
-  if (!c || c.trim() === "") return "#0891b2"
-  if (/^[0-9A-Fa-f]{6}$/.test(c)) return `#${c}`
-  if (c.startsWith("#")) return c
-  return "#0891b2"
-}
-
 function nowMinutesLocal(): number {
   const d = new Date()
   return d.getHours() * 60 + d.getMinutes() + d.getSeconds() / 60
 }
-
-// 早着は表示しない（定刻扱い）
-function delayInfo(s: TrainDelay["status"], m: number): { text: string; color: string; delayed: boolean } {
-  switch (s) {
-    case "delayed":
-      return { text: `+${m}分`, color: "#dc2626", delayed: true }
-    case "cancelled":
-      return { text: "運休", color: "#6b7280", delayed: true }
-    default:
-      return { text: "定刻", color: "#16a34a", delayed: false }
-  }
-}
-
-// 種別の盤面表示用の短縮表記（在線盤のバッジ用）
-const SYUBETSU_ABBREV: Record<string, string> = {
-  各駅停車: "各停",
-  循環特快: "循特",
-  特別快速: "特快",
-  咲島循環: "循環",
-}
-const abbrevSyubetsu = (name: string) => SYUBETSU_ABBREV[name] || name
 
 interface SegPlacement {
   stops: string[]
@@ -514,7 +489,10 @@ export function TrainLocationBoard() {
     const line = RAIL_LINES.find((l) => l.name === selectedKey)
     if (!line) return null
     const states = mergeCoupledStates(
-      source === "dynmap" ? rtmStatesWithDelay : runStates.filter((t) => t.routeType !== 3),
+      // バス運用(B0x/バスN)は列車走行位置には出さない（暫定処置）
+      (source === "dynmap" ? rtmStatesWithDelay : runStates.filter((t) => t.routeType !== 3)).filter(
+        (t) => !isBusOperationNumber(t.operationId),
+      ),
     )
     return {
       key: line.name,
@@ -779,14 +757,14 @@ export function TrainLocationBoard() {
 
   // Dynmap実位置のバス1台ぶん（系統・行先＋手前数停の停留所と現在位置）
   const BusApproachRow = ({ b }: { b: ApproachingBus }) => (
-    <div className="rounded-lg border border-border p-2 shadow-sm">
-      <div className="mb-1 flex items-center gap-2">
-        <span className="rounded bg-green-700 px-1.5 py-0.5 text-xs font-bold text-white">{b.line}</span>
-        <span className="min-w-0 truncate text-sm font-medium">{b.dest}</span>
+    <div className="rounded-lg border border-border p-3 shadow-sm">
+      <div className="mb-2 flex items-center gap-2">
+        <span className="rounded bg-green-700 px-2 py-1 text-base font-bold text-white">{b.line}</span>
+        <span className="min-w-0 truncate text-lg font-bold">{b.dest}</span>
         {b.delayed && b.delayText && (
-          <span className="whitespace-nowrap text-xs font-medium text-amber-600">{b.delayText}</span>
+          <span className="whitespace-nowrap text-sm font-medium text-amber-600">{b.delayText}</span>
         )}
-        <span className="ml-auto whitespace-nowrap text-xs font-bold text-green-700">
+        <span className="ml-auto whitespace-nowrap text-base font-bold text-green-700">
           {b.stopsAway === 0 ? "まもなく" : `あと ${b.stopsAway} 停留所`}
         </span>
       </div>
@@ -794,14 +772,14 @@ export function TrainLocationBoard() {
       <div className="overflow-x-auto pb-1">
         <div className="flex items-start">
           {b.beyondWindow && (
-            <div className="flex w-8 flex-shrink-0 flex-col items-center">
-              <div className="h-8" />
-              <div className="relative flex h-3.5 w-full items-center justify-center">
-                <span className="absolute right-0 top-1/2 h-1 w-1/2 -translate-y-1/2 bg-green-700/40" />
-                <span className="relative z-10 text-xs leading-none text-muted-foreground">⋯</span>
+            <div className="flex w-12 flex-shrink-0 flex-col items-center">
+              <div className="h-12" />
+              <div className="relative flex h-5 w-full items-center justify-center">
+                <span className="absolute right-0 top-1/2 h-1.5 w-1/2 -translate-y-1/2 bg-green-700/40" />
+                <span className="relative z-10 text-sm leading-none text-muted-foreground">⋯</span>
               </div>
               <div
-                className="mt-1 whitespace-nowrap text-[10px] leading-tight text-muted-foreground"
+                className="mt-1.5 whitespace-nowrap text-xs leading-tight text-muted-foreground"
                 style={{ writingMode: "vertical-rl" }}
               >
                 {b.stopsAway}停以上手前
@@ -809,29 +787,29 @@ export function TrainLocationBoard() {
             </div>
           )}
           {b.strip.map((s, i) => (
-            <div key={s.index} className="flex w-12 flex-shrink-0 flex-col items-center">
+            <div key={s.index} className="flex w-16 flex-shrink-0 flex-col items-center">
               {/* バス（現在位置）。高さ固定枠で全列のラインを水平にそろえる */}
-              <div className="flex h-8 items-end justify-center">
-                {s.current && <img src="/vehicles/bus.png" alt="バス" draggable={false} className="h-7 w-auto" />}
+              <div className="flex h-12 items-end justify-center">
+                {s.current && <img src="/vehicles/bus.png" alt="バス" draggable={false} className="h-11 w-auto" />}
               </div>
               {/* 横線＋停留所の丸 */}
-              <div className="relative flex h-3.5 w-full items-center justify-center">
+              <div className="relative flex h-5 w-full items-center justify-center">
                 {(i > 0 || b.beyondWindow) && (
-                  <span className="absolute left-0 top-1/2 h-1 w-1/2 -translate-y-1/2 bg-green-700/40" />
+                  <span className="absolute left-0 top-1/2 h-1.5 w-1/2 -translate-y-1/2 bg-green-700/40" />
                 )}
                 {i < b.strip.length - 1 && (
-                  <span className="absolute right-0 top-1/2 h-1 w-1/2 -translate-y-1/2 bg-green-700/40" />
+                  <span className="absolute right-0 top-1/2 h-1.5 w-1/2 -translate-y-1/2 bg-green-700/40" />
                 )}
                 <span
                   className={`relative z-10 flex-shrink-0 rounded-full ${
-                    s.isTarget ? "h-3.5 w-3.5 bg-green-700" : "h-2.5 w-2.5 border-2 border-muted-foreground/40 bg-background"
+                    s.isTarget ? "h-5 w-5 bg-green-700" : "h-3.5 w-3.5 border-[3px] border-muted-foreground/40 bg-background"
                   }`}
                 />
               </div>
               {/* 停留所名（縦書き） */}
               <div
-                className={`mt-1 whitespace-nowrap text-xs leading-tight ${
-                  s.isTarget ? "font-bold text-green-700" : "text-muted-foreground"
+                className={`mt-1.5 whitespace-nowrap text-sm leading-tight ${
+                  s.isTarget ? "font-bold text-green-700" : "text-foreground/80"
                 }`}
                 style={{ writingMode: "vertical-rl" }}
               >
@@ -1250,118 +1228,14 @@ export function TrainLocationBoard() {
       </p>
 
       {/* 運用詳細（ピンクリック） */}
-      {selectedTrain &&
-        (() => {
-          const t = selectedTrain
-          const c = stat.routeColorById.get(t.routeId) || "#0891b2"
-          const d = delayInfo(t.status, t.delayMinutes)
-          // 増結: 自列車＋併結相手をまとめて扱う
-          const members = [{ operationId: t.operationId, trainNumber: t.trainNumber }, ...(t.coupledWith || [])]
-          const isCoupled = members.length > 1
-          const trainNos = members.map((m) => m.trainNumber).filter(Boolean)
-          return (
-            <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-              onClick={() => setSelectedTrain(null)}
-            >
-              <div
-                className="w-full max-w-sm rounded-lg border border-border bg-card p-4 shadow-xl"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="mb-3 flex items-center gap-2">
-                  <span
-                    className="whitespace-nowrap rounded px-1.5 py-0.5 text-sm font-bold text-white"
-                    style={{ backgroundColor: c }}
-                  >
-                    {abbrevSyubetsu(t.routeName) || t.operationId}
-                  </span>
-                  <span className="min-w-0 truncate text-base font-bold">{t.headsign || ""}</span>
-                  {isCoupled && (
-                    <span className="whitespace-nowrap rounded bg-amber-500 px-1.5 py-0.5 text-xs font-bold text-white">
-                      増結
-                    </span>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => setSelectedTrain(null)}
-                    className="ml-auto rounded p-1 text-muted-foreground hover:bg-accent"
-                    aria-label="閉じる"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-                <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-sm">
-                  <dt className="text-muted-foreground">運用番号</dt>
-                  <dd className="font-medium">{members.map((m) => m.operationId).join("・")}</dd>
-                  {trainNos.length > 0 && (
-                    <>
-                      <dt className="text-muted-foreground">列車番号</dt>
-                      <dd className="font-medium tabular-nums">{trainNos.join(" + ")}</dd>
-                    </>
-                  )}
-                  <dt className="text-muted-foreground">種別</dt>
-                  <dd className="font-medium">{t.routeName}</dd>
-                  <dt className="text-muted-foreground">行先</dt>
-                  <dd className="font-medium">{t.headsign || "—"}</dd>
-                  <dt className="text-muted-foreground">使用車両</dt>
-                  <dd className="flex flex-col gap-1 font-medium">
-                    {members.map((m) => {
-                      const v = vehicleManager.getCachedVehicleForOperation(m.operationId)
-                      return (
-                        <span key={m.operationId} className="flex items-center gap-1.5">
-                          {isCoupled && (
-                            <span className="rounded bg-muted px-1 text-[10px] text-muted-foreground">
-                              {m.trainNumber || m.operationId}
-                            </span>
-                          )}
-                          {v?.iconUrl && <img src={v.iconUrl} alt="" className="h-6 w-auto object-contain" />}
-                          {v ? (
-                            <span>
-                              {v.name}
-                              {v.type ? <span className="text-muted-foreground">（{v.type}）</span> : null}
-                            </span>
-                          ) : (
-                            <span className="text-muted-foreground">未割当</span>
-                          )}
-                        </span>
-                      )
-                    })}
-                  </dd>
-                  <dt className="text-muted-foreground">現在地</dt>
-                  <dd className="font-medium">
-                    {t.atStation ? `${t.fromStop} 停車中` : `${t.fromStop} → ${t.toStop} 走行中`}
-                  </dd>
-                  <dt className="text-muted-foreground">遅延</dt>
-                  <dd className="font-medium" style={{ color: d.delayed ? d.color : undefined }}>
-                    {d.text}
-                  </dd>
-                </dl>
-                {t.upcoming && t.upcoming.length > 0 ? (
-                  <div className="mt-3">
-                    <p className="mb-1 text-xs font-semibold text-muted-foreground">これからの停車駅（到着予定）</p>
-                    <div className="flex flex-col gap-1">
-                      {t.upcoming.map((u, i) => (
-                        <div
-                          key={i}
-                          className="flex items-center justify-between rounded border border-border px-2 py-1 text-sm"
-                        >
-                          <span className="font-medium">{u.name}</span>
-                          <span className="tabular-nums text-muted-foreground">{u.time} 着</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <p className="mt-3 text-xs text-muted-foreground">
-                    {source === "dynmap"
-                      ? "この運用はダイヤ上に見つからないため到着予想を表示できません。"
-                      : "この先の停車駅情報がありません。"}
-                  </p>
-                )}
-              </div>
-            </div>
-          )
-        })()}
+      {selectedTrain && (
+        <TrainDetailModal
+          train={selectedTrain}
+          color={stat.routeColorById.get(selectedTrain.routeId) || "#0891b2"}
+          fromDynmap={source === "dynmap"}
+          onClose={() => setSelectedTrain(null)}
+        />
+      )}
     </div>
   )
 }

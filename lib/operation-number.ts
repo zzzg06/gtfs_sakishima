@@ -39,14 +39,14 @@ export function isTrainOperationNumber(raw: string): boolean {
   return parseOperationNumber(raw).kind === "train"
 }
 
-// 同じ運用を指すか（K01 と K1、B02 と バス2 は同一とみなす）
+// 同じ運用を指すか（K01 と K1、B02 と バス2 は同一とみなす）。
+// 種別(列車/バス)が違う番号や、接頭辞のない番号（貸切03 等）は別物として扱う。
 export function isSameOperation(a: string, b: string): boolean {
   if (a === b) return true
   const pa = parseOperationNumber(a)
   const pb = parseOperationNumber(b)
   if (pa.num == null || pb.num == null || pa.num !== pb.num) return false
-  if (pa.kind === "other" || pb.kind === "other") return true
-  return pa.kind === pb.kind
+  return pa.kind !== "other" && pa.kind === pb.kind
 }
 
 // candidates(時刻表側の運用番号)から raw に対応する運用番号を1つ選ぶ。
@@ -60,11 +60,14 @@ export function resolveOperationNumber(
   if (list.includes(raw)) return raw
   const p = parseOperationNumber(raw)
   if (p.num == null) return null
+  // 接頭辞(K=列車 / B・バス=バス)が一致するものだけを対象にする。
+  // 「貸切03」のように種別の分からない運用番号は、番号だけで K3 等に結び付けない。
+  if (p.kind === "other") return null
   let nearest: { id: string; diff: number } | null = null
   for (const c of list) {
     const q = parseOperationNumber(c)
     if (q.num == null) continue
-    if (p.kind !== "other" && q.kind !== "other" && q.kind !== p.kind) continue
+    if (q.kind !== p.kind) continue
     const diff = Math.abs(q.num - p.num)
     if (diff === 0) return c
     if (!opts.nearest) continue

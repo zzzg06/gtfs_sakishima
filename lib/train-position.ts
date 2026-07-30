@@ -61,6 +61,8 @@ export interface TrainRunState {
   progress: number // 駅間走行の進捗 0..1
   // 増結（途中駅で連結して同一位置を走る他列車）。在線盤で1本にまとめて表示するために併結相手を保持。
   coupledWith?: { operationId: string; trainNumber?: string }[]
+  // 終着到着後の居残り表示（terminalDwellMinutes による延命）。同じ運用が次の便を走り始めていたら捨てる。
+  terminalDwell?: boolean
 }
 
 // 座標つき（Dynmapマーカー等で使用）
@@ -188,6 +190,8 @@ export function computeTrainRunStates(params: RunStateParams): TrainRunState[] {
         if (nowMinutes >= arrive[i] && nowMinutes <= effDepart) {
           placed = {
             ...base,
+            // 終着駅で本来の発時刻を過ぎている＝居残り表示ぶん
+            terminalDwell: i === lastIdx && nowMinutes > depart[i],
             atStation: true,
             fromStopId: seq[i].stop_id,
             toStopId: seq[i].stop_id,
@@ -238,7 +242,10 @@ export function computeTrainRunStates(params: RunStateParams): TrainRunState[] {
     }
   }
 
-  return results
+  // 同一運用が二重に出るのを防ぐ: 次の便を走り始めているのに、前の便が終着の居残り表示で
+  // 残っている場合はその居残りを捨てる（スタフ上、前便の到着より次便の発車が早い運用がある）。
+  const activeOps = new Set(results.filter((r) => !r.terminalDwell).map((r) => r.operationId))
+  return results.filter((r) => !(r.terminalDwell && activeOps.has(r.operationId)))
 }
 
 // 座標つき位置（Dynmapマーカー用）。在線状態 + 駅座標を補間。座標未登録の駅は除外。

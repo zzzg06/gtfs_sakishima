@@ -15,21 +15,30 @@ import {
   type MapPlacement,
 } from "@/lib/route-map-layout"
 import { buildOperationSchedule } from "@/lib/estimate-delay"
+import { isBusOperationNumber } from "@/lib/operation-number"
+import { vehicleManager } from "@/lib/vehicle-manager"
+import { abbrevSyubetsu, routeColor, vehicleIconUrl } from "@/lib/train-display"
+import { TrainDetailModal } from "@/components/train-detail-modal"
 import { stationCoordinateManager, type StationCoordinates } from "@/lib/station-coordinates"
 import {
   locateRtmMarkers,
   resolveRtmStatesWithSchedule,
   type RtmMarker,
 } from "@/lib/rtm-locate"
-import { Train, Minus, Plus, RotateCcw, List, X, Maximize2, Minimize2 } from "lucide-react"
+import { Train, Minus, Plus, RotateCcw, List, Maximize2, Minimize2 } from "lucide-react"
 
 // 管理画面用の路線図（運行状況マップ）。在線表示(/live)は1線ずつ縦に並べるのに対し、
 // こちらは路線網全体を1枚の模式図に描き、列車を線上に配置する。ひとまず列車のみ（バスは対象外）。
 // 表示元は /live と同じく「ダイヤ予測（時刻表＋実時間）」と「Dynmap実位置（RTMマーカー）」の切替式。
 
 const REFRESH_MS = 10000
-const ICON_OFFSET = 34 // 線からアイコンまでの距離
-const STACK_STEP = 32 // 同じ位置に複数いるときのずらし量
+const ICON_W = 46 // 車両カードの幅
+const ICON_H = 42 // 車両カードの高さ
+const ICON_OFFSET = 46 // 線からカード中心までの距離
+const STACK_STEP = 34 // 重なったときにずらす量
+// 重なり判定の当たり判定（カード＋下の運用番号ラベルぶん）
+const HIT_W = ICON_W + 8
+const HIT_H = ICON_H + 22
 
 function nowMinutesLocal(): number {
   const d = new Date()
@@ -94,7 +103,9 @@ export function RouteStatusMap() {
   useEffect(() => {
     const load = async () => {
       if (!gtfsParser.hasData()) await gtfsParser.loadFromStorageAsync()
-      setVisibility(await delayManager.loadTripVisibilitySettings())
+      // 車両割当（アイコン画像）も /live と同じく読み込む
+      const [vis] = await Promise.all([delayManager.loadTripVisibilitySettings(), vehicleManager.loadCache()])
+      setVisibility(vis)
       setReady(true)
     }
     load()
@@ -105,6 +116,7 @@ export function RouteStatusMap() {
       setNow(nowMinutesLocal())
       setUpdatedAt(clockNow())
       setTick((t) => t + 1)
+      vehicleManager.loadCache().catch(() => {}) // 車両割当の変更に追従
     }, REFRESH_MS)
     return () => clearInterval(id)
   }, [])
@@ -150,7 +162,19 @@ export function RouteStatusMap() {
     const routes = gtfsParser.getRoutes()
     // Dynmap実位置を時刻表に対応づける（運用番号の突き合わせ・遅延推定）ための便一覧
     const { schedule, trainOperationIds } = buildOperationSchedule({ trips, stopTimes, routes, stopNameById })
-    return { trips, stopTimes, routes, stopNameById, stopIdByName, operationSchedule: schedule, trainOperationIds }
+    // 運用詳細の種別バッジ色（/live と同じく route_color を使う）
+    const routeColorById = new Map<string, string>()
+    for (const r of routes) routeColorById.set(r.route_id, routeColor(r.route_color))
+    return {
+      trips,
+      stopTimes,
+      routes,
+      stopNameById,
+      stopIdByName,
+      routeColorById,
+      operationSchedule: schedule,
+      trainOperationIds,
+    }
   }, [ready])
 
   // Dynmap実位置の取得（source=dynmap のとき。tick で定期更新）
@@ -219,7 +243,10 @@ export function RouteStatusMap() {
     })
   }, [rtmStates, stat, runStates, coords, now])
 
-  const shownStates = source === "dynmap" ? rtmStatesResolved : runStates
+  // バス運用(B0x/バスN)は列車走行位置には出さない（暫定処置）
+  const shownStates = (source === "dynmap" ? rtmStatesResolved : runStates).filter(
+    (s) => !isBusOperationNumber(s.operationId),
+  )
 
   // 図上の配置。同じ位置に複数の列車がいる場合は線に垂直な向きへずらして重なりを避ける。
   const placed = useMemo<Placed[]>(() => {
@@ -234,16 +261,16 @@ export function RouteStatusMap() {
       })
       if (!pos) continue
       const lineName = lineOfState(s) || MAP_LINES[0].name
-      // 近接する列車（対向列車も同じ側に出る）は、まず進行方向の後ろへ、次に外側へずらして重なりを避ける。
-      // 線から離れすぎないよう、後ろ方向を優先して候補を試す。
+      // 近接する列車（上下の対向列車も同じ側に出る）は、まず進行方向の後ろへ、次に外側へずらす。
+      // 当たり判定は車両カードの実寸で行う（小さすぎると上下運用が重なって見える）。
       let cx = pos.x + pos.normalX * ICON_OFFSET
       let cy = pos.y + pos.normalY * ICON_OFFSET
-      for (let k = 0; k < 9; k++) {
-        const normal = ICON_OFFSET + STACK_STEP * Math.floor(k / 3)
-        const back = -STACK_STEP * (k % 3)
+      for (let k = 0; k < 12; k++) {
+        const normal = ICON_OFFSET + (ICON_H + 14) * Math.floor(k / 4)
+        const back = -(ICON_W + 10) * (k % 4)
         cx = pos.x + pos.normalX * normal + pos.dirX * back
         cy = pos.y + pos.normalY * normal + pos.dirY * back
-        const hit = out.some((o) => Math.abs(o.cx - cx) < STACK_STEP && Math.abs(o.cy - cy) < STACK_STEP)
+        const hit = out.some((o) => Math.abs(o.cx - cx) < HIT_W && Math.abs(o.cy - cy) < HIT_H)
         if (!hit) break
       }
       out.push({ state: s, pos, lineName, color: mapLineColor(lineName), cx, cy })
@@ -478,12 +505,18 @@ export function RouteStatusMap() {
                 )
               })}
 
-              {/* 列車 */}
+              {/* 列車（/live の在線盤と同じ「車両画像＋種別バッジ」のカード） */}
               {placed.map((p) => {
                 const { pos, state: t, cx, cy } = p
                 const angle = (Math.atan2(pos.dirY, pos.dirX) * 180) / Math.PI
                 const delayed = t.delayMinutes > 0 // 早着は扱わない
                 const isSel = selected?.operationId === t.operationId && selected?.tripId === t.tripId
+                const img = vehicleIconUrl(
+                  vehicleManager.getCachedVehicleForOperation(t.operationId)?.iconUrl,
+                  t.routeType,
+                )
+                const badge = abbrevSyubetsu(t.routeName) || t.operationId
+                const badgeW = Math.max(26, badge.length * 11 + 8)
                 return (
                   <g
                     key={`${t.tripId}-${t.operationId}`}
@@ -493,7 +526,7 @@ export function RouteStatusMap() {
                   >
                     <title>{`${t.operationId} ${t.routeName}${t.headsign ? " " + t.headsign : ""} / ${
                       t.atStation ? `${t.fromStop} 停車中` : `${t.fromStop}→${t.toStop} 走行中`
-                    }`}</title>
+                    }${delayed ? ` / +${t.delayMinutes}分` : ""}`}</title>
                     {/* 線とアイコンをつなぐ引き出し線 */}
                     <line
                       x1={pos.x - cx}
@@ -505,37 +538,57 @@ export function RouteStatusMap() {
                       strokeDasharray="3 3"
                       opacity={0.6}
                     />
+                    {/* 車両カード（白地・路線色の枠。遅延は赤枠、選択中は太枠） */}
                     <rect
-                      x={-15}
-                      y={-15}
-                      width={30}
-                      height={30}
-                      rx={8}
-                      fill={p.color}
-                      stroke={isSel ? "#111827" : delayed ? "#dc2626" : "#ffffff"}
+                      x={-ICON_W / 2}
+                      y={-ICON_H / 2}
+                      width={ICON_W}
+                      height={ICON_H}
+                      rx={7}
+                      fill="#ffffff"
+                      stroke={isSel ? "#111827" : delayed ? "#dc2626" : p.color}
                       strokeWidth={isSel ? 3.5 : delayed ? 3 : 2}
                     />
-                    {/* 列車グリフ（窓＋足） */}
-                    <rect x={-8} y={-9} width={16} height={9} rx={2} fill="#ffffff" />
-                    <rect x={-8} y={2} width={5} height={5} rx={1} fill="#ffffff" />
-                    <rect x={3} y={2} width={5} height={5} rx={1} fill="#ffffff" />
+                    {/* 車両画像（運用に割り当てた車両。未割当は既定アイコン） */}
+                    <image
+                      href={img}
+                      x={-ICON_W / 2 + 4}
+                      y={-ICON_H / 2 + 3}
+                      width={ICON_W - 8}
+                      height={22}
+                      preserveAspectRatio="xMidYMid meet"
+                    />
+                    {/* 種別バッジ（路線色の下地に白抜き） */}
+                    <rect x={-badgeW / 2} y={ICON_H / 2 - 17} width={badgeW} height={14} rx={3} fill={p.color} />
+                    <text
+                      y={ICON_H / 2 - 10}
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      fontSize={11}
+                      fontWeight={700}
+                      fill="#ffffff"
+                    >
+                      {badge}
+                    </text>
                     {/* 進行方向の矢印。終着駅に停車中（次駅なし）は向きが定まらないため出さない */}
                     {!(t.atStation && !t.nextStop) && (
-                      <g transform={`rotate(${angle}) translate(24,0)`}>
-                        <polygon points="0,-6 9,0 0,6" fill="#334155" />
+                      <g transform={`rotate(${angle}) translate(${ICON_W / 2 + 9},0)`}>
+                        <polygon points="0,-6 9,0 0,6" fill={p.color} />
                       </g>
                     )}
+                    {/* 運用番号（＋遅延） */}
                     <text
-                      y={28}
+                      y={ICON_H / 2 + 12}
                       textAnchor="middle"
                       fontSize={11}
                       fontWeight={700}
-                      fill="#111827"
+                      fill={delayed ? "#dc2626" : "#111827"}
                       stroke="#ffffff"
                       strokeWidth={3}
                       paintOrder="stroke"
                     >
                       {t.operationId}
+                      {delayed ? ` +${t.delayMinutes}分` : ""}
                     </text>
                   </g>
                 )
@@ -579,41 +632,14 @@ export function RouteStatusMap() {
         </div>
       </div>
 
-      {/* 運用詳細（アイコンをクリックした列車） */}
+      {/* 運用詳細（アイコンをクリックした列車）。/live の走行位置と同一仕様のモーダル */}
       {selected && (
-        <div className="rounded-lg border border-border bg-card p-3">
-          <div className="mb-2 flex items-start justify-between gap-2">
-            <div>
-              <p className="text-sm font-bold">
-                運用 {selected.operationId}
-                {selected.trainNumber ? ` / 列車番号 ${selected.trainNumber}` : ""}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {selected.routeName}
-                {selected.headsign ? ` ${selected.headsign}` : ""} ／{" "}
-                {selected.atStation ? `${selected.fromStop} 停車中` : `${selected.fromStop}→${selected.toStop} 走行中`}
-                {selected.delayMinutes > 0 ? ` ／ +${selected.delayMinutes}分` : ""}
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setSelected(null)}
-              className="rounded p-1 text-muted-foreground hover:bg-muted"
-              aria-label="閉じる"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-          {selected.upcoming && selected.upcoming.length > 0 && (
-            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-              {selected.upcoming.map((u) => (
-                <span key={u.name}>
-                  <span className="text-muted-foreground">{u.time}</span> {u.name}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
+        <TrainDetailModal
+          train={selected}
+          color={stat?.routeColorById.get(selected.routeId) || "#0891b2"}
+          fromDynmap={source === "dynmap"}
+          onClose={() => setSelected(null)}
+        />
       )}
     </div>
   )

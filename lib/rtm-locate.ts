@@ -49,7 +49,8 @@ export function locateRtmMarkers(params: {
   const buses: RtmBusMarker[] = []
 
   for (const tr of markers) {
-    // バス([バス]運用)は鉄道盤・列車実位置から除外し、バス専用ビューへ回す
+    // バス運用(B0x/「バス」)は鉄道盤・列車実位置から除外し、バス専用ビューへ回す。
+    // ※暫定処置: 運用番号がバスならDynmapのアイコン種別に関わらず列車側には出さない。
     if (isBusMarker(tr)) {
       const prev = prevPos.get(tr.id)
       prevPos.set(tr.id, { x: tr.x, z: tr.z })
