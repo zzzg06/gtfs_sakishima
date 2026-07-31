@@ -10,7 +10,7 @@ import { buildResultUrl, DEFAULT_OPTIONS, type SearchType } from "@/lib/search-q
 import type { GTFSStop } from "@/lib/gtfs-parser"
 import type { TransportOptions } from "@/lib/route-finder"
 import { Button } from "@/components/ui/button"
-import { Settings, Train, ExternalLink } from "lucide-react"
+import { Settings, Train, ExternalLink, CircleHelp } from "lucide-react"
 
 const MODE_TO_TYPE: Record<SearchMode, SearchType> = { departure: "dep", arrival: "arr", none: "none" }
 
@@ -94,6 +94,15 @@ function HomePage() {
                 >
                   <Train className="h-4 w-4" />
                   列車走行位置（在線）を見る
+                </a>
+
+                {/* 使い方（PCはサイドメニューにあるためモバイルのみ） */}
+                <a
+                  href="/help"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-card py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent lg:hidden"
+                >
+                  <CircleHelp className="h-4 w-4" />
+                  はじめての方へ（使い方）
                 </a>
 
                 <TimetableSearch onSelect={(stop) => router.push(`/timetable/${encodeURIComponent(stop.stop_id)}`)} />

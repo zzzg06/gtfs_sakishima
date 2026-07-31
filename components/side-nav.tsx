@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Search, Clock, Info, Train, Settings } from "lucide-react"
+import { Search, Clock, Info, Train, Settings, CircleHelp } from "lucide-react"
 
 // PC表示（lg以上）でのみ表示する左サイドのメニューバー。モバイルでは非表示。
 const NAV_ITEMS = [
@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { href: "/timetable", label: "時刻表", icon: Clock, isActive: (p: string) => p.startsWith("/timetable") },
   { href: "/status", label: "運行情報", icon: Info, isActive: (p: string) => p.startsWith("/status") },
   { href: "/live", label: "列車走行位置", icon: Train, isActive: (p: string) => p.startsWith("/live") },
+  { href: "/help", label: "使い方", icon: CircleHelp, isActive: (p: string) => p.startsWith("/help") },
 ]
 
 export function SideNav() {
