@@ -16,6 +16,7 @@ import {
 } from "@/lib/route-map-layout"
 import { buildOperationSchedule } from "@/lib/estimate-delay"
 import { isBusOperationNumber } from "@/lib/operation-number"
+import { liveSettingsManager, type LivePositionSource } from "@/lib/live-settings"
 import { vehicleManager } from "@/lib/vehicle-manager"
 import { abbrevSyubetsu, routeColor, vehicleIconUrl } from "@/lib/train-display"
 import { TrainDetailModal } from "@/components/train-detail-modal"
@@ -91,8 +92,11 @@ export function RouteStatusMap() {
   const [expanded, setExpanded] = useState(false) // 全画面表示
   const [selected, setSelected] = useState<TrainRunState | null>(null)
   const viewportRef = useRef<HTMLDivElement | null>(null)
-  // 表示元: ダイヤ予測（時刻表）/ Dynmap実位置（RTMマーカー）
-  const [source, setSource] = useState<"schedule" | "dynmap">("schedule")
+  // 表示元: ダイヤ予測（時刻表）/ Dynmap実位置（RTMマーカー）。
+  // 管理者だけが変更でき、共有設定(live-settings)に保存して一般ページ(/live)にも適用される。
+  const [source, setSource] = useState<LivePositionSource>("schedule")
+  const [savingSource, setSavingSource] = useState(false)
+  const [sourceError, setSourceError] = useState<string | null>(null)
   const [rtmStates, setRtmStates] = useState<TrainRunState[]>([])
   const [rtmUnmapped, setRtmUnmapped] = useState<RtmMarker[]>([])
   const [rtmError, setRtmError] = useState<string | null>(null)
@@ -103,13 +107,34 @@ export function RouteStatusMap() {
   useEffect(() => {
     const load = async () => {
       if (!gtfsParser.hasData()) await gtfsParser.loadFromStorageAsync()
-      // 車両割当（アイコン画像）も /live と同じく読み込む
-      const [vis] = await Promise.all([delayManager.loadTripVisibilitySettings(), vehicleManager.loadCache()])
+      // 車両割当（アイコン画像）と表示元設定も /live と同じく読み込む
+      const [vis, live] = await Promise.all([
+        delayManager.loadTripVisibilitySettings(),
+        liveSettingsManager.load(),
+        vehicleManager.loadCache(),
+      ])
       setVisibility(vis)
+      setSource(live.positionSource)
       setReady(true)
     }
     load()
   }, [])
+
+  // 表示元の変更（管理者設定として保存 → /live にも反映）
+  const changeSource = async (next: LivePositionSource) => {
+    if (next === source || savingSource) return
+    setSource(next) // 先に反映して即座に切り替わって見えるようにする
+    setSavingSource(true)
+    setSourceError(null)
+    try {
+      await liveSettingsManager.save({ positionSource: next })
+    } catch (e) {
+      setSourceError(e instanceof Error ? e.message : "表示元の保存に失敗しました")
+      setSource(next === "dynmap" ? "schedule" : "dynmap") // 保存できなければ元に戻す
+    } finally {
+      setSavingSource(false)
+    }
+  }
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -318,22 +343,29 @@ export function RouteStatusMap() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          {/* 表示元の切替（/live と同じ） */}
-          <div className="flex overflow-hidden rounded-md border border-border text-sm">
-            <button
-              type="button"
-              onClick={() => setSource("schedule")}
-              className={`px-2.5 py-1.5 ${source === "schedule" ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}
-            >
-              ダイヤ予測
-            </button>
-            <button
-              type="button"
-              onClick={() => setSource("dynmap")}
-              className={`border-l border-border px-2.5 py-1.5 ${source === "dynmap" ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}
-            >
-              Dynmap実位置
-            </button>
+          {/* 表示元の切替。ここが唯一の設定箇所で、一般ページ(/live)の表示もこれに従う */}
+          <div className="flex items-center gap-2">
+            <div className="flex overflow-hidden rounded-md border border-border text-sm">
+              <button
+                type="button"
+                onClick={() => changeSource("schedule")}
+                disabled={savingSource}
+                className={`px-2.5 py-1.5 disabled:opacity-60 ${source === "schedule" ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}
+              >
+                ダイヤ予測
+              </button>
+              <button
+                type="button"
+                onClick={() => changeSource("dynmap")}
+                disabled={savingSource}
+                className={`border-l border-border px-2.5 py-1.5 disabled:opacity-60 ${source === "dynmap" ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}
+              >
+                Dynmap実位置
+              </button>
+            </div>
+            <span className="text-xs text-muted-foreground">
+              {savingSource ? "保存中..." : "一般ページにも反映"}
+            </span>
           </div>
           <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <span className={`h-2 w-2 rounded-full ${rtmError ? "bg-red-600" : "bg-green-600"}`} />
@@ -360,6 +392,9 @@ export function RouteStatusMap() {
 
       {source === "dynmap" && rtmError && (
         <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{rtmError}</p>
+      )}
+      {sourceError && (
+        <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{sourceError}</p>
       )}
 
       <div className="flex flex-col gap-4 lg:flex-row">

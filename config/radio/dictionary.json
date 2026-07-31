@@ -1,0 +1,258 @@
+{
+  "$comment": [
+    "ラジオ放送用の VOICEPEAK ユーザー辞書。これが唯一の正本。",
+    "scripts/radio-dict-sync.mjs で %LOCALAPPDATA%DreamtonicsVoicepeaksettingsdic.json へ同期する。",
+    "accentType: 0=平板, 1=頭高, n=第nモーラの後で下がる。0は暫定値なので実聴して直すこと。",
+    "pron はカタカナ。読みの正本は scripts/convert-oud2.mjs の STATION_READINGS。駅を追加したら両方を更新する。"
+  ],
+  "entries": [
+    {
+      "sur": "桐立",
+      "pron": "キリタチ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "小島",
+      "pron": "コジマ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "桐立埠頭",
+      "pron": "キリタチフトウ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "海央皇",
+      "pron": "カイオウホウ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "島北出坂",
+      "pron": "トウホクイデサカ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "笠丘",
+      "pron": "カサオカ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "神在月",
+      "pron": "カミアリヅキ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "木古川",
+      "pron": "キコガワ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "葛敷",
+      "pron": "カツシキ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "中原台",
+      "pron": "ナカハラダイ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "大岩",
+      "pron": "ヒロイワ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "新咲市場",
+      "pron": "シンサキシジョウ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "咲東崎",
+      "pron": "サキトウザキ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "天玉寺",
+      "pron": "テンギョクジ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "船上湯本",
+      "pron": "フナガミユモト",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "上砥",
+      "pron": "カミト",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "咲西浜",
+      "pron": "サキサイハマ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "助が丘",
+      "pron": "スケガオカ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "八つ橋",
+      "pron": "ヤツハシ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "富田",
+      "pron": "トミタ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "咲島港",
+      "pron": "サキシマコウ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "豆島口",
+      "pron": "マメジマグチ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "兜島中央",
+      "pron": "カブトジマチュウオウ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "久米浜",
+      "pron": "クメハマ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "御東",
+      "pron": "ミトウ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "咲島線",
+      "pron": "サキシマセン",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "島北線",
+      "pron": "トウホクセン",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "木古川線",
+      "pron": "キコガワセン",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "咲島鉄道",
+      "pron": "サキシマテツドウ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "咲島",
+      "pron": "サキシマ",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    },
+    {
+      "sur": "島北",
+      "pron": "トウホク",
+      "pos": "Japanese_Koyuumeishi_place",
+      "priority": 5,
+      "accentType": 0,
+      "lang": "ja"
+    }
+  ]
+}

@@ -14,6 +14,7 @@ import {
 import { stationCoordinateManager, type StationCoordinates } from "@/lib/station-coordinates"
 import { buildApproachingBus, buildStrip, dedupeConsecutive, type ApproachingBus } from "@/lib/bus-locate"
 import { vehicleManager } from "@/lib/vehicle-manager"
+import { liveSettingsManager } from "@/lib/live-settings"
 import { buildOperationSchedule, type ScheduleLeg } from "@/lib/estimate-delay"
 import {
   headsignMatchLevel,
@@ -24,7 +25,8 @@ import {
 } from "@/lib/operation-number"
 import { abbrevSyubetsu, delayInfo, routeColor, vehicleIconUrl } from "@/lib/train-display"
 import { TrainDetailModal } from "@/components/train-detail-modal"
-import { Train, Bus, RefreshCw } from "lucide-react"
+import { BusStopMapPicker } from "@/components/bus-stop-map-picker"
+import { Train, Bus, RefreshCw, Map as MapIcon } from "lucide-react"
 
 type RtmTrain = RtmMarker
 type RtmBus = RtmBusMarker
@@ -240,9 +242,10 @@ export function TrainLocationBoard() {
   const [rtmBuses, setRtmBuses] = useState<RtmBus[]>([])
   const [coords, setCoords] = useState<StationCoordinates>({})
   const [rtmError, setRtmError] = useState<string | null>(null)
-  // Dynmap実位置のバス: 検索して選んだバス停
+  // バス: 検索または地図から選んだバス停
   const [selectedBusStop, setSelectedBusStop] = useState<string>("")
   const [busStopQuery, setBusStopQuery] = useState<string>("")
+  const [showBusMap, setShowBusMap] = useState(false)
   // 運用詳細（ピンクリックで表示する列車）
   const [selectedTrain, setSelectedTrain] = useState<TrainRunState | null>(null)
   const prevPos = useRef<Map<string, { x: number; z: number }>>(new Map())
@@ -253,17 +256,28 @@ export function TrainLocationBoard() {
   const [scrollToken, setScrollToken] = useState(0)
   // 乗換案内から「走行位置」リンクで飛んできたときにフォーカスする運用番号
   const [focusOp, setFocusOp] = useState<string | null>(null)
-  const focusSourceStartedRef = useRef(false)
-  // dynmap/ダイヤ予測いずれを表示するかの判定が済んだか（判定前にschedule側で確定しないようにするゲート）
-  const [focusSourceReady, setFocusSourceReady] = useState(false)
+  // 表示元(管理者設定)の読み込みが済んだか。読み込み前にフォーカスを解決しないためのゲート
+  const [sourceReady, setSourceReady] = useState(false)
 
   useEffect(() => {
     const load = async () => {
       if (!gtfsParser.hasData()) await gtfsParser.loadFromStorageAsync()
       // 遅延の手入力は廃止。運休(visibility)と車両割当のみ読み込む。
-      const [vis] = await Promise.all([delayManager.loadTripVisibilitySettings(), vehicleManager.loadCache()])
+      // 表示元(ダイヤ予測/Dynmap実位置)は管理者設定に従う（利用者は切り替えられない）。
+      const [vis, live] = await Promise.all([
+        delayManager.loadTripVisibilitySettings(),
+        liveSettingsManager.load(),
+        vehicleManager.loadCache(),
+      ])
       setVisibility(vis)
+      setSource(live.positionSource)
+      setSourceReady(true)
       setReady(true)
+      // バス停の地図ピッカーで使うため、表示元に関わらず座標を読み込んでおく
+      stationCoordinateManager
+        .load()
+        .then((c) => setCoords((prev) => (Object.keys(prev).length > 0 ? prev : c)))
+        .catch(() => {})
     }
     load()
   }, [])
@@ -272,8 +286,12 @@ export function TrainLocationBoard() {
     const id = setInterval(() => {
       setNow(nowMinutesLocal())
       setTick((t) => t + 1)
-      // 車両割当の変更に追従（モジュールキャッシュ更新→次レンダーで反映）
+      // 車両割当・表示元設定の変更に追従（モジュールキャッシュ更新→次レンダーで反映）
       vehicleManager.loadCache().catch(() => {})
+      liveSettingsManager
+        .load()
+        .then((s) => setSource(s.positionSource))
+        .catch(() => {})
     }, REFRESH_MS)
     return () => clearInterval(id)
   }, [])
@@ -286,29 +304,6 @@ export function TrainLocationBoard() {
       setFocusOp(op)
     }
   }, [])
-
-  // フォーカス対象の表示元を決定: dynmapで実走行中ならdynmap、そうでなければダイヤ予測。
-  useEffect(() => {
-    if (!focusOp || focusSourceStartedRef.current) return
-    focusSourceStartedRef.current = true
-    let cancelled = false
-    ;(async () => {
-      let onDynmap = false
-      try {
-        const res = await fetch("/api/rtm-trains").then((r) => r.json()).catch(() => null)
-        if (res?.success && Array.isArray(res.trains)) {
-          // K01 と K1 のような表記ゆれでも同じ運用と判定する
-          onDynmap = res.trains.some((t: RtmTrain) => isSameOperation(t.runNo, focusOp))
-        }
-      } catch {}
-      if (cancelled) return
-      setSource(onDynmap ? "dynmap" : "schedule")
-      setFocusSourceReady(true) // 判定完了。これ以降にフォーカス解決を許可
-    })()
-    return () => {
-      cancelled = true
-    }
-  }, [focusOp])
 
   // Dynmap実位置の取得（source=dynmap のとき。tick で定期更新）
   useEffect(() => {
@@ -456,7 +451,7 @@ export function TrainLocationBoard() {
   // フォーカス対象の運用が現在走行中なら、その列車の線区へ切替＋スクロールし、運用詳細を開く。
   // 表示元(source)確定後、該当状態が算出できた時点で一度だけ実行する。
   useEffect(() => {
-    if (!focusOp || !stat || !focusSourceReady) return // 表示元(dynmap/予測)の判定後に解決
+    if (!focusOp || !stat || !sourceReady) return // 表示元(管理者設定)の読み込み後に解決
     const states = source === "dynmap" ? rtmStatesWithDelay : runStates
     const target =
       states.find((s) => isSameOperation(s.operationId, focusOp)) ||
@@ -470,7 +465,7 @@ export function TrainLocationBoard() {
     }
     setSelectedTrain(target)
     setFocusOp(null) // 一度きり
-  }, [focusOp, focusSourceReady, source, runStates, rtmStatesWithDelay, stat])
+  }, [focusOp, sourceReady, source, runStates, rtmStatesWithDelay, stat])
 
   // 路線セレクタの選択肢（列車モードの線区。バスはバス停検索ビューのため使わない）
   const options = useMemo(() => {
@@ -533,6 +528,16 @@ export function TrainLocationBoard() {
       }),
     )
   }, [board, scrollToken])
+
+  // 地図ピッカー用の系統（代表停車順＋系統色）
+  const busMapRoutes = useMemo(() => {
+    if (!stat) return []
+    return stat.busRoutes.map((r) => ({
+      name: r.route_short_name || r.route_long_name || r.route_id,
+      color: stat.routeColorById.get(r.route_id) || "#0891b2",
+      stops: stat.repByRoute.get(r.route_id) || [],
+    }))
+  }, [stat])
 
   // バス: 選択したバス停に接近中のバス（手前数停＋現在位置）。
   // Dynmap実位置はライブ座標から、ダイヤ予測は時刻表(runStates)から現在位置を求める。
@@ -1011,23 +1016,10 @@ export function TrainLocationBoard() {
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          {/* データ元 */}
-          <div className="flex overflow-hidden rounded border border-border">
-            <button
-              type="button"
-              onClick={() => setSource("schedule")}
-              className={`px-3 py-1 text-sm font-medium ${source === "schedule" ? "bg-green-700 text-white" : "bg-card"}`}
-            >
-              ダイヤ予測
-            </button>
-            <button
-              type="button"
-              onClick={() => setSource("dynmap")}
-              className={`px-3 py-1 text-sm font-medium ${source === "dynmap" ? "bg-green-700 text-white" : "bg-card"}`}
-            >
-              Dynmap実位置
-            </button>
-          </div>
+          {/* データ元は管理者設定（/admin の運行状況マップ）で切り替える。ここでは表示のみ。 */}
+          <span className="rounded border border-border px-2 py-1 text-xs text-muted-foreground">
+            {source === "dynmap" ? "実位置表示" : "ダイヤ予測表示"}
+          </span>
           {/* 列車/バス（Dynmap実位置はバス停検索ビューに切替） */}
           {(
             <div className="flex overflow-hidden rounded border border-border">
@@ -1062,10 +1054,35 @@ export function TrainLocationBoard() {
               placeholder="バス停名・よみで検索"
               className="h-9 min-w-0 flex-1 rounded border border-border bg-background px-2 text-sm text-foreground"
             />
+            <button
+              type="button"
+              onClick={() => setShowBusMap((v) => !v)}
+              className={`flex items-center gap-1 rounded border px-2 py-1.5 text-sm ${
+                showBusMap ? "border-green-700 bg-green-700 text-white" : "border-border bg-background hover:bg-accent"
+              }`}
+            >
+              <MapIcon className="h-4 w-4" />
+              地図から選ぶ
+            </button>
             {selectedBusStop && (
               <span className="rounded bg-green-700 px-2 py-1 text-xs font-bold text-white">{selectedBusStop}</span>
             )}
           </div>
+          {/* 地図からバス停を選ぶ（登録済み座標をもとにした簡易路線図） */}
+          {showBusMap && (
+            <div className="mt-2">
+              <BusStopMapPicker
+                coords={coords}
+                stopNames={stat.busStops.map((s) => s.name)}
+                routes={busMapRoutes}
+                selected={selectedBusStop}
+                onSelect={(n) => {
+                  setSelectedBusStop(n)
+                  setBusStopQuery("")
+                }}
+              />
+            </div>
+          )}
           {(() => {
             const q = busStopQuery.trim()
             if (!q) return null
