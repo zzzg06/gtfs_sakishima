@@ -15,6 +15,7 @@ import { stationCoordinateManager, type StationCoordinates } from "@/lib/station
 import { buildApproachingBus, buildStrip, dedupeConsecutive, type ApproachingBus } from "@/lib/bus-locate"
 import { vehicleManager } from "@/lib/vehicle-manager"
 import { liveSettingsManager } from "@/lib/live-settings"
+import { busMapSettingsManager, type BusMapSettings } from "@/lib/bus-map"
 import { buildOperationSchedule, type ScheduleLeg } from "@/lib/estimate-delay"
 import {
   headsignMatchLevel,
@@ -246,6 +247,7 @@ export function TrainLocationBoard() {
   const [selectedBusStop, setSelectedBusStop] = useState<string>("")
   const [busStopQuery, setBusStopQuery] = useState<string>("")
   const [showBusMap, setShowBusMap] = useState(false)
+  const [busMapSettings, setBusMapSettings] = useState<BusMapSettings>({ imageUrl: "", refs: [] })
   // 運用詳細（ピンクリックで表示する列車）
   const [selectedTrain, setSelectedTrain] = useState<TrainRunState | null>(null)
   const prevPos = useRef<Map<string, { x: number; z: number }>>(new Map())
@@ -273,11 +275,12 @@ export function TrainLocationBoard() {
       setSource(live.positionSource)
       setSourceReady(true)
       setReady(true)
-      // バス停の地図ピッカーで使うため、表示元に関わらず座標を読み込んでおく
+      // バス停の地図ピッカーで使うため、表示元に関わらず座標と地図設定を読み込んでおく
       stationCoordinateManager
         .load()
         .then((c) => setCoords((prev) => (Object.keys(prev).length > 0 ? prev : c)))
         .catch(() => {})
+      busMapSettingsManager.load().then(setBusMapSettings).catch(() => {})
     }
     load()
   }, [])
@@ -1075,6 +1078,7 @@ export function TrainLocationBoard() {
                 coords={coords}
                 stopNames={stat.busStops.map((s) => s.name)}
                 routes={busMapRoutes}
+                busMap={busMapSettings}
                 selected={selectedBusStop}
                 onSelect={(n) => {
                   setSelectedBusStop(n)

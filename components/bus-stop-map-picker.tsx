@@ -1,13 +1,14 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import type { StationCoordinates } from "@/lib/station-coordinates"
+import { solveBusMapTransform, worldToPixel, type BusMapSettings } from "@/lib/bus-map"
 import { Minus, Plus, RotateCcw } from "lucide-react"
 
 // バス停を地図から選ぶピッカー。
-// 登録済みのバス停座標（Minecraft X/Z、管理画面「駅座標」）をそのまま平面図にして、
-// 系統の停車順を線で結んだ簡易路線図を描く。クリックでそのバス停を選択する。
-// 座標が未登録のバス停は地図に置けないため、下にボタンとして並べる。
+// 背景画像（パンフレットの路線図）が設定されていればその上に、無ければ
+// 登録済みのバス停座標（Minecraft X/Z、管理画面「駅座標」）だけの簡易路線図にバス停を並べる。
+// クリックでそのバス停を選択する。座標が未登録のバス停は地図に置けないため、下にボタンとして並べる。
 
 export interface BusMapRoute {
   name: string // 系統名
@@ -21,6 +22,7 @@ interface Props {
   routes: BusMapRoute[]
   selected: string
   onSelect: (name: string) => void
+  busMap?: BusMapSettings // 背景画像＋位置合わせ（未設定なら座標だけの簡易図）
 }
 
 const VIEW_W = 900
@@ -30,13 +32,39 @@ const PADDING = 46 // 端の停留所名がはみ出さないよう余白を取�
 // 表示用の短い名前（先頭の「(バス)」を落とす）
 const shortName = (n: string) => n.replace(/^\(バス\)/, "")
 
-export function BusStopMapPicker({ coords, stopNames, routes, selected, onSelect }: Props) {
+export function BusStopMapPicker({ coords, stopNames, routes, selected, onSelect, busMap }: Props) {
   const [zoom, setZoom] = useState(1)
   const [hover, setHover] = useState<string | null>(null)
+  const [imgSize, setImgSize] = useState<{ w: number; h: number } | null>(null)
+
+  // 背景画像の実サイズを取得（viewBoxに使う）
+  const imageUrl = busMap?.imageUrl || ""
+  useEffect(() => {
+    if (!imageUrl) {
+      setImgSize(null)
+      return
+    }
+    const img = new Image()
+    img.onload = () => setImgSize({ w: img.naturalWidth, h: img.naturalHeight })
+    img.onerror = () => setImgSize(null)
+    img.src = imageUrl
+  }, [imageUrl])
+
+  const transform = useMemo(
+    () => (busMap && imageUrl ? solveBusMapTransform(busMap.refs || [], coords) : null),
+    [busMap, imageUrl, coords],
+  )
+  const useImage = !!(imageUrl && imgSize && transform)
 
   const layout = useMemo(() => {
     const placed = stopNames.filter((n) => coords[n])
     const missing = stopNames.filter((n) => !coords[n])
+    if (useImage && transform) {
+      // 背景画像上へワールド座標を変換して配置する
+      const pts = new Map<string, { x: number; y: number }>()
+      for (const n of placed) pts.set(n, worldToPixel(transform, coords[n].x, coords[n].z))
+      return { pts, missing, scale: 1 }
+    }
     if (placed.length === 0) return { pts: new Map<string, { x: number; y: number }>(), missing, scale: 1 }
     const xs = placed.map((n) => coords[n].x)
     const zs = placed.map((n) => coords[n].z)
@@ -53,7 +81,16 @@ export function BusStopMapPicker({ coords, stopNames, routes, selected, onSelect
       pts.set(n, { x: (coords[n].x - minX) * scale + offX, y: (coords[n].z - minZ) * scale + offY })
     }
     return { pts, missing, scale }
-  }, [coords, stopNames])
+  }, [coords, stopNames, useImage, transform])
+
+  const viewW = useImage && imgSize ? imgSize.w : VIEW_W
+  const viewH = useImage && imgSize ? imgSize.h : VIEW_H
+  // 背景画像は等倍だと大きいので、既定でパネル幅に収まる倍率にしてからズームを掛ける
+  const baseScale = useImage ? Math.min(1, VIEW_W / viewW) : 1
+  const width = viewW * baseScale * zoom
+  const height = viewH * baseScale * zoom
+  // 画像モードでは図の縮尺に合わせて丸・文字の大きさを調整する
+  const k = useImage ? viewW / VIEW_W : 1
 
   // 停留所名は重なりを避けて置く（選択中・ホバー中は必ず出す）
   const labels = useMemo(() => {
@@ -61,25 +98,25 @@ export function BusStopMapPicker({ coords, stopNames, routes, selected, onSelect
     const out: { name: string; x: number; y: number; show: boolean }[] = []
     const entries = [...layout.pts.entries()].sort((a, b) => a[1].y - b[1].y)
     for (const [name, p] of entries) {
-      const w = shortName(name).length * 10 + 6
-      const box = { x1: p.x - w / 2, y1: p.y + 8, x2: p.x + w / 2, y2: p.y + 24 }
+      const w = (shortName(name).length * 10 + 6) * k
+      const box = { x1: p.x - w / 2, y1: p.y + 8 * k, x2: p.x + w / 2, y2: p.y + 24 * k }
       const hit = boxes.some((b) => !(box.x2 < b.x1 || box.x1 > b.x2 || box.y2 < b.y1 || box.y1 > b.y2))
       if (!hit) boxes.push(box)
       out.push({ name, x: p.x, y: p.y, show: !hit })
     }
     return out
-  }, [layout])
-
-  const width = VIEW_W * zoom
-  const height = VIEW_H * zoom
+  }, [layout, k])
 
   return (
     <div className="space-y-2">
       <div className="relative">
         <div className="max-h-[520px] overflow-auto rounded-lg border border-border bg-white">
-          <svg width={width} height={height} viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}>
-            {/* 系統（停車順を結んだ線） */}
-            {routes.map((r) => {
+          <svg width={width} height={height} viewBox={`0 0 ${viewW} ${viewH}`}>
+            {/* 背景（パンフレットの路線図） */}
+            {useImage && <image href={imageUrl} x={0} y={0} width={viewW} height={viewH} />}
+            {/* 系統（停車順を結んだ線）。背景画像がある場合は画像側に路線が描かれているので出さない */}
+            {!useImage &&
+              routes.map((r) => {
               const pts = r.stops.map((s) => layout.pts.get(s)).filter(Boolean) as { x: number; y: number }[]
               if (pts.length < 2) return null
               return (
@@ -110,25 +147,25 @@ export function BusStopMapPicker({ coords, stopNames, routes, selected, onSelect
                 >
                   <title>{l.name}</title>
                   {/* クリック領域を広めに取る */}
-                  <circle cx={l.x} cy={l.y} r={12} fill="transparent" />
+                  <circle cx={l.x} cy={l.y} r={12 * k} fill="transparent" />
                   <circle
                     cx={l.x}
                     cy={l.y}
-                    r={isSel ? 8 : 5.5}
+                    r={(isSel ? 8 : 5.5) * k}
                     fill={isSel ? "#15803d" : "#ffffff"}
                     stroke={isSel ? "#14532d" : isHover ? "#15803d" : "#475569"}
-                    strokeWidth={isSel ? 3 : 2.5}
+                    strokeWidth={(isSel ? 3 : 2.5) * k}
                   />
                   {(l.show || isSel || isHover) && (
                     <text
                       x={l.x}
-                      y={l.y + 20}
+                      y={l.y + 20 * k}
                       textAnchor="middle"
-                      fontSize={12}
+                      fontSize={12 * k}
                       fontWeight={isSel ? 700 : 500}
                       fill={isSel ? "#15803d" : "#1f2937"}
                       stroke="#ffffff"
-                      strokeWidth={3.5}
+                      strokeWidth={3.5 * k}
                       paintOrder="stroke"
                       className="pointer-events-none"
                     >

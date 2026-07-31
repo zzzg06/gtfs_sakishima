@@ -23,6 +23,7 @@ import {
   History,
   Inbox,
   Map as MapIcon,
+  Bus as BusIcon,
 } from "lucide-react"
 import { GTFSStorage, type GTFSDataset } from "@/lib/gtfs-storage"
 import { gtfsParser } from "@/lib/gtfs-parser"
@@ -34,17 +35,19 @@ import { SearchHistoryViewer } from "@/components/search-history-viewer"
 import { OperationRequestViewer } from "@/components/operation-request-viewer"
 import { StationCoordinateManager } from "@/components/station-coordinate-manager"
 import { RouteStatusMap } from "@/components/route-status-map"
+import { BusMapCalibrator } from "@/components/bus-map-calibrator"
 
 interface AdminDataManagerProps {
   onDataLoaded: () => void
 }
 
 // 管理画面のセクション。タブで切り替える（従来の全画面置換＋戻るボタン方式を廃止）。
-type AdminSection = "datasets" | "map" | "trips" | "vehicles" | "routes" | "coords" | "requests" | "history"
+type AdminSection = "datasets" | "map" | "busmap" | "trips" | "vehicles" | "routes" | "coords" | "requests" | "history"
 
 const ADMIN_TABS: { key: AdminSection; label: string; icon: typeof Database; needsData?: boolean }[] = [
   { key: "datasets", label: "データ管理", icon: Database },
   { key: "map", label: "運行状況マップ", icon: MapIcon, needsData: true },
+  { key: "busmap", label: "バス停マップ", icon: BusIcon, needsData: true },
   { key: "trips", label: "運用管理", icon: Settings, needsData: true },
   { key: "vehicles", label: "車両管理", icon: Car, needsData: true },
   { key: "routes", label: "経路・徒歩設定", icon: Footprints, needsData: true },
@@ -205,6 +208,7 @@ export function AdminDataManager({ onDataLoaded }: AdminDataManagerProps) {
       <div className="space-y-6">
         {tabBar}
         {section === "map" && <RouteStatusMap />}
+        {section === "busmap" && <BusMapCalibrator onBack={backToDatasets} />}
         {section === "trips" && (
           <TripManager
             onVisibilityChange={onDataLoaded}

@@ -3,6 +3,7 @@ import type { Vehicle, OperationVehicleAssignment } from "@/lib/vehicle-manager"
 import type { TripDelayInfo, TripOperationStatus } from "@/lib/delay-manager"
 import { DEFAULT_ROUTE_SETTINGS, type RouteSettings } from "@/lib/route-settings"
 import { DEFAULT_LIVE_SETTINGS, type LiveSettings } from "@/lib/live-settings"
+import { DEFAULT_BUS_MAP_SETTINGS, type BusMapSettings } from "@/lib/bus-map"
 import type { StationCoordinates } from "@/lib/station-coordinates"
 import { readJsonFile, writeJsonFile } from "@/lib/server/file-store"
 import { getRequestSession } from "@/lib/server/session"
@@ -20,6 +21,7 @@ interface SharedDataStore {
   tripVisibilitySettings: Record<string, boolean>
   routeSettings: RouteSettings
   liveSettings: LiveSettings // 走行位置の表示元（管理者のみ変更可）
+  busMap: BusMapSettings // バス停マップ（背景画像と位置合わせ）
   stationCoordinates: StationCoordinates
   lastUpdated: string
 }
@@ -35,6 +37,7 @@ function emptyStore(): SharedDataStore {
     tripVisibilitySettings: {},
     routeSettings: { ...DEFAULT_ROUTE_SETTINGS },
     liveSettings: { ...DEFAULT_LIVE_SETTINGS },
+    busMap: { ...DEFAULT_BUS_MAP_SETTINGS },
     stationCoordinates: {},
     lastUpdated: new Date().toISOString(),
   }
@@ -86,6 +89,9 @@ export async function GET(request: NextRequest) {
       case "live-settings":
         return NextResponse.json({ success: true, data: store.liveSettings, lastUpdated: store.lastUpdated })
 
+      case "bus-map":
+        return NextResponse.json({ success: true, data: store.busMap, lastUpdated: store.lastUpdated })
+
       case "station-coordinates":
         return NextResponse.json({ success: true, data: store.stationCoordinates, lastUpdated: store.lastUpdated })
 
@@ -136,6 +142,9 @@ export async function POST(request: NextRequest) {
             break
           case "live-settings":
             store.liveSettings = { ...DEFAULT_LIVE_SETTINGS, ...data }
+            break
+          case "bus-map":
+            store.busMap = { ...DEFAULT_BUS_MAP_SETTINGS, ...data }
             break
           case "station-coordinates":
             store.stationCoordinates = data || {}
