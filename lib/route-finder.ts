@@ -2,6 +2,7 @@ import { gtfsParser, type GTFSStop, type GTFSStopTime, type GTFSTrip, type GTFSR
 import { getCachedTripVisibilitySettings } from "./delay-manager"
 import { getCachedRouteSettings } from "./route-settings"
 import { findWalkPath } from "./walk-list"
+import { ENTRANCE_TO_STATION, findTaxiRide, taxiDestinationsFrom, TAXI_WAIT_MINUTES, type TaxiRide } from "./taxi-routes"
 
 export interface RouteSegment {
   route: GTFSRoute
@@ -23,6 +24,8 @@ export interface WalkingSegment {
   distance: number // メートル単位
   duration: number // 分単位
   type: "walking"
+  mode?: "walk" | "taxi" // taxi=デマンドタクシー（呼び出し待ちを含む）。省略時は徒歩
+  waitMinutes?: number // タクシーの呼び出し待ち（分）
 }
 
 export type TransitSegment = RouteSegment | WalkingSegment
@@ -49,7 +52,6 @@ export interface TransportOptions {
 
 export class RouteFinder {
   private readonly MAX_TRANSFER_WAIT_TIME = 20 // 最大乗り換え待ち時間（分）
-  private readonly TAXI_WAIT_TIME = 5 // タクシー待ち時間（分）
   // 交通手段が切り替わる乗換（列車⇄バス、乗物⇄徒歩）に最低限必要な乗換時間（分）。
   // (バス)〇〇駅 と 〇〇 は同一駅扱いだが、ホーム⇄バス停の移動に要するため最低4分とする。
   private readonly MIN_MODE_CHANGE_TRANSFER = 4
@@ -137,7 +139,7 @@ export class RouteFinder {
     // Check each trip for direct connection
     tripStopTimes.forEach((sortedStops, tripId) => {
       const trip = gtfsParser.getTrip(tripId)
-      if (!trip || this.isTaxiTrip(trip)) return
+      if (!trip) return
 
       let fromStopTime: GTFSStopTime | null = null
       let toStopTime: GTFSStopTime | null = null
@@ -183,83 +185,158 @@ export class RouteFinder {
     return segments.sort((a, b) => this.timeToMinutes(a.departureTime) - this.timeToMinutes(b.departureTime))
   }
 
-  private isTaxiTrip(trip: GTFSTrip): boolean {
-    const route = gtfsParser.getRoute(trip.route_id)
-    return route?.route_id === "TAXI"
+  // タクシーはデマンド方式（時刻表なし）。路線図に描かれた区間だけを、呼び出し待ちつきで乗れる。
+  private makeTaxiSegment(
+    fromStop: GTFSStop,
+    toStop: GTFSStop,
+    departureTime: string,
+    ride: TaxiRide,
+  ): WalkingSegment {
+    const total = TAXI_WAIT_MINUTES + ride.minutes
+    return {
+      fromStop,
+      toStop,
+      departureTime,
+      arrivalTime: this.minutesToTime(this.timeToMinutes(departureTime) + total),
+      distance: 0,
+      duration: total,
+      type: "walking",
+      mode: "taxi",
+      waitMinutes: TAXI_WAIT_MINUTES,
+    }
   }
 
-  private findTaxiRoutes(fromStopId: string, toStopId: string, departureTime?: string): RouteSegment[] {
-    const segments: RouteSegment[] = []
-    const stopTimes = gtfsParser.getStopTimes()
-    const departureMinutes = departureTime ? this.timeToMinutes(departureTime) : 0
+  // タクシーを含む経路（デマンド方式。路線図に描かれた区間だけ利用できる）。
+  // 検索フロー（use-route-search）から呼ぶ入口。
+  findRoutesWithTaxi(
+    fromStopId: string,
+    toStopId: string,
+    departureTime?: string,
+    options?: TransportOptions,
+  ): TransitRoute[] {
+    if (!options?.allowTaxi) return []
+    return [
+      ...this.findTaxiOnlyRoutes(fromStopId, toStopId, departureTime),
+      ...this.findRoutesWithTaxiAccess(fromStopId, toStopId, departureTime).slice(0, 3),
+    ]
+  }
 
-    // 同一駅グループを取得
-    const fromStopIds = gtfsParser.getRelatedStopIds(fromStopId)
-    const toStopIds = gtfsParser.getRelatedStopIds(toStopId)
+  // タクシーで直接行ける場合（出発地と目的地が同じタクシー路線上にある）
+  private findTaxiOnlyRoutes(fromStopId: string, toStopId: string, departureTime?: string): TransitRoute[] {
+    const fromStop = gtfsParser.getStop(fromStopId)
+    const toStop = gtfsParser.getStop(toStopId)
+    if (!fromStop || !toStop) return []
+    const ride = findTaxiRide(fromStop.stop_name, toStop.stop_name)
+    if (!ride) return []
+    const startMin = departureTime ? this.timeToMinutes(departureTime) : 8 * 60
+    const seg = this.makeTaxiSegment(fromStop, toStop, this.minutesToTime(startMin), ride)
+    return [
+      {
+        segments: [seg],
+        totalDuration: seg.duration,
+        transfers: 0,
+        departureTime: seg.departureTime,
+        arrivalTime: seg.arrivalTime,
+        walkingDistance: 0,
+      },
+    ]
+  }
 
-    // Group stop times by trip
-    const tripStopTimes = new Map<string, GTFSStopTime[]>()
-    stopTimes.forEach((st) => {
-      if (!tripStopTimes.has(st.trip_id)) {
-        tripStopTimes.set(st.trip_id, [])
+  // タクシーで駅まで出て乗物に乗る／降りてからタクシーで目的地へ（片方だけでも可）。
+  // タクシーの着発地点が駅の出入口（木古川駅東口など）の場合は、駅まで徒歩でつないで乗降する。
+  private findRoutesWithTaxiAccess(fromStopId: string, toStopId: string, departureTime?: string): TransitRoute[] {
+    const routes: TransitRoute[] = []
+    const fromStop = gtfsParser.getStop(fromStopId)
+    const toStop = gtfsParser.getStop(toStopId)
+    if (!fromStop || !toStop) return routes
+    const startMin = departureTime ? this.timeToMinutes(departureTime) : 8 * 60
+
+    // タクシーで行ける地点 → 実際に乗降する駅（出入口なら駅まで徒歩を挟む）
+    interface TaxiAccess {
+      ride: TaxiRide
+      dropStop: GTFSStop // タクシーの降り場（＝着発地点）
+      boardStop: GTFSStop // 乗降する駅
+      walkMinutes: number // 降り場から駅までの徒歩（0なら同じ場所）
+      lead: number // 呼び出し待ち＋乗車＋徒歩
+    }
+    const accessOf = (stop: GTFSStop): TaxiAccess[] => {
+      const out: TaxiAccess[] = []
+      for (const ride of taxiDestinationsFrom(stop.stop_name)) {
+        const dropStop = gtfsParser.getStops().find((s) => s.stop_name === ride.to)
+        if (!dropStop) continue
+        const entrance = ENTRANCE_TO_STATION[ride.to]
+        const boardStop = entrance
+          ? gtfsParser.getStops().find((s) => s.stop_name === entrance.station)
+          : dropStop
+        if (!boardStop) continue
+        const walkMinutes = entrance ? entrance.walkMinutes : 0
+        out.push({
+          ride,
+          dropStop,
+          boardStop,
+          walkMinutes,
+          lead: TAXI_WAIT_MINUTES + ride.minutes + walkMinutes,
+        })
       }
-      tripStopTimes.get(st.trip_id)!.push(st)
-    })
+      return out
+    }
 
-    // Check each trip for taxi routes
-    tripStopTimes.forEach((tripStops, tripId) => {
-      const trip = gtfsParser.getTrip(tripId)
-      if (!trip || !this.isTaxiTrip(trip)) return
+    const origins = [
+      { stopId: fromStopId, lead: 0, access: null as TaxiAccess | null },
+      ...accessOf(fromStop).map((a) => ({ stopId: a.boardStop.stop_id, lead: a.lead, access: a })),
+    ]
+    const dests = [
+      { stopId: toStopId, tail: 0, access: null as TaxiAccess | null },
+      ...accessOf(toStop).map((a) => ({ stopId: a.boardStop.stop_id, tail: a.lead, access: a })),
+    ]
 
-      const sortedStops = tripStops.sort((a, b) => a.stop_sequence - b.stop_sequence)
+    for (const o of origins) {
+      for (const d of dests) {
+        if (o.stopId === d.stopId) continue
+        if (!o.access && !d.access) continue // タクシーを使わない組み合わせは他の探索が担当する
+        const boardStop = gtfsParser.getStop(o.stopId)
+        const alightStop = gtfsParser.getStop(d.stopId)
+        if (!boardStop || !alightStop) continue
 
-      let fromStopTime: GTFSStopTime | null = null
-      let toStopTime: GTFSStopTime | null = null
-
-      for (const stopTime of sortedStops) {
-        // 出発駅の同一駅グループをチェック
-        if (fromStopIds.includes(stopTime.stop_id)) {
-          fromStopTime = stopTime
-        }
-        // 到着駅の同一駅グループをチェック（出発駅が見つかった後のみ）
-        else if (toStopIds.includes(stopTime.stop_id) && fromStopTime) {
-          toStopTime = stopTime
-          break
-        }
-      }
-
-      if (fromStopTime && toStopTime) {
-        const route = gtfsParser.getRoute(trip.route_id)
-        const fromStop = gtfsParser.getStop(fromStopId)
-        const toStop = gtfsParser.getStop(toStopId)
-
-        if (route && fromStop && toStop) {
-          // タクシーは時刻に関係なくいつでも運行、待ち時間5分を追加
-          const actualDepartureTime = departureTime
-            ? this.minutesToTime(Math.max(departureMinutes + this.TAXI_WAIT_TIME, this.timeToMinutes(departureTime)))
-            : this.minutesToTime(this.timeToMinutes("08:00") + this.TAXI_WAIT_TIME)
-
-          // 所要時間はstop_timesから計算
-          const originalDuration =
-            this.timeToMinutes(toStopTime.arrival_time) - this.timeToMinutes(fromStopTime.departure_time)
-          const actualArrivalTime = this.minutesToTime(this.timeToMinutes(actualDepartureTime) + originalDuration)
-
-          segments.push({
-            route,
-            trip,
-            fromStop,
-            toStop,
-            departureTime: actualDepartureTime,
-            arrivalTime: actualArrivalTime,
-            stopSequenceFrom: fromStopTime.stop_sequence,
-            stopSequenceTo: toStopTime.stop_sequence,
-            type: "transit",
+        const boardAfter = this.minutesToTime(startMin + o.lead)
+        for (const transit of this.findDirectRoutes(o.stopId, d.stopId, boardAfter).slice(0, 2)) {
+          const segments: TransitSegment[] = []
+          let depTime = transit.departureTime
+          if (o.access) {
+            const a = o.access
+            depTime = this.minutesToTime(this.timeToMinutes(transit.departureTime) - a.lead)
+            segments.push(this.makeTaxiSegment(fromStop, a.dropStop, depTime, a.ride))
+            if (a.walkMinutes > 0) {
+              const taxiArr = this.minutesToTime(this.timeToMinutes(depTime) + TAXI_WAIT_MINUTES + a.ride.minutes)
+              segments.push(this.makeWalkSegment(a.dropStop, a.boardStop, taxiArr, a.walkMinutes))
+            }
+          }
+          segments.push(transit)
+          let arrTime = transit.arrivalTime
+          if (d.access) {
+            const a = d.access
+            let t = transit.arrivalTime
+            if (a.walkMinutes > 0) {
+              const w = this.makeWalkSegment(a.boardStop, a.dropStop, t, a.walkMinutes)
+              segments.push(w)
+              t = w.arrivalTime
+            }
+            const tail = this.makeTaxiSegment(a.dropStop, toStop, t, a.ride)
+            segments.push(tail)
+            arrTime = tail.arrivalTime
+          }
+          routes.push({
+            segments,
+            totalDuration: this.timeToMinutes(arrTime) - this.timeToMinutes(depTime),
+            transfers: 0,
+            departureTime: depTime,
+            arrivalTime: arrTime,
+            walkingDistance: 0,
           })
         }
       }
-    })
-
-    return segments
+    }
+    return routes.sort((a, b) => this.timeToMinutes(a.arrivalTime) - this.timeToMinutes(b.arrivalTime))
   }
 
   // 徒歩を含む経路（徒歩区間リストに基づく）。徒歩のみ／徒歩→列車／列車→徒歩。
@@ -443,12 +520,8 @@ export class RouteFinder {
       }
 
       if (!options.allowTaxi) {
-        const hasTaxiSegment = route.segments.some((segment) => {
-          if (segment.type === "transit") {
-            return this.isTaxiTrip(segment.trip)
-          }
-          return false
-        })
+        // タクシー区間（デマンド）を含む経路は、タクシーを許可していないときは出さない
+        const hasTaxiSegment = route.segments.some((segment) => segment.type === "walking" && segment.mode === "taxi")
         if (hasTaxiSegment) {
           return false
         }
@@ -769,18 +842,9 @@ export class RouteFinder {
     })
 
     if (transportOptions.allowTaxi) {
-      const taxiSegments = this.findTaxiRoutes(fromStopId, toStopId, departureTime)
-      taxiSegments.slice(0, 3).forEach((segment) => {
-        const duration = this.timeToMinutes(segment.arrivalTime) - this.timeToMinutes(segment.departureTime)
-        routes.push({
-          segments: [segment],
-          totalDuration: duration,
-          transfers: 0,
-          departureTime: segment.departureTime,
-          arrivalTime: segment.arrivalTime,
-          walkingDistance: 0,
-        })
-      })
+      // タクシー路線図の区間だけを使う: 直接乗れる場合と、最寄り駅までの足として使う場合
+      routes.push(...this.findTaxiOnlyRoutes(fromStopId, toStopId, departureTime))
+      routes.push(...this.findRoutesWithTaxiAccess(fromStopId, toStopId, departureTime).slice(0, 3))
     }
 
     if (transportOptions.allowWalking) {

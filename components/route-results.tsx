@@ -755,6 +755,29 @@ function RouteCard({
                             nextSegment && !isWalkingSegment(nextSegment)
                               ? calculateWaitTime(segment.arrivalTime, nextSegment.departureTime)
                               : 0
+                          // タクシー（デマンド方式）区間は徒歩と区別して表示し、呼び出しが必要な旨も出す
+                          if (segment.mode === "taxi") {
+                            const ride = segment.duration - (segment.waitMinutes || 0)
+                            return (
+                              <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm">
+                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                  <Car className="h-4 w-4 text-amber-700" />
+                                  <span className="font-medium text-amber-800">タクシー</span>
+                                  <span className="text-muted-foreground">{formatDuration(segment.duration)}</span>
+                                  {segment.waitMinutes ? (
+                                    <span className="text-xs text-muted-foreground">
+                                      （呼び出し待ち {segment.waitMinutes}分 ＋ 乗車 {ride}分）
+                                    </span>
+                                  ) : null}
+                                  {wait > 0 && <span className="text-muted-foreground">＋ 待ち {wait}分</span>}
+                                </div>
+                                <p className="mt-1 text-xs text-amber-900">
+                                  デマンド方式です。乗り場のボタンで<span className="font-medium">呼び出しが必要</span>で、
+                                  <span className="font-medium">時間帯によっては運行できない場合があります</span>。
+                                </p>
+                              </div>
+                            )
+                          }
                           return (
                             <div className="flex items-center space-x-2 text-sm bg-gray-50 rounded-lg p-3 border border-gray-200">
                               <svg className="h-4 w-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

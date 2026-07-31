@@ -179,8 +179,11 @@ export function useRouteSearch() {
           ? routeFinder.findRoutesWithTransitWalkTransit(fromStop.stop_id, toStop.stop_id, searchTime, options)
           : []
 
+        // タクシー（デマンド）。路線図に描かれた区間のみ。タクシーオフ時は空
+        const taxiRoutes = routeFinder.findRoutesWithTaxi(fromStop.stop_id, toStop.stop_id, searchTime, options)
+
         // 乗換・徒歩は「乗換回数・種別/徒歩の並び」ごとに最良1件へ集約
-        const transfers = dedupeByTransitPattern([...transferRoutes, ...walkRoutes, ...transitWalkRoutes])
+        const transfers = dedupeByTransitPattern([...transferRoutes, ...walkRoutes, ...transitWalkRoutes, ...taxiRoutes])
 
         // 同一便への乗り直し等、同じ便に2回乗る無意味な候補を除外
         const candidates = [...direct, ...transfers].filter((r) => !hasDuplicateTrip(r))

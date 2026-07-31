@@ -1,5 +1,6 @@
 import { GTFSStorage, type GTFSDataset } from "./gtfs-storage"
 import embeddedBus from "@/data/embedded-bus.json"
+import { TAXI_ONLY_POINTS } from "./taxi-routes"
 
 export interface GTFSStop {
   stop_id: string
@@ -243,6 +244,9 @@ export class GTFSParser {
         // 同梱のバスデータ（行路表由来）をネットワークにマージ
         this.mergeBusData()
 
+        // タクシー路線図にしか無い着発地点を、検索できるよう停留所として登録
+        this.mergeTaxiPoints()
+
         // 8〜11時台の基本ダイヤを4時間ごとに繰り返し、24時近くまで展開
         this.expandRepeatingSchedule()
 
@@ -279,6 +283,18 @@ export class GTFSParser {
     this.stopTimes = [...this.stopTimes, ...bus.stopTimes]
     bus.calendar.forEach((c) => { if (!this.calendar.has(c.service_id)) this.calendar.set(c.service_id, c) })
     console.log("[gtfs] バスデータをマージ:", { busStops: bus.stops.length, busTrips: bus.trips.length })
+  }
+
+  // タクシー路線図の着発地点のうち、駅・バス停として存在しないもの（茶の畑など）を停留所として登録する。
+  // 便（stop_times）は持たないので時刻表や在線表示には出ず、経路検索の発着地としてだけ使える。
+  private mergeTaxiPoints(): void {
+    let added = 0
+    for (const name of TAXI_ONLY_POINTS) {
+      if (this.stops.has(name)) continue
+      this.stops.set(name, { stop_id: name, stop_name: name, stop_lat: 0, stop_lon: 0, location_type: 0 })
+      added++
+    }
+    if (added > 0) console.log("[gtfs] タクシー着発地点を登録:", added)
   }
 
   // 同梱データ（バス・列車とも）は8〜11時台の4時間分のみ。実際は同じ運用を4時間ごとに
