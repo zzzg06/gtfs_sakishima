@@ -26,7 +26,7 @@ import {
 } from "@/lib/operation-number"
 import { abbrevSyubetsu, delayInfo, routeColor, vehicleIconUrl } from "@/lib/train-display"
 import { TrainDetailModal } from "@/components/train-detail-modal"
-import { BusStopMapPicker } from "@/components/bus-stop-map-picker"
+import { StopMapPicker } from "@/components/stop-map-picker"
 import { Train, Bus, RefreshCw, Map as MapIcon } from "lucide-react"
 
 type RtmTrain = RtmMarker
@@ -1074,9 +1074,9 @@ export function TrainLocationBoard() {
           {/* 地図からバス停を選ぶ（登録済み座標をもとにした簡易路線図） */}
           {showBusMap && (
             <div className="mt-2">
-              <BusStopMapPicker
+              <StopMapPicker
                 coords={coords}
-                stopNames={stat.busStops.map((s) => s.name)}
+                stops={stat.busStops.map((s) => ({ name: s.name, kind: "bus" as const }))}
                 routes={busMapRoutes}
                 busMap={busMapSettings}
                 selected={selectedBusStop}

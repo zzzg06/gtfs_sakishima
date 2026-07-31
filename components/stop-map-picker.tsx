@@ -5,20 +5,27 @@ import type { StationCoordinates } from "@/lib/station-coordinates"
 import { solveBusMapTransform, worldToPixel, type BusMapSettings } from "@/lib/bus-map"
 import { Minus, Plus, RotateCcw } from "lucide-react"
 
-// バス停を地図から選ぶピッカー。
+// 駅・バス停を地図から選ぶピッカー（走行位置のバス停選択と、時刻表の駅選択で共用）。
 // 背景画像（パンフレットの路線図）が設定されていればその上に、無ければ
-// 登録済みのバス停座標（Minecraft X/Z、管理画面「駅座標」）だけの簡易路線図にバス停を並べる。
-// クリックでそのバス停を選択する。座標が未登録のバス停は地図に置けないため、下にボタンとして並べる。
+// 登録済みの座標（Minecraft X/Z、管理画面「駅座標」）だけの簡易図に並べる。
+// クリックでその駅／バス停を選択する。座標が未登録のものは地図に置けないため、下にボタンとして並べる。
+
+export type StopKind = "rail" | "bus"
 
 export interface BusMapRoute {
-  name: string // 系統名
+  name: string // 系統・路線名
   color: string
-  stops: string[] // 停車順（バス停名）
+  stops: string[] // 停車順（駅名／バス停名）
+}
+
+export interface PickerStop {
+  name: string
+  kind: StopKind // 鉄道駅=四角、バス停=丸で描き分ける
 }
 
 interface Props {
   coords: StationCoordinates
-  stopNames: string[] // 対象のバス停（系統に現れる停の和集合）
+  stops: PickerStop[] // 対象の駅・バス停
   routes: BusMapRoute[]
   selected: string
   onSelect: (name: string) => void
@@ -32,7 +39,9 @@ const PADDING = 46 // 端の停留所名がはみ出さないよう余白を取�
 // 表示用の短い名前（先頭の「(バス)」を落とす）
 const shortName = (n: string) => n.replace(/^\(バス\)/, "")
 
-export function BusStopMapPicker({ coords, stopNames, routes, selected, onSelect, busMap }: Props) {
+export function StopMapPicker({ coords, stops, routes, selected, onSelect, busMap }: Props) {
+  const stopNames = useMemo(() => stops.map((s) => s.name), [stops])
+  const kindOf = useMemo(() => new Map(stops.map((s) => [s.name, s.kind])), [stops])
   const [zoom, setZoom] = useState(1)
   const [hover, setHover] = useState<string | null>(null)
   const [imgSize, setImgSize] = useState<{ w: number; h: number } | null>(null)
@@ -148,14 +157,28 @@ export function BusStopMapPicker({ coords, stopNames, routes, selected, onSelect
                   <title>{l.name}</title>
                   {/* クリック領域を広めに取る */}
                   <circle cx={l.x} cy={l.y} r={12 * k} fill="transparent" />
-                  <circle
-                    cx={l.x}
-                    cy={l.y}
-                    r={(isSel ? 8 : 5.5) * k}
-                    fill={isSel ? "#15803d" : "#ffffff"}
-                    stroke={isSel ? "#14532d" : isHover ? "#15803d" : "#475569"}
-                    strokeWidth={(isSel ? 3 : 2.5) * k}
-                  />
+                  {/* 鉄道駅は四角、バス停は丸で描き分ける */}
+                  {kindOf.get(l.name) === "rail" ? (
+                    <rect
+                      x={l.x - (isSel ? 8 : 6) * k}
+                      y={l.y - (isSel ? 8 : 6) * k}
+                      width={(isSel ? 16 : 12) * k}
+                      height={(isSel ? 16 : 12) * k}
+                      rx={2 * k}
+                      fill={isSel ? "#1d4ed8" : "#ffffff"}
+                      stroke={isSel ? "#1e3a8a" : isHover ? "#1d4ed8" : "#1f2937"}
+                      strokeWidth={(isSel ? 3 : 2.5) * k}
+                    />
+                  ) : (
+                    <circle
+                      cx={l.x}
+                      cy={l.y}
+                      r={(isSel ? 8 : 5.5) * k}
+                      fill={isSel ? "#15803d" : "#ffffff"}
+                      stroke={isSel ? "#14532d" : isHover ? "#15803d" : "#475569"}
+                      strokeWidth={(isSel ? 3 : 2.5) * k}
+                    />
+                  )}
                   {(l.show || isSel || isHover) && (
                     <text
                       x={l.x}
@@ -163,7 +186,7 @@ export function BusStopMapPicker({ coords, stopNames, routes, selected, onSelect
                       textAnchor="middle"
                       fontSize={12 * k}
                       fontWeight={isSel ? 700 : 500}
-                      fill={isSel ? "#15803d" : "#1f2937"}
+                      fill={isSel ? (kindOf.get(l.name) === "rail" ? "#1d4ed8" : "#15803d") : "#1f2937"}
                       stroke="#ffffff"
                       strokeWidth={3.5 * k}
                       paintOrder="stroke"
@@ -207,15 +230,30 @@ export function BusStopMapPicker({ coords, stopNames, routes, selected, onSelect
         </div>
       </div>
 
-      <p className="text-xs text-muted-foreground">
-        バス停をクリックすると選択します（拡大すると全ての停留所名が出ます）。地図は登録済みの座標をもとにした簡易図です。
-      </p>
+      {/* 凡例と使い方 */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+        {stops.some((s) => s.kind === "rail") && (
+          <span className="flex items-center gap-1.5">
+            <svg width="16" height="16" viewBox="0 0 16 16">
+              <rect x="2.5" y="2.5" width="11" height="11" rx="2" fill="#fff" stroke="#1f2937" strokeWidth="2.5" />
+            </svg>
+            鉄道駅
+          </span>
+        )}
+        <span className="flex items-center gap-1.5">
+          <svg width="16" height="16" viewBox="0 0 16 16">
+            <circle cx="8" cy="8" r="5" fill="#fff" stroke="#475569" strokeWidth="2.5" />
+          </svg>
+          バス停
+        </span>
+        <span>クリックで選択（拡大すると全ての名前が出ます）</span>
+      </div>
 
-      {/* 座標未登録で地図に置けないバス停 */}
+      {/* 座標未登録で地図に置けない駅・バス停 */}
       {layout.missing.length > 0 && (
         <div className="rounded-lg border border-border bg-card p-2">
           <p className="mb-1 text-xs text-muted-foreground">
-            座標が未登録のため地図に出せないバス停（{layout.missing.length}）。管理画面「駅座標」で登録すると地図に載ります。
+            座標が未登録のため地図に出せない駅・バス停（{layout.missing.length}）。管理画面「駅座標」で登録すると地図に載ります。
           </p>
           <div className="flex flex-wrap gap-1">
             {layout.missing.map((n) => (

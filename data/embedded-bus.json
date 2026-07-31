@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-06-23T03:28:20.421Z",
+ "generatedAt": "2026-07-31T07:44:28.821Z",
  "source": "2026natsusakishima_staff_20260620_zantei.xlsx",
  "stops": [
   {
@@ -84,13 +84,13 @@
    "stop_desc": "さきしまこうえき"
   },
   {
-   "stop_id": "(バス)旧港駅跡",
-   "stop_name": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
+   "stop_name": "(バス)元港駅跡",
    "stop_lat": 0,
    "stop_lon": 0,
    "location_type": 0,
    "parent_station": "",
-   "stop_desc": "きゅうこうえきあと"
+   "stop_desc": "もとこうえきあと"
   },
   {
    "stop_id": "(バス)富田駅前",
@@ -109,15 +109,6 @@
    "location_type": 0,
    "parent_station": "",
    "stop_desc": "なかはらだいえきまえ"
-  },
-  {
-   "stop_id": "(バス)元港駅跡",
-   "stop_name": "(バス)元港駅跡",
-   "stop_lat": 0,
-   "stop_lon": 0,
-   "location_type": 0,
-   "parent_station": "",
-   "stop_desc": "もとこうえきあと"
   },
   {
    "stop_id": "(バス)上砥駅前",
@@ -1207,7 +1198,7 @@
    "trip_id": "bus_1B8025_1",
    "arrival_time": "08:20:00",
    "departure_time": "08:20:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 10,
    "platform_code": "",
    "drop_off_type": 0
@@ -1369,7 +1360,7 @@
    "trip_id": "bus_2B8025_3",
    "arrival_time": "08:05:00",
    "departure_time": "08:05:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -1594,7 +1585,7 @@
    "trip_id": "bus_3B8101_6",
    "arrival_time": "08:02:00",
    "departure_time": "08:02:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -1693,7 +1684,7 @@
    "trip_id": "bus_3B8201_7",
    "arrival_time": "08:14:00",
    "departure_time": "08:14:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -2053,7 +2044,7 @@
    "trip_id": "bus_4B8225_11",
    "arrival_time": "08:35:00",
    "departure_time": "08:35:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 10,
    "platform_code": "",
    "drop_off_type": 0
@@ -2377,7 +2368,7 @@
    "trip_id": "bus_5B8308_14",
    "arrival_time": "08:41:00",
    "departure_time": "08:41:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -3511,7 +3502,7 @@
    "trip_id": "bus_4B9101_27",
    "arrival_time": "09:02:00",
    "departure_time": "09:02:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -3610,7 +3601,7 @@
    "trip_id": "bus_4B9201_28",
    "arrival_time": "09:12:00",
    "departure_time": "09:12:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -3709,7 +3700,7 @@
    "trip_id": "bus_4B9301_29",
    "arrival_time": "09:22:00",
    "departure_time": "09:22:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -3808,7 +3799,7 @@
    "trip_id": "bus_4B9401_30",
    "arrival_time": "09:32:00",
    "departure_time": "09:32:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -5311,7 +5302,7 @@
    "trip_id": "bus_4B0101_47",
    "arrival_time": "10:02:00",
    "departure_time": "10:02:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -5410,7 +5401,7 @@
    "trip_id": "bus_4B0201_48",
    "arrival_time": "10:12:00",
    "departure_time": "10:12:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -5509,7 +5500,7 @@
    "trip_id": "bus_4B0301_49",
    "arrival_time": "10:22:00",
    "departure_time": "10:22:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -5608,7 +5599,7 @@
    "trip_id": "bus_4B0401_50",
    "arrival_time": "10:32:00",
    "departure_time": "10:32:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -6256,7 +6247,7 @@
    "trip_id": "bus_1B1225_57",
    "arrival_time": "11:38:00",
    "departure_time": "11:38:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 6,
    "platform_code": "",
    "drop_off_type": 0
@@ -6301,7 +6292,7 @@
    "trip_id": "bus_1B1308_58",
    "arrival_time": "11:46:00",
    "departure_time": "11:46:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -6607,7 +6598,7 @@
    "trip_id": "bus_2B1101_60",
    "arrival_time": "11:35:00",
    "departure_time": "11:35:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
@@ -7147,7 +7138,7 @@
    "trip_id": "bus_4B1225_68",
    "arrival_time": "11:37:00",
    "departure_time": "11:37:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 10,
    "platform_code": "",
    "drop_off_type": 0
@@ -7192,7 +7183,7 @@
    "trip_id": "bus_4B1301_69",
    "arrival_time": "11:45:00",
    "departure_time": "11:45:00",
-   "stop_id": "(バス)旧港駅跡",
+   "stop_id": "(バス)元港駅跡",
    "stop_sequence": 3,
    "platform_code": "",
    "drop_off_type": 0
