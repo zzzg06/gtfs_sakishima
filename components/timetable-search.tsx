@@ -4,6 +4,7 @@ import type React from "react"
 import { useMemo, useState } from "react"
 import { StationSearch } from "@/components/station-search"
 import { gtfsParser, type GTFSStop } from "@/lib/gtfs-parser"
+import { isTaxiOnlyPoint } from "@/lib/taxi-routes"
 import { Clock, Train, Bus, ArrowLeft } from "lucide-react"
 
 // 時刻表（駅ごとの発車時刻一覧）。
@@ -123,6 +124,8 @@ export function TimetableSearch({ onSelect }: { onSelect: (stop: GTFSStop) => vo
               placeholder="駅、バス停"
               label="時刻表を見る駅"
               hideLabel
+              // タクシーでしか発着しない地点は時刻表を持たないので候補から外す
+              filterStop={(s) => !isTaxiOnlyPoint(s.stop_name)}
             />
           </div>
         </div>

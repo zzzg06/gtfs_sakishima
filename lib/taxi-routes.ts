@@ -22,33 +22,25 @@ const DEFAULT_RIDE_MINUTES = 6
 // 乗車時間の下限（分）
 const MIN_RIDE_MINUTES = 2
 
+// 着発地点は、同名のバス停がある場合はそのバス停に統一する（別地点として重複させない）。
+// バス停と駅のつながり（例: (バス)木古川駅西口 ↔ 木古川）は徒歩リスト(embedded-walk)に既にあるため、
+// タクシー→徒歩→乗車 の乗り継ぎはそちらで解決される。
 export const TAXI_LINES: TaxiLine[] = [
-  { points: ["茶の畑", "木古川駅西口"] },
-  { points: ["長池貯水池", "飯洲戸果樹", "木古川駅東口"] },
-  { points: ["(バス)咲東崎灯台公園", "新咲市場"] },
+  { points: ["(バス)茶の畑", "(バス)木古川駅西口"] },
+  { points: ["(バス)長池貯水池", "飯洲戸果樹", "(バス)木古川駅東口"] },
+  { points: ["(バス)咲東崎灯台公園", "(バス)新咲市場"] },
   { points: ["鳥飼海の家", "助が丘駅南口"] }, // 助が丘駅から先（八つ橋・中原台方面）は鉄道でありタクシーではない
   { points: ["(バス)なみなかアリーナ", "八つ橋"] },
   { points: ["富浜桟橋", "中原台"] },
 ]
 
-// 駅の出入口 → その駅（乗り換えは徒歩でつなぐ）
+// 徒歩リストに載っていない着発地点だけ、乗り換え先の駅を補う（他は徒歩リストで解決）。
 export const ENTRANCE_TO_STATION: Record<string, { station: string; walkMinutes: number }> = {
-  木古川駅東口: { station: "木古川", walkMinutes: 2 },
-  木古川駅西口: { station: "木古川", walkMinutes: 2 },
   助が丘駅南口: { station: "助が丘", walkMinutes: 2 },
 }
 
-// 路線図にしか無い（GTFSに駅・停留所として存在しない）着発地点。検索できるよう停留所として登録する。
-export const TAXI_ONLY_POINTS = [
-  "茶の畑",
-  "長池貯水池",
-  "飯洲戸果樹",
-  "鳥飼海の家",
-  "富浜桟橋",
-  "木古川駅東口",
-  "木古川駅西口",
-  "助が丘駅南口",
-]
+// 路線図にしか無い（駅・バス停として存在しない）着発地点。検索できるよう停留所として登録する。
+export const TAXI_ONLY_POINTS = ["飯洲戸果樹", "鳥飼海の家", "富浜桟橋", "助が丘駅南口"]
 
 export interface TaxiRide {
   from: string
@@ -111,3 +103,16 @@ export function allTaxiPoints(): string[] {
 export function isTaxiPoint(name: string): boolean {
   return allTaxiPoints().includes(name)
 }
+
+// タクシーでしか発着しない地点（駅・バス停ではない）。時刻表の対象外にする。
+export function isTaxiOnlyPoint(name: string): boolean {
+  return TAXI_ONLY_POINTS.includes(name)
+}
+
+// 検索結果などに出す注意書き（デマンド方式の説明）
+export const TAXI_NOTICE_TITLE = "タクシー（デマンド方式）のご利用について"
+export const TAXI_NOTICE_LINES = [
+  "乗り場にあるボタンで呼び出してからご乗車ください（事前の呼び出しが必要です）。",
+  "時間帯によっては対応できない場合があります。",
+  "追加料金はかかりません。路線図に無い区間が設定される場合があるため、最新情報をご確認ください。",
+]

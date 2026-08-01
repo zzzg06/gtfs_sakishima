@@ -15,7 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
-import { Clock, RefreshCw, AlertCircle, Train, Bus, Search, Circle, Car, ChevronLeft, ChevronRight, Send, CheckCircle2, Navigation } from "lucide-react"
+import { Clock, RefreshCw, AlertCircle, AlertTriangle, Train, Bus, Search, Circle, Car, ChevronLeft, ChevronRight, Send, CheckCircle2, Navigation } from "lucide-react"
 import type { TransitRoute, TransitSegment, WalkingSegment, RouteBadge } from "@/lib/route-finder"
 import type { RouteQuery } from "@/hooks/use-route-search"
 import { vehicleManager } from "@/lib/vehicle-manager"
@@ -23,6 +23,7 @@ import { gtfsParser, type GTFSStop } from "@/lib/gtfs-parser"
 import { computeTrainRunStates, nowMinutesInTokyo } from "@/lib/train-position"
 import { delayManager, getCachedTripVisibilitySettings } from "@/lib/delay-manager"
 import { sendOperationRequest } from "@/lib/operation-request"
+import { isTaxiOnlyPoint, TAXI_NOTICE_LINES, TAXI_NOTICE_TITLE } from "@/lib/taxi-routes"
 
 interface RouteResultsProps {
   routes: TransitRoute[]
@@ -617,11 +618,29 @@ function RouteCard({
     return `${stopTime.platform_code}番線${suffix}`
   }
 
+  // タクシー（デマンド方式）を含む経路には注意アイコンを出し、クリックで内容を表示する
+  const hasTaxi = route.segments.some((s) => s.type === "walking" && s.mode === "taxi")
+  const [showNotice, setShowNotice] = useState(false)
+
+  const noticePanel = showNotice ? (
+    <div className="mx-3 mb-2 rounded-md border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900">
+      <div className="mb-1 flex items-center gap-1.5 font-bold">
+        <AlertTriangle className="h-4 w-4" />
+        {TAXI_NOTICE_TITLE}
+      </div>
+      <ul className="list-disc space-y-0.5 pl-5">
+        {TAXI_NOTICE_LINES.map((line) => (
+          <li key={line}>{line}</li>
+        ))}
+      </ul>
+    </div>
+  ) : null
+
   // 駅名と、その隣の「時刻表」リンク（画像のように駅名の隣に表示領域を設ける）
   const renderStationName = (stop: GTFSStop, className: string) => (
     <>
       <span className={className}>{stop.stop_name}</span>
-      {onStationClick && (
+      {onStationClick && !isTaxiOnlyPoint(stop.stop_name) && (
         <button
           type="button"
           onClick={() => onStationClick(stop)}
@@ -681,6 +700,18 @@ function RouteCard({
                   徒歩 {formatDistance(route.walkingDistance)}
                 </Badge>
               )}
+              {hasTaxi && (
+                <button
+                  type="button"
+                  onClick={() => setShowNotice((v) => !v)}
+                  aria-expanded={showNotice}
+                  title="この経路には注意事項があります"
+                  className="flex items-center gap-1 rounded-full border border-amber-400 bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-900 hover:bg-amber-200"
+                >
+                  <AlertTriangle className="h-3 w-3" />
+                  注意
+                </button>
+              )}
             </div>
             <div className="flex items-baseline gap-1 whitespace-nowrap">
               <span className="text-xs text-muted-foreground">所要</span>
@@ -689,6 +720,7 @@ function RouteCard({
           </div>
         </CardHeader>
         <CardContent className="pt-0">
+          {noticePanel}
           <div className="relative">
             {route.segments.map((segment, segmentIndex) => {
               const isFirstSegment = segmentIndex === 0
@@ -770,11 +802,17 @@ function RouteCard({
                                     </span>
                                   ) : null}
                                   {wait > 0 && <span className="text-muted-foreground">＋ 待ち {wait}分</span>}
+                                  <button
+                                    type="button"
+                                    onClick={() => setShowNotice(true)}
+                                    aria-expanded={showNotice}
+                                    title="タクシー利用の注意事項"
+                                    className="ml-auto flex items-center gap-1 rounded-full border border-amber-400 bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-900 hover:bg-amber-200"
+                                  >
+                                    <AlertTriangle className="h-3 w-3" />
+                                    注意
+                                  </button>
                                 </div>
-                                <p className="mt-1 text-xs text-amber-900">
-                                  デマンド方式です。乗り場のボタンで<span className="font-medium">呼び出しが必要</span>で、
-                                  <span className="font-medium">時間帯によっては運行できない場合があります</span>。
-                                </p>
                               </div>
                             )
                           }

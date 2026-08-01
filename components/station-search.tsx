@@ -16,9 +16,10 @@ interface StationSearchProps {
   placeholder: string
   label: string
   hideLabel?: boolean // コンパクト表示時はラベルを外側のチップで表現するため非表示にする
+  filterStop?: (stop: GTFSStop) => boolean // 候補に出す駅の絞り込み（例: 時刻表はタクシー専用地点を除く）
 }
 
-export function StationSearch({ value, onChange, placeholder, label, hideLabel = false }: StationSearchProps) {
+export function StationSearch({ value, onChange, placeholder, label, hideLabel = false, filterStop }: StationSearchProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [searchResults, setSearchResults] = useState<GTFSStop[]>([])
   const [isRecent, setIsRecent] = useState(false) // ドロップダウンが「最近利用した駅」を表示中か
@@ -32,10 +33,10 @@ export function StationSearch({ value, onChange, placeholder, label, hideLabel =
 
   // 最近利用した駅（localStorage）を解決して返す
   const loadRecentStops = (): GTFSStop[] => {
-    return getRecentStopIds()
+    const stops = getRecentStopIds()
       .map((id) => gtfsParser.getStop(id))
       .filter((s): s is GTFSStop => Boolean(s))
-      .slice(0, 6)
+    return (filterStop ? stops.filter(filterStop) : stops).slice(0, 6)
   }
 
   useEffect(() => {
@@ -53,13 +54,15 @@ export function StationSearch({ value, onChange, placeholder, label, hideLabel =
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
+  const applyFilter = (stops: GTFSStop[]) => (filterStop ? stops.filter(filterStop) : stops)
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value
     setInputValue(newValue)
     onChange(newValue, null)
 
     if (newValue.trim().length > 0) {
-      const results = gtfsParser.searchStops(newValue).slice(0, 8) // Limit to 8 results
+      const results = applyFilter(gtfsParser.searchStops(newValue)).slice(0, 8) // Limit to 8 results
       setSearchResults(results)
       setIsRecent(false)
       setIsOpen(results.length > 0)
@@ -83,7 +86,7 @@ export function StationSearch({ value, onChange, placeholder, label, hideLabel =
 
   const handleInputFocus = () => {
     if (inputValue.trim().length > 0) {
-      const results = gtfsParser.searchStops(inputValue).slice(0, 8)
+      const results = applyFilter(gtfsParser.searchStops(inputValue)).slice(0, 8)
       setSearchResults(results)
       setIsRecent(false)
       setIsOpen(results.length > 0)

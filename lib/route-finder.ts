@@ -259,24 +259,35 @@ export class RouteFinder {
       walkMinutes: number // 降り場から駅までの徒歩（0なら同じ場所）
       lead: number // 呼び出し待ち＋乗車＋徒歩
     }
+    // タクシーの降り場そのもの＋そこから徒歩で行ける駅（徒歩リスト）を乗車候補にする。
+    // 徒歩リストに無い着発地点（助が丘駅南口など）だけ ENTRANCE_TO_STATION で補う。
     const accessOf = (stop: GTFSStop): TaxiAccess[] => {
       const out: TaxiAccess[] = []
       for (const ride of taxiDestinationsFrom(stop.stop_name)) {
         const dropStop = gtfsParser.getStops().find((s) => s.stop_name === ride.to)
         if (!dropStop) continue
+
+        const candidates: { boardStop: GTFSStop; walkMinutes: number }[] = [{ boardStop: dropStop, walkMinutes: 0 }]
+        for (const target of gtfsParser.getStops()) {
+          if (target.stop_id === dropStop.stop_id) continue
+          const wp = findWalkPath(ride.to, target.stop_name)
+          if (wp) candidates.push({ boardStop: target, walkMinutes: wp.time })
+        }
         const entrance = ENTRANCE_TO_STATION[ride.to]
-        const boardStop = entrance
-          ? gtfsParser.getStops().find((s) => s.stop_name === entrance.station)
-          : dropStop
-        if (!boardStop) continue
-        const walkMinutes = entrance ? entrance.walkMinutes : 0
-        out.push({
-          ride,
-          dropStop,
-          boardStop,
-          walkMinutes,
-          lead: TAXI_WAIT_MINUTES + ride.minutes + walkMinutes,
-        })
+        if (entrance && !candidates.some((c) => c.boardStop.stop_name === entrance.station)) {
+          const st = gtfsParser.getStops().find((s) => s.stop_name === entrance.station)
+          if (st) candidates.push({ boardStop: st, walkMinutes: entrance.walkMinutes })
+        }
+
+        for (const c of candidates.sort((a, b) => a.walkMinutes - b.walkMinutes).slice(0, 3)) {
+          out.push({
+            ride,
+            dropStop,
+            boardStop: c.boardStop,
+            walkMinutes: c.walkMinutes,
+            lead: TAXI_WAIT_MINUTES + ride.minutes + c.walkMinutes,
+          })
+        }
       }
       return out
     }

@@ -6,6 +6,7 @@ import { gtfsParser } from "@/lib/gtfs-parser"
 import { delayManager } from "@/lib/delay-manager"
 import { routeSettingsManager } from "@/lib/route-settings"
 import { vehicleManager } from "@/lib/vehicle-manager"
+import { stationCoordinateManager } from "@/lib/station-coordinates"
 import { logSearch, type SearchLogTrip } from "@/lib/search-log"
 import type { GTFSStop } from "@/lib/gtfs-parser"
 
@@ -158,6 +159,8 @@ export function useRouteSearch() {
           delayManager.loadTripVisibilitySettings(),
           routeSettingsManager.loadAll(),
           vehicleManager.loadCache(),
+          // タクシーの乗車時間は着発地点の座標から概算するため、座標も読み込んでおく
+          stationCoordinateManager.load(),
         ])
 
         // 直通便（発車ボード）＋乗り換え経路を候補に。乗換回数は問わず到着が早い順で並べる
