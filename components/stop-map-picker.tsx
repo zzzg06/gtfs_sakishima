@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type { StationCoordinates } from "@/lib/station-coordinates"
 import { solveBusMapTransform, worldToPixel, type BusMapSettings } from "@/lib/bus-map"
 import { Minus, Plus, RotateCcw } from "lucide-react"
@@ -45,6 +45,9 @@ export function StopMapPicker({ coords, stops, routes, selected, onSelect, busMa
   const [zoom, setZoom] = useState(1)
   const [hover, setHover] = useState<string | null>(null)
   const [imgSize, setImgSize] = useState<{ w: number; h: number } | null>(null)
+  // 表示幅（スマホなど狭い画面では図を縮めて全体を収める）
+  const viewportRef = useRef<HTMLDivElement | null>(null)
+  const [panelWidth, setPanelWidth] = useState(0)
 
   // 背景画像の実サイズを取得（viewBoxに使う）
   const imageUrl = busMap?.imageUrl || ""
@@ -92,10 +95,30 @@ export function StopMapPicker({ coords, stops, routes, selected, onSelect, busMa
     return { pts, missing, scale }
   }, [coords, stopNames, useImage, transform])
 
+  const measure = useCallback(() => {
+    const el = viewportRef.current
+    if (el && el.clientWidth > 0) setPanelWidth(el.clientWidth)
+  }, [])
+  useEffect(() => {
+    measure()
+    const el = viewportRef.current
+    // ResizeObserverが効かない環境（埋め込みブラウザ等）に備えて window の resize も見る
+    window.addEventListener("resize", measure)
+    let ro: ResizeObserver | null = null
+    if (el && typeof ResizeObserver !== "undefined") {
+      ro = new ResizeObserver(measure)
+      ro.observe(el)
+    }
+    return () => {
+      window.removeEventListener("resize", measure)
+      ro?.disconnect()
+    }
+  }, [measure])
+
   const viewW = useImage && imgSize ? imgSize.w : VIEW_W
   const viewH = useImage && imgSize ? imgSize.h : VIEW_H
-  // 背景画像は等倍だと大きいので、既定でパネル幅に収まる倍率にしてからズームを掛ける
-  const baseScale = useImage ? Math.min(1, VIEW_W / viewW) : 1
+  // 既定はパネル幅に収まる倍率（狭い画面ほど縮む）。ここにズームを掛ける
+  const baseScale = panelWidth > 0 ? Math.min(1, panelWidth / viewW) : useImage ? Math.min(1, VIEW_W / viewW) : 1
   const width = viewW * baseScale * zoom
   const height = viewH * baseScale * zoom
   // 画像モードでは図の縮尺に合わせて丸・文字の大きさを調整する
@@ -119,7 +142,7 @@ export function StopMapPicker({ coords, stops, routes, selected, onSelect, busMa
   return (
     <div className="space-y-2">
       <div className="relative">
-        <div className="max-h-[520px] overflow-auto rounded-lg border border-border bg-white">
+        <div ref={viewportRef} className="max-h-[520px] overflow-auto rounded-lg border border-border bg-white">
           <svg width={width} height={height} viewBox={`0 0 ${viewW} ${viewH}`}>
             {/* 背景（パンフレットの路線図） */}
             {useImage && <image href={imageUrl} x={0} y={0} width={viewW} height={viewH} />}

@@ -2,7 +2,7 @@
 //
 // 使い方:
 //   node scripts/convert-staff-trains.mjs
-//   node scripts/convert-staff-trains.mjs --source data/2026natsusakishima_staff_20260620_zantei.xlsx
+//   node scripts/convert-staff-trains.mjs --source data/2026natsusakishima_staff_20260802_zantei.xlsx
 //
 // スタフの「鉄道　運用XX」ブロック(レーン=最大4便)から列車ダイヤを抽出し、
 // アプリ同梱の embedded-gtfs.json(datasets形式)を1データセットで生成する。
@@ -17,7 +17,7 @@ const require = createRequire(import.meta.url)
 const XLSX = require("xlsx")
 
 const args = {
-  source: "data/2026natsusakishima_staff_20260620_zantei.xlsx",
+  source: "data/2026natsusakishima_staff_20260802_zantei.xlsx",
   output: "data/embedded-gtfs.json",
   datasetId: "embedded-2026",
   datasetName: "2026夏スタフ",

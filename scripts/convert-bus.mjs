@@ -16,7 +16,7 @@ import { createRequire } from "node:module"
 const require = createRequire(import.meta.url)
 const XLSX = require("xlsx")
 
-const args = { source: "data/2026natsusakishima_staff_20260620_zantei.xlsx", output: "data/embedded-bus.json", includeDeadhead: false }
+const args = { source: "data/2026natsusakishima_staff_20260802_zantei.xlsx", output: "data/embedded-bus.json", includeDeadhead: false }
 for (let i = 2; i < process.argv.length; i++) {
   if (process.argv[i] === "--source") args.source = process.argv[++i]
   else if (process.argv[i] === "--output") args.output = process.argv[++i]
@@ -138,13 +138,35 @@ for (const sheetName of SHEETS) {
 
   for (const H of blockStarts) {
     const next = allHeads.find((x) => x > H) ?? rows.length
-    const operationNo = String(rows[H + 2]?.[1] || "").trim() // 運用番号（バスN）※レーン共通
+
+    // 行の位置はスタフの版によって変わる（2026-08版で「放送コマンド」行が増えた）ため、
+    // 固定オフセットではなくA列の見出しで行を探す。
+    const findRow = (label) => {
+      for (let r = H + 1; r < next; r++) {
+        if (String(rows[r]?.[0] || "").replace(/\s/g, "") === label) return r
+      }
+      return -1
+    }
+    const rowOperation = findRow("運用番号")
+    const rowTrainNo = findRow("列車番号")
+    const rowType = findRow("種別")
+    const rowDest = findRow("行先")
+    // 停車行は「着時刻」ヘッダー行の次から
+    let rowHeader = -1
+    for (let r = H + 1; r < next; r++) {
+      if (String(rows[r]?.[1] || "").trim() === "着時刻") {
+        rowHeader = r
+        break
+      }
+    }
+    if (rowTrainNo < 0 || rowType < 0 || rowDest < 0 || rowHeader < 0) continue
+    const operationNo = String(rows[rowOperation]?.[1] || "").trim() // 運用番号（バスN）※レーン共通
 
     for (const off of [0, 8, 16, 24]) {
-      const trainNo = String(rows[H + 5]?.[off + 1] || "").trim()
+      const trainNo = String(rows[rowTrainNo]?.[off + 1] || "").trim()
       if (!trainNo) continue
-      const type = String(rows[H + 6]?.[off + 1] || "").trim()
-      const dest = String(rows[H + 7]?.[off + 1] || "").trim()
+      const type = String(rows[rowType]?.[off + 1] || "").trim()
+      const dest = String(rows[rowDest]?.[off + 1] || "").trim()
 
       // 回送・送り込みは非営業として除外。出入(出入庫)は途中停留所で客扱いする営業運用なので含める
       // （例: 「出入08 → 咲71」は出庫後に咲71として営業）。
@@ -154,7 +176,7 @@ for (const sheetName of SHEETS) {
       }
 
       const legStops = []
-      for (let r = H + 9; r < next; r++) {
+      for (let r = rowHeader + 1; r < next; r++) {
         const nm = String(rows[r]?.[off] || "").trim()
         if (!nm) continue
         const arr = fractionToTime(rows[r][off + 1])

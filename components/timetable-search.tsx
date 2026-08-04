@@ -2,10 +2,16 @@
 
 import type React from "react"
 import { useMemo, useState } from "react"
+import { useEffect } from "react"
 import { StationSearch } from "@/components/station-search"
+import { StopMapPicker, type PickerStop } from "@/components/stop-map-picker"
 import { gtfsParser, type GTFSStop } from "@/lib/gtfs-parser"
 import { isTaxiOnlyPoint } from "@/lib/taxi-routes"
-import { Clock, Train, Bus, ArrowLeft } from "lucide-react"
+import { stationCoordinateManager, type StationCoordinates } from "@/lib/station-coordinates"
+import { busMapSettingsManager, type BusMapSettings } from "@/lib/bus-map"
+import { RAIL_LINES } from "@/lib/rail-lines"
+import { routeColor } from "@/lib/train-display"
+import { Clock, Train, Bus, ArrowLeft, Map as MapIcon } from "lucide-react"
 
 // 時刻表（駅ごとの発車時刻一覧）。
 // - TimetableSearch: トップページ下部の駅ピッカー。駅を選ぶと親に通知して時刻表ページへ。
@@ -101,9 +107,66 @@ function getDepartures(stop: GTFSStop): Departure[] {
   return list.sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time))
 }
 
-// ---------- トップページ下部の駅ピッカー ----------
+// 地図ピッカーに渡す駅・バス停と路線（時刻表がある＝いずれかの便が停車するものだけ）
+function useTimetableMapData() {
+  return useMemo(() => {
+    const empty = {
+      stops: [] as PickerStop[],
+      routes: [] as { name: string; color: string; stops: string[] }[],
+      stopByName: new Map<string, GTFSStop>(),
+    }
+    if (!gtfsParser.hasData()) return empty
+    const stopById = new Map(gtfsParser.getStops().map((s) => [s.stop_id, s]))
+    const routes = gtfsParser.getRoutes()
+    const routeById = new Map(routes.map((r) => [r.route_id, r]))
+    const routeIdByTrip = new Map(gtfsParser.getTrips().map((t) => [t.trip_id, t.route_id]))
+    const kindByName = new Map<string, "rail" | "bus">()
+    const stopByName = new Map<string, GTFSStop>()
+    const namesByTrip = new Map<string, { routeId: string; names: string[] }>()
+
+    for (const st of gtfsParser.getStopTimes()) {
+      const stop = stopById.get(st.stop_id)
+      const routeId = routeIdByTrip.get(st.trip_id)
+      if (!stop || !routeId) continue
+      const kind: "rail" | "bus" = routeById.get(routeId)?.route_type === 3 ? "bus" : "rail"
+      if (!kindByName.has(stop.stop_name) || kind === "rail") kindByName.set(stop.stop_name, kind)
+      if (!stopByName.has(stop.stop_name)) stopByName.set(stop.stop_name, stop)
+      const cur = namesByTrip.get(st.trip_id) || { routeId, names: [] }
+      if (cur.names[cur.names.length - 1] !== stop.stop_name) cur.names.push(stop.stop_name)
+      namesByTrip.set(st.trip_id, cur)
+    }
+    const seqByRoute = new Map<string, string[]>()
+    for (const { routeId, names } of namesByTrip.values()) {
+      if ((seqByRoute.get(routeId)?.length || 0) < names.length) seqByRoute.set(routeId, names)
+    }
+    const routeLines = [
+      ...RAIL_LINES.map((l) => ({ name: l.name, color: routeColor(l.color), stops: l.segments.flat() })),
+      ...routes
+        .filter((r) => r.route_type === 3 && seqByRoute.has(r.route_id))
+        .map((r) => ({
+          name: r.route_short_name || r.route_long_name || r.route_id,
+          color: routeColor(r.route_color),
+          stops: seqByRoute.get(r.route_id) || [],
+        })),
+    ]
+    const stops: PickerStop[] = [...kindByName.entries()].map(([name, kind]) => ({ name, kind }))
+    return { stops, routes: routeLines, stopByName }
+  }, [gtfsParser.hasData()])
+}
+
+// ---------- 駅ピッカー（トップページ下部・時刻表ページ共通） ----------
 export function TimetableSearch({ onSelect }: { onSelect: (stop: GTFSStop) => void }) {
   const [station, setStation] = useState("")
+  const [showMap, setShowMap] = useState(false)
+  const [coords, setCoords] = useState<StationCoordinates>({})
+  const [busMap, setBusMap] = useState<BusMapSettings>({ imageUrl: "", refs: [] })
+  const mapData = useTimetableMapData()
+
+  // 地図表示に必要な座標と背景画像設定（初回のみ）
+  useEffect(() => {
+    stationCoordinateManager.load().then(setCoords).catch(() => {})
+    busMapSettingsManager.load().then(setBusMap).catch(() => {})
+  }, [])
 
   return (
     <div className="rounded-lg border border-border shadow-sm">
@@ -129,7 +192,32 @@ export function TimetableSearch({ onSelect }: { onSelect: (stop: GTFSStop) => vo
             />
           </div>
         </div>
-        <p className="text-xs text-muted-foreground">駅・バス停を選ぶと時刻表を表示します。</p>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowMap((v) => !v)}
+            className={`flex items-center gap-1.5 rounded border px-2.5 py-1.5 text-sm ${
+              showMap ? "border-green-700 bg-green-700 text-white" : "border-border bg-background hover:bg-accent"
+            }`}
+          >
+            <MapIcon className="h-4 w-4" />
+            地図から選ぶ
+          </button>
+          <p className="text-xs text-muted-foreground">駅・バス停を選ぶと時刻表を表示します。</p>
+        </div>
+        {showMap && (
+          <StopMapPicker
+            coords={coords}
+            stops={mapData.stops}
+            routes={mapData.routes}
+            busMap={busMap}
+            selected=""
+            onSelect={(name) => {
+              const stop = mapData.stopByName.get(name)
+              if (stop) onSelect(stop)
+            }}
+          />
+        )}
       </div>
     </div>
   )
