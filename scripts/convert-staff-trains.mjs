@@ -181,7 +181,15 @@ for (const sheetName of SHEETS) {
     const next = allHeads.find((x) => x > H) ?? rows.length
     const operationNo = String(rows[H + 2]?.[1] || "").trim() // 運用番号（KX）※レーン共通
 
-    for (const off of [0, 8, 16, 24]) {
+    // レーン数はブロックによって違う（基本4レーン、運用によってはそれ以上）ため、
+    // 列車番号セルが埋まっている限り8列ごとに読み進める。
+    const lanes = []
+    for (let off = 0; off <= 96; off += 8) {
+      const v = rows[H + 5]?.[off + 1]
+      if (v !== "" && v != null) lanes.push(off)
+    }
+
+    for (const off of lanes) {
       const trainNoRaw = rows[H + 5]?.[off + 1]
       if (trainNoRaw === "" || trainNoRaw == null) continue
       const type = String(rows[H + 6]?.[off + 1] || "").trim()

@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-08-04T12:07:34.685Z",
+ "generatedAt": "2026-08-05T02:26:22.831Z",
  "source": "2026natsusakishima_staff_20260802_zantei.xlsx",
  "stops": [
   {
@@ -761,9 +761,17 @@
    "direction_id": 0
   },
   {
+   "route_id": "BUS_港01",
+   "service_id": "EVERYDAY",
+   "trip_id": "bus_4B9501_31",
+   "trip_headsign": "中原台駅前（市街地循環）行き",
+   "trip_short_name": "バス4",
+   "direction_id": 0
+  },
+  {
    "route_id": "BUS_出入08 → 咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_5B9071_31",
+   "trip_id": "bus_5B9071_32",
    "trip_headsign": "咲島港駅 → 新咲市場行き",
    "trip_short_name": "バス5",
    "direction_id": 0
@@ -771,7 +779,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_5B9171_32",
+   "trip_id": "bus_5B9171_33",
    "trip_headsign": "咲西浜行き",
    "trip_short_name": "バス5",
    "direction_id": 0
@@ -779,7 +787,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_5B9271_33",
+   "trip_id": "bus_5B9271_34",
    "trip_headsign": "新咲市場行き",
    "trip_short_name": "バス5",
    "direction_id": 0
@@ -787,7 +795,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_5B9371_34",
+   "trip_id": "bus_5B9371_35",
    "trip_headsign": "咲西浜行き",
    "trip_short_name": "バス5",
    "direction_id": 0
@@ -795,7 +803,7 @@
   {
    "route_id": "BUS_咲12",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_1B0012_35",
+   "trip_id": "bus_1B0012_36",
    "trip_headsign": "天玉寺駅前行き",
    "trip_short_name": "バス1",
    "direction_id": 0
@@ -803,7 +811,7 @@
   {
    "route_id": "BUS_咲16",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_1B0116_36",
+   "trip_id": "bus_1B0116_37",
    "trip_headsign": "木古川駅東口行き",
    "trip_short_name": "バス1",
    "direction_id": 0
@@ -811,7 +819,7 @@
   {
    "route_id": "BUS_咲16",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_1B0216_37",
+   "trip_id": "bus_1B0216_38",
    "trip_headsign": "天玉寺駅前行き",
    "trip_short_name": "バス1",
    "direction_id": 0
@@ -819,7 +827,7 @@
   {
    "route_id": "BUS_咲12",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_1B0312_38",
+   "trip_id": "bus_1B0312_39",
    "trip_headsign": "砥島行き",
    "trip_short_name": "バス1",
    "direction_id": 0
@@ -827,7 +835,7 @@
   {
    "route_id": "BUS_咲76",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_2B0076_39",
+   "trip_id": "bus_2B0076_40",
    "trip_headsign": "天玉寺駅前行き",
    "trip_short_name": "バス2",
    "direction_id": 0
@@ -835,7 +843,7 @@
   {
    "route_id": "BUS_咲86",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "trip_headsign": "なみなかアリーナ行き",
    "trip_short_name": "バス2",
    "direction_id": 0
@@ -843,7 +851,7 @@
   {
    "route_id": "BUS_咲86",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "trip_headsign": "天玉寺駅前行き",
    "trip_short_name": "バス2",
    "direction_id": 0
@@ -851,7 +859,7 @@
   {
    "route_id": "BUS_咲76",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_2B0376_42",
+   "trip_id": "bus_2B0376_43",
    "trip_headsign": "船上湯本駅前行き",
    "trip_short_name": "バス2",
    "direction_id": 0
@@ -859,7 +867,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "trip_headsign": "咲東崎灯台公園行き",
    "trip_short_name": "バス3",
    "direction_id": 0
@@ -867,7 +875,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_3B0171_44",
+   "trip_id": "bus_3B0171_45",
    "trip_headsign": "咲島港駅行き",
    "trip_short_name": "バス3",
    "direction_id": 0
@@ -875,7 +883,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_3B0271_45",
+   "trip_id": "bus_3B0271_46",
    "trip_headsign": "咲東崎灯台公園行き",
    "trip_short_name": "バス3",
    "direction_id": 0
@@ -883,7 +891,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "trip_headsign": "砥島行き",
    "trip_short_name": "バス3",
    "direction_id": 0
@@ -891,7 +899,7 @@
   {
    "route_id": "BUS_港01",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_4B0101_47",
+   "trip_id": "bus_4B0101_48",
    "trip_headsign": "中原台駅前（市街地循環）行き",
    "trip_short_name": "バス4",
    "direction_id": 0
@@ -899,7 +907,7 @@
   {
    "route_id": "BUS_港01",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_4B0201_48",
+   "trip_id": "bus_4B0201_49",
    "trip_headsign": "中原台駅前（市街地循環）行き",
    "trip_short_name": "バス4",
    "direction_id": 0
@@ -907,7 +915,7 @@
   {
    "route_id": "BUS_港01",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_4B0301_49",
+   "trip_id": "bus_4B0301_50",
    "trip_headsign": "中原台駅前（市街地循環）行き",
    "trip_short_name": "バス4",
    "direction_id": 0
@@ -915,7 +923,15 @@
   {
    "route_id": "BUS_港01",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_4B0401_50",
+   "trip_id": "bus_4B0401_51",
+   "trip_headsign": "中原台駅前（市街地循環）行き",
+   "trip_short_name": "バス4",
+   "direction_id": 0
+  },
+  {
+   "route_id": "BUS_港01",
+   "service_id": "EVERYDAY",
+   "trip_id": "bus_4B0501_52",
    "trip_headsign": "中原台駅前（市街地循環）行き",
    "trip_short_name": "バス4",
    "direction_id": 0
@@ -923,7 +939,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_5B0171_51",
+   "trip_id": "bus_5B0171_53",
    "trip_headsign": "咲西浜行き",
    "trip_short_name": "バス5",
    "direction_id": 0
@@ -931,7 +947,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_5B0271_52",
+   "trip_id": "bus_5B0271_54",
    "trip_headsign": "新咲市場行き",
    "trip_short_name": "バス5",
    "direction_id": 0
@@ -939,7 +955,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_5B0371_53",
+   "trip_id": "bus_5B0371_55",
    "trip_headsign": "咲西浜行き",
    "trip_short_name": "バス5",
    "direction_id": 0
@@ -947,7 +963,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_5B0471_54",
+   "trip_id": "bus_5B0471_56",
    "trip_headsign": "新咲市場行き",
    "trip_short_name": "バス5",
    "direction_id": 0
@@ -955,7 +971,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_1B1071_55",
+   "trip_id": "bus_1B1071_57",
    "trip_headsign": "天玉寺駅前行き",
    "trip_short_name": "バス1",
    "direction_id": 0
@@ -963,7 +979,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "trip_headsign": "咲西浜行き",
    "trip_short_name": "バス1",
    "direction_id": 0
@@ -971,7 +987,7 @@
   {
    "route_id": "BUS_咲25",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_1B1225_57",
+   "trip_id": "bus_1B1225_59",
    "trip_headsign": "中原台駅前行き",
    "trip_short_name": "バス1",
    "direction_id": 0
@@ -979,7 +995,7 @@
   {
    "route_id": "BUS_出入08",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_1B1308_58",
+   "trip_id": "bus_1B1308_60",
    "trip_headsign": "咲島営業所行き",
    "trip_short_name": "バス1",
    "direction_id": 0
@@ -987,7 +1003,7 @@
   {
    "route_id": "BUS_咲55乙",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "trip_headsign": "船上湯本駅前 → 中原台駅前行き",
    "trip_short_name": "バス2",
    "direction_id": 0
@@ -995,7 +1011,7 @@
   {
    "route_id": "BUS_港01",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_2B1101_60",
+   "trip_id": "bus_2B1101_62",
    "trip_headsign": "中原台駅前（市街地循環）行き",
    "trip_short_name": "バス2",
    "direction_id": 0
@@ -1003,7 +1019,7 @@
   {
    "route_id": "BUS_出入05",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_2B1305_61",
+   "trip_id": "bus_2B1305_63",
    "trip_headsign": "咲島営業所行き",
    "trip_short_name": "バス2",
    "direction_id": 0
@@ -1011,7 +1027,7 @@
   {
    "route_id": "BUS_咲76",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_3B1176_62",
+   "trip_id": "bus_3B1176_64",
    "trip_headsign": "船上湯本駅前行き",
    "trip_short_name": "バス3",
    "direction_id": 0
@@ -1019,7 +1035,7 @@
   {
    "route_id": "BUS_咲76",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_3B1276_63",
+   "trip_id": "bus_3B1276_65",
    "trip_headsign": "天玉寺駅前行き",
    "trip_short_name": "バス3",
    "direction_id": 0
@@ -1027,7 +1043,7 @@
   {
    "route_id": "BUS_咲76",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_3B1376_64",
+   "trip_id": "bus_3B1376_66",
    "trip_headsign": "助が丘駅北口行き",
    "trip_short_name": "バス3",
    "direction_id": 0
@@ -1035,15 +1051,23 @@
   {
    "route_id": "BUS_出入08",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_3B1408_65",
+   "trip_id": "bus_3B1408_67",
    "trip_headsign": "咲島港駅行き",
+   "trip_short_name": "バス3",
+   "direction_id": 0
+  },
+  {
+   "route_id": "BUS_急行バス　せせらぎ号",
+   "service_id": "EVERYDAY",
+   "trip_id": "bus_3B1618_68",
+   "trip_headsign": "船上湯本駅前行き",
    "trip_short_name": "バス3",
    "direction_id": 0
   },
   {
    "route_id": "BUS_咲76",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_4B1076_66",
+   "trip_id": "bus_4B1076_69",
    "trip_headsign": "船上湯本駅前行き",
    "trip_short_name": "バス4",
    "direction_id": 0
@@ -1051,7 +1075,7 @@
   {
    "route_id": "BUS_咲12",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_4B1112_67",
+   "trip_id": "bus_4B1112_70",
    "trip_headsign": "砥島行き",
    "trip_short_name": "バス4",
    "direction_id": 0
@@ -1059,7 +1083,7 @@
   {
    "route_id": "BUS_咲25",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "trip_headsign": "中原台駅前行き",
    "trip_short_name": "バス4",
    "direction_id": 0
@@ -1067,7 +1091,7 @@
   {
    "route_id": "BUS_港01",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_4B1301_69",
+   "trip_id": "bus_4B1301_72",
    "trip_headsign": "中原台駅前（市街地循環）行き",
    "trip_short_name": "バス4",
    "direction_id": 0
@@ -1075,7 +1099,7 @@
   {
    "route_id": "BUS_咲71",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "trip_headsign": "砥島行き",
    "trip_short_name": "バス5",
    "direction_id": 0
@@ -1083,7 +1107,7 @@
   {
    "route_id": "BUS_咲25",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_5B1225_71",
+   "trip_id": "bus_5B1225_74",
    "trip_headsign": "咲島港駅行き",
    "trip_short_name": "バス5",
    "direction_id": 0
@@ -1091,7 +1115,7 @@
   {
    "route_id": "BUS_咲55甲",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_5B1355_72",
+   "trip_id": "bus_5B1355_75",
    "trip_headsign": "船上湯本駅前行き",
    "trip_short_name": "バス5",
    "direction_id": 0
@@ -1099,7 +1123,7 @@
   {
    "route_id": "BUS_咲76",
    "service_id": "EVERYDAY",
-   "trip_id": "bus_5B1576_73",
+   "trip_id": "bus_5B1576_76",
    "trip_headsign": "咲島営業所行き",
    "trip_short_name": "バス5",
    "direction_id": 0
@@ -3870,7 +3894,106 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9071_31",
+   "trip_id": "bus_4B9501_31",
+   "arrival_time": "09:41:00",
+   "departure_time": "09:41:00",
+   "stop_id": "(バス)中原台駅前",
+   "stop_sequence": 1,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B9501_31",
+   "arrival_time": "09:41:00",
+   "departure_time": "09:41:00",
+   "stop_id": "(バス)富田駅前",
+   "stop_sequence": 2,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B9501_31",
+   "arrival_time": "09:42:00",
+   "departure_time": "09:42:00",
+   "stop_id": "(バス)元港駅跡",
+   "stop_sequence": 3,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B9501_31",
+   "arrival_time": "09:43:00",
+   "departure_time": "09:43:00",
+   "stop_id": "(バス)咲島港駅",
+   "stop_sequence": 4,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B9501_31",
+   "arrival_time": "09:44:00",
+   "departure_time": "09:44:00",
+   "stop_id": "(バス)なみなかアリーナ",
+   "stop_sequence": 5,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B9501_31",
+   "arrival_time": "09:44:00",
+   "departure_time": "09:44:00",
+   "stop_id": "(バス)咲島警察署",
+   "stop_sequence": 6,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B9501_31",
+   "arrival_time": "09:45:00",
+   "departure_time": "09:45:00",
+   "stop_id": "(バス)八つ橋駅前",
+   "stop_sequence": 7,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B9501_31",
+   "arrival_time": "09:45:00",
+   "departure_time": "09:45:00",
+   "stop_id": "(バス)咲島BT",
+   "stop_sequence": 8,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B9501_31",
+   "arrival_time": "09:46:00",
+   "departure_time": "09:46:00",
+   "stop_id": "(バス)葛敷駅入口",
+   "stop_sequence": 9,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B9501_31",
+   "arrival_time": "09:47:00",
+   "departure_time": "09:47:00",
+   "stop_id": "(バス)大学寮横",
+   "stop_sequence": 10,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B9501_31",
+   "arrival_time": "09:49:00",
+   "departure_time": "09:49:00",
+   "stop_id": "(バス)中原台駅前",
+   "stop_sequence": 11,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_5B9071_32",
    "arrival_time": "09:00:00",
    "departure_time": "09:00:00",
    "stop_id": "(バス)咲島営業所",
@@ -3879,7 +4002,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9071_31",
+   "trip_id": "bus_5B9071_32",
    "arrival_time": "09:01:00",
    "departure_time": "09:01:00",
    "stop_id": "(バス)八つ橋駅前",
@@ -3888,7 +4011,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9071_31",
+   "trip_id": "bus_5B9071_32",
    "arrival_time": "09:02:00",
    "departure_time": "09:02:00",
    "stop_id": "(バス)咲島警察署",
@@ -3897,7 +4020,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9071_31",
+   "trip_id": "bus_5B9071_32",
    "arrival_time": "09:02:00",
    "departure_time": "09:02:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -3906,7 +4029,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9071_31",
+   "trip_id": "bus_5B9071_32",
    "arrival_time": "09:05:00",
    "departure_time": "09:05:00",
    "stop_id": "(バス)咲島港駅",
@@ -3915,7 +4038,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9071_31",
+   "trip_id": "bus_5B9071_32",
    "arrival_time": "09:06:00",
    "departure_time": "09:06:00",
    "stop_id": "(バス)元港駅跡",
@@ -3924,7 +4047,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9071_31",
+   "trip_id": "bus_5B9071_32",
    "arrival_time": "09:07:00",
    "departure_time": "09:07:00",
    "stop_id": "(バス)豆島渡船入口",
@@ -3933,7 +4056,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9071_31",
+   "trip_id": "bus_5B9071_32",
    "arrival_time": "09:07:00",
    "departure_time": "09:07:00",
    "stop_id": "(バス)大岩駅入口",
@@ -3942,7 +4065,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9071_31",
+   "trip_id": "bus_5B9071_32",
    "arrival_time": "09:10:00",
    "departure_time": "09:10:00",
    "stop_id": "(バス)新咲市場",
@@ -3951,7 +4074,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9171_32",
+   "trip_id": "bus_5B9171_33",
    "arrival_time": "09:12:00",
    "departure_time": "09:12:00",
    "stop_id": "(バス)新咲市場",
@@ -3960,7 +4083,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9171_32",
+   "trip_id": "bus_5B9171_33",
    "arrival_time": "09:13:00",
    "departure_time": "09:13:00",
    "stop_id": "(バス)大岩駅入口",
@@ -3969,7 +4092,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9171_32",
+   "trip_id": "bus_5B9171_33",
    "arrival_time": "09:14:00",
    "departure_time": "09:14:00",
    "stop_id": "(バス)豆島渡船前",
@@ -3978,7 +4101,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9171_32",
+   "trip_id": "bus_5B9171_33",
    "arrival_time": "09:14:00",
    "departure_time": "09:14:00",
    "stop_id": "(バス)元港駅跡",
@@ -3987,7 +4110,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9171_32",
+   "trip_id": "bus_5B9171_33",
    "arrival_time": "09:16:00",
    "departure_time": "09:16:00",
    "stop_id": "(バス)咲島港駅",
@@ -3996,7 +4119,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9171_32",
+   "trip_id": "bus_5B9171_33",
    "arrival_time": "09:16:00",
    "departure_time": "09:16:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -4005,7 +4128,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9171_32",
+   "trip_id": "bus_5B9171_33",
    "arrival_time": "09:17:00",
    "departure_time": "09:17:00",
    "stop_id": "(バス)助浜交差点",
@@ -4014,7 +4137,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9171_32",
+   "trip_id": "bus_5B9171_33",
    "arrival_time": "09:18:00",
    "departure_time": "09:18:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -4023,7 +4146,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9171_32",
+   "trip_id": "bus_5B9171_33",
    "arrival_time": "09:22:00",
    "departure_time": "09:22:00",
    "stop_id": "(バス)咲西浜",
@@ -4032,7 +4155,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9271_33",
+   "trip_id": "bus_5B9271_34",
    "arrival_time": "09:28:00",
    "departure_time": "09:28:00",
    "stop_id": "(バス)咲西浜",
@@ -4041,7 +4164,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9271_33",
+   "trip_id": "bus_5B9271_34",
    "arrival_time": "09:28:00",
    "departure_time": "09:28:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -4050,7 +4173,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9271_33",
+   "trip_id": "bus_5B9271_34",
    "arrival_time": "09:30:00",
    "departure_time": "09:30:00",
    "stop_id": "(バス)助浜交差点",
@@ -4059,7 +4182,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9271_33",
+   "trip_id": "bus_5B9271_34",
    "arrival_time": "09:30:00",
    "departure_time": "09:30:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -4068,7 +4191,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9271_33",
+   "trip_id": "bus_5B9271_34",
    "arrival_time": "09:32:00",
    "departure_time": "09:32:00",
    "stop_id": "(バス)咲島港駅",
@@ -4077,7 +4200,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9271_33",
+   "trip_id": "bus_5B9271_34",
    "arrival_time": "09:33:00",
    "departure_time": "09:33:00",
    "stop_id": "(バス)元港駅跡",
@@ -4086,7 +4209,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9271_33",
+   "trip_id": "bus_5B9271_34",
    "arrival_time": "09:34:00",
    "departure_time": "09:34:00",
    "stop_id": "(バス)豆島渡船入口",
@@ -4095,7 +4218,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9271_33",
+   "trip_id": "bus_5B9271_34",
    "arrival_time": "09:34:00",
    "departure_time": "09:34:00",
    "stop_id": "(バス)大岩駅入口",
@@ -4104,7 +4227,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9271_33",
+   "trip_id": "bus_5B9271_34",
    "arrival_time": "09:38:00",
    "departure_time": "09:38:00",
    "stop_id": "(バス)新咲市場",
@@ -4113,7 +4236,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9371_34",
+   "trip_id": "bus_5B9371_35",
    "arrival_time": "09:41:00",
    "departure_time": "09:41:00",
    "stop_id": "(バス)新咲市場",
@@ -4122,7 +4245,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9371_34",
+   "trip_id": "bus_5B9371_35",
    "arrival_time": "09:42:00",
    "departure_time": "09:42:00",
    "stop_id": "(バス)大岩駅入口",
@@ -4131,7 +4254,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9371_34",
+   "trip_id": "bus_5B9371_35",
    "arrival_time": "09:43:00",
    "departure_time": "09:43:00",
    "stop_id": "(バス)豆島渡船前",
@@ -4140,7 +4263,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9371_34",
+   "trip_id": "bus_5B9371_35",
    "arrival_time": "09:43:00",
    "departure_time": "09:43:00",
    "stop_id": "(バス)元港駅跡",
@@ -4149,7 +4272,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9371_34",
+   "trip_id": "bus_5B9371_35",
    "arrival_time": "09:45:00",
    "departure_time": "09:45:00",
    "stop_id": "(バス)咲島港駅",
@@ -4158,7 +4281,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9371_34",
+   "trip_id": "bus_5B9371_35",
    "arrival_time": "09:45:00",
    "departure_time": "09:45:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -4167,7 +4290,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9371_34",
+   "trip_id": "bus_5B9371_35",
    "arrival_time": "09:46:00",
    "departure_time": "09:46:00",
    "stop_id": "(バス)助浜交差点",
@@ -4176,7 +4299,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9371_34",
+   "trip_id": "bus_5B9371_35",
    "arrival_time": "09:47:00",
    "departure_time": "09:47:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -4185,7 +4308,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B9371_34",
+   "trip_id": "bus_5B9371_35",
    "arrival_time": "09:51:00",
    "departure_time": "09:51:00",
    "stop_id": "(バス)咲西浜",
@@ -4194,7 +4317,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0012_35",
+   "trip_id": "bus_1B0012_36",
    "arrival_time": "10:00:00",
    "departure_time": "10:00:00",
    "stop_id": "(バス)砥島",
@@ -4203,7 +4326,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0012_35",
+   "trip_id": "bus_1B0012_36",
    "arrival_time": "10:01:00",
    "departure_time": "10:01:00",
    "stop_id": "(バス)中砥",
@@ -4212,7 +4335,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0012_35",
+   "trip_id": "bus_1B0012_36",
    "arrival_time": "10:03:00",
    "departure_time": "10:03:00",
    "stop_id": "(バス)島北出坂駅東口",
@@ -4221,7 +4344,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0012_35",
+   "trip_id": "bus_1B0012_36",
    "arrival_time": "10:03:00",
    "departure_time": "10:03:00",
    "stop_id": "(バス)出坂団地北",
@@ -4230,7 +4353,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0012_35",
+   "trip_id": "bus_1B0012_36",
    "arrival_time": "10:04:00",
    "departure_time": "10:04:00",
    "stop_id": "(バス)茶の畑",
@@ -4239,7 +4362,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0012_35",
+   "trip_id": "bus_1B0012_36",
    "arrival_time": "10:06:00",
    "departure_time": "10:06:00",
    "stop_id": "(バス)入九葉神社前",
@@ -4248,7 +4371,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0012_35",
+   "trip_id": "bus_1B0012_36",
    "arrival_time": "10:07:00",
    "departure_time": "10:07:00",
    "stop_id": "(バス)笠丘駅前",
@@ -4257,7 +4380,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0012_35",
+   "trip_id": "bus_1B0012_36",
    "arrival_time": "10:08:00",
    "departure_time": "10:08:00",
    "stop_id": "(バス)長池貯水池",
@@ -4266,7 +4389,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0012_35",
+   "trip_id": "bus_1B0012_36",
    "arrival_time": "10:09:00",
    "departure_time": "10:09:00",
    "stop_id": "(バス)寺見",
@@ -4275,7 +4398,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0012_35",
+   "trip_id": "bus_1B0012_36",
    "arrival_time": "10:10:00",
    "departure_time": "10:10:00",
    "stop_id": "(バス)天玉寺",
@@ -4284,7 +4407,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0012_35",
+   "trip_id": "bus_1B0012_36",
    "arrival_time": "10:14:00",
    "departure_time": "10:14:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -4293,7 +4416,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0116_36",
+   "trip_id": "bus_1B0116_37",
    "arrival_time": "10:16:00",
    "departure_time": "10:16:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -4302,7 +4425,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0116_36",
+   "trip_id": "bus_1B0116_37",
    "arrival_time": "10:17:00",
    "departure_time": "10:17:00",
    "stop_id": "(バス)天玉寺",
@@ -4311,7 +4434,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0116_36",
+   "trip_id": "bus_1B0116_37",
    "arrival_time": "10:17:00",
    "departure_time": "10:17:00",
    "stop_id": "(バス)寺見",
@@ -4320,7 +4443,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0116_36",
+   "trip_id": "bus_1B0116_37",
    "arrival_time": "10:19:00",
    "departure_time": "10:19:00",
    "stop_id": "(バス)長池貯水池",
@@ -4329,7 +4452,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0116_36",
+   "trip_id": "bus_1B0116_37",
    "arrival_time": "10:20:00",
    "departure_time": "10:20:00",
    "stop_id": "(バス)笠丘駅前",
@@ -4338,7 +4461,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0116_36",
+   "trip_id": "bus_1B0116_37",
    "arrival_time": "10:21:00",
    "departure_time": "10:21:00",
    "stop_id": "(バス)入九葉神社前",
@@ -4347,7 +4470,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0116_36",
+   "trip_id": "bus_1B0116_37",
    "arrival_time": "10:22:00",
    "departure_time": "10:22:00",
    "stop_id": "(バス)上瀬橋",
@@ -4356,7 +4479,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0116_36",
+   "trip_id": "bus_1B0116_37",
    "arrival_time": "10:22:00",
    "departure_time": "10:22:00",
    "stop_id": "(バス)ノーエンズ農園",
@@ -4365,7 +4488,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0116_36",
+   "trip_id": "bus_1B0116_37",
    "arrival_time": "10:23:00",
    "departure_time": "10:23:00",
    "stop_id": "(バス)咲島農協前",
@@ -4374,7 +4497,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0116_36",
+   "trip_id": "bus_1B0116_37",
    "arrival_time": "10:26:00",
    "departure_time": "10:26:00",
    "stop_id": "(バス)木古川駅東口",
@@ -4383,7 +4506,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0216_37",
+   "trip_id": "bus_1B0216_38",
    "arrival_time": "10:26:00",
    "departure_time": "10:26:00",
    "stop_id": "(バス)木古川駅東口",
@@ -4392,7 +4515,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0216_37",
+   "trip_id": "bus_1B0216_38",
    "arrival_time": "10:26:00",
    "departure_time": "10:26:00",
    "stop_id": "(バス)咲島農協前",
@@ -4401,7 +4524,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0216_37",
+   "trip_id": "bus_1B0216_38",
    "arrival_time": "10:27:00",
    "departure_time": "10:27:00",
    "stop_id": "(バス)ノーエンズ農園",
@@ -4410,7 +4533,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0216_37",
+   "trip_id": "bus_1B0216_38",
    "arrival_time": "10:27:00",
    "departure_time": "10:27:00",
    "stop_id": "(バス)上瀬橋",
@@ -4419,7 +4542,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0216_37",
+   "trip_id": "bus_1B0216_38",
    "arrival_time": "10:28:00",
    "departure_time": "10:28:00",
    "stop_id": "(バス)入九葉神社前",
@@ -4428,7 +4551,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0216_37",
+   "trip_id": "bus_1B0216_38",
    "arrival_time": "10:30:00",
    "departure_time": "10:30:00",
    "stop_id": "(バス)笠丘駅前",
@@ -4437,7 +4560,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0216_37",
+   "trip_id": "bus_1B0216_38",
    "arrival_time": "10:31:00",
    "departure_time": "10:31:00",
    "stop_id": "(バス)長池貯水池",
@@ -4446,7 +4569,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0216_37",
+   "trip_id": "bus_1B0216_38",
    "arrival_time": "10:32:00",
    "departure_time": "10:32:00",
    "stop_id": "(バス)寺見",
@@ -4455,7 +4578,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0216_37",
+   "trip_id": "bus_1B0216_38",
    "arrival_time": "10:33:00",
    "departure_time": "10:33:00",
    "stop_id": "(バス)天玉寺",
@@ -4464,7 +4587,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0216_37",
+   "trip_id": "bus_1B0216_38",
    "arrival_time": "10:36:00",
    "departure_time": "10:36:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -4473,7 +4596,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0312_38",
+   "trip_id": "bus_1B0312_39",
    "arrival_time": "10:37:00",
    "departure_time": "10:37:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -4482,7 +4605,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0312_38",
+   "trip_id": "bus_1B0312_39",
    "arrival_time": "10:38:00",
    "departure_time": "10:38:00",
    "stop_id": "(バス)天玉寺",
@@ -4491,7 +4614,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0312_38",
+   "trip_id": "bus_1B0312_39",
    "arrival_time": "10:38:00",
    "departure_time": "10:38:00",
    "stop_id": "(バス)寺見",
@@ -4500,7 +4623,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0312_38",
+   "trip_id": "bus_1B0312_39",
    "arrival_time": "10:40:00",
    "departure_time": "10:40:00",
    "stop_id": "(バス)長池貯水池",
@@ -4509,7 +4632,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0312_38",
+   "trip_id": "bus_1B0312_39",
    "arrival_time": "10:41:00",
    "departure_time": "10:41:00",
    "stop_id": "(バス)笠丘駅前",
@@ -4518,7 +4641,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0312_38",
+   "trip_id": "bus_1B0312_39",
    "arrival_time": "10:42:00",
    "departure_time": "10:42:00",
    "stop_id": "(バス)入九葉神社前",
@@ -4527,7 +4650,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0312_38",
+   "trip_id": "bus_1B0312_39",
    "arrival_time": "10:43:00",
    "departure_time": "10:43:00",
    "stop_id": "(バス)茶の畑",
@@ -4536,7 +4659,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0312_38",
+   "trip_id": "bus_1B0312_39",
    "arrival_time": "10:44:00",
    "departure_time": "10:44:00",
    "stop_id": "(バス)出坂団地北",
@@ -4545,7 +4668,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0312_38",
+   "trip_id": "bus_1B0312_39",
    "arrival_time": "10:45:00",
    "departure_time": "10:45:00",
    "stop_id": "(バス)島北出坂駅東口",
@@ -4554,7 +4677,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0312_38",
+   "trip_id": "bus_1B0312_39",
    "arrival_time": "10:46:00",
    "departure_time": "10:46:00",
    "stop_id": "(バス)中砥",
@@ -4563,7 +4686,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B0312_38",
+   "trip_id": "bus_1B0312_39",
    "arrival_time": "10:51:00",
    "departure_time": "10:51:00",
    "stop_id": "(バス)砥島",
@@ -4572,7 +4695,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0076_39",
+   "trip_id": "bus_2B0076_40",
    "arrival_time": "10:00:00",
    "departure_time": "10:00:00",
    "stop_id": "(バス)船上湯本駅前",
@@ -4581,7 +4704,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0076_39",
+   "trip_id": "bus_2B0076_40",
    "arrival_time": "10:01:00",
    "departure_time": "10:01:00",
    "stop_id": "(バス)木置",
@@ -4590,7 +4713,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0076_39",
+   "trip_id": "bus_2B0076_40",
    "arrival_time": "10:02:00",
    "departure_time": "10:02:00",
    "stop_id": "(バス)出浦",
@@ -4599,7 +4722,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0076_39",
+   "trip_id": "bus_2B0076_40",
    "arrival_time": "10:05:00",
    "departure_time": "10:05:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -4608,7 +4731,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:07:00",
    "departure_time": "10:07:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -4617,7 +4740,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:07:00",
    "departure_time": "10:07:00",
    "stop_id": "(バス)出浦",
@@ -4626,7 +4749,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:08:00",
    "departure_time": "10:08:00",
    "stop_id": "(バス)木置",
@@ -4635,7 +4758,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:09:00",
    "departure_time": "10:09:00",
    "stop_id": "(バス)船上湯本駅前",
@@ -4644,7 +4767,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:11:00",
    "departure_time": "10:11:00",
    "stop_id": "(バス)笠丘駅入口",
@@ -4653,7 +4776,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:12:00",
    "departure_time": "10:12:00",
    "stop_id": "(バス)入九葉神社前",
@@ -4662,7 +4785,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:12:00",
    "departure_time": "10:12:00",
    "stop_id": "(バス)上瀬橋",
@@ -4671,7 +4794,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:13:00",
    "departure_time": "10:13:00",
    "stop_id": "(バス)ノーエンズ農園",
@@ -4680,7 +4803,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:14:00",
    "departure_time": "10:14:00",
    "stop_id": "(バス)咲島インター",
@@ -4689,7 +4812,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:14:00",
    "departure_time": "10:14:00",
    "stop_id": "(バス)大学寮横",
@@ -4698,7 +4821,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:16:00",
    "departure_time": "10:18:00",
    "stop_id": "(バス)中原台駅前",
@@ -4707,7 +4830,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:19:00",
    "departure_time": "10:19:00",
    "stop_id": "(バス)富田駅前",
@@ -4716,7 +4839,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:19:00",
    "departure_time": "10:19:00",
    "stop_id": "(バス)元港駅跡",
@@ -4725,7 +4848,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:20:00",
    "departure_time": "10:20:00",
    "stop_id": "(バス)咲島港駅",
@@ -4734,7 +4857,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0186_40",
+   "trip_id": "bus_2B0186_41",
    "arrival_time": "10:26:00",
    "departure_time": "10:26:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -4743,7 +4866,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:26:00",
    "departure_time": "10:26:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -4752,7 +4875,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:28:00",
    "departure_time": "10:28:00",
    "stop_id": "(バス)咲島港駅",
@@ -4761,7 +4884,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:28:00",
    "departure_time": "10:28:00",
    "stop_id": "(バス)元港駅跡",
@@ -4770,7 +4893,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:29:00",
    "departure_time": "10:29:00",
    "stop_id": "(バス)富田駅前",
@@ -4779,7 +4902,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:30:00",
    "departure_time": "10:30:00",
    "stop_id": "(バス)中原台駅前",
@@ -4788,7 +4911,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:30:00",
    "departure_time": "10:30:00",
    "stop_id": "(バス)大学寮横",
@@ -4797,7 +4920,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:30:00",
    "departure_time": "10:30:00",
    "stop_id": "(バス)咲島インター",
@@ -4806,7 +4929,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:31:00",
    "departure_time": "10:31:00",
    "stop_id": "(バス)ノーエンズ農園",
@@ -4815,7 +4938,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:32:00",
    "departure_time": "10:32:00",
    "stop_id": "(バス)上瀬橋",
@@ -4824,7 +4947,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:33:00",
    "departure_time": "10:33:00",
    "stop_id": "(バス)入九葉神社前",
@@ -4833,7 +4956,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:34:00",
    "departure_time": "10:34:00",
    "stop_id": "(バス)笠丘駅入口",
@@ -4842,7 +4965,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:36:00",
    "departure_time": "10:36:00",
    "stop_id": "(バス)船上湯本駅前",
@@ -4851,7 +4974,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:37:00",
    "departure_time": "10:37:00",
    "stop_id": "(バス)木置",
@@ -4860,7 +4983,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:38:00",
    "departure_time": "10:38:00",
    "stop_id": "(バス)出浦",
@@ -4869,7 +4992,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0286_41",
+   "trip_id": "bus_2B0286_42",
    "arrival_time": "10:43:00",
    "departure_time": "10:43:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -4878,7 +5001,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0376_42",
+   "trip_id": "bus_2B0376_43",
    "arrival_time": "10:46:00",
    "departure_time": "10:46:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -4887,7 +5010,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0376_42",
+   "trip_id": "bus_2B0376_43",
    "arrival_time": "10:46:00",
    "departure_time": "10:46:00",
    "stop_id": "(バス)出浦",
@@ -4896,7 +5019,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0376_42",
+   "trip_id": "bus_2B0376_43",
    "arrival_time": "10:47:00",
    "departure_time": "10:47:00",
    "stop_id": "(バス)木置",
@@ -4905,7 +5028,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B0376_42",
+   "trip_id": "bus_2B0376_43",
    "arrival_time": "10:50:00",
    "departure_time": "10:50:00",
    "stop_id": "(バス)船上湯本駅前",
@@ -4914,7 +5037,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:00:00",
    "departure_time": "10:00:00",
    "stop_id": "(バス)砥島",
@@ -4923,7 +5046,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:01:00",
    "departure_time": "10:01:00",
    "stop_id": "(バス)中砥",
@@ -4932,7 +5055,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:01:00",
    "departure_time": "10:01:00",
    "stop_id": "(バス)島北出坂駅西口",
@@ -4941,7 +5064,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:02:00",
    "departure_time": "10:02:00",
    "stop_id": "(バス)下砥",
@@ -4950,7 +5073,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:03:00",
    "departure_time": "10:03:00",
    "stop_id": "(バス)咲西浜",
@@ -4959,7 +5082,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:03:00",
    "departure_time": "10:03:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -4968,7 +5091,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:05:00",
    "departure_time": "10:05:00",
    "stop_id": "(バス)助浜交差点",
@@ -4977,7 +5100,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:05:00",
    "departure_time": "10:05:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -4986,7 +5109,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:07:00",
    "departure_time": "10:07:00",
    "stop_id": "(バス)咲島港駅",
@@ -4995,7 +5118,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:08:00",
    "departure_time": "10:08:00",
    "stop_id": "(バス)元港駅跡",
@@ -5004,7 +5127,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:09:00",
    "departure_time": "10:09:00",
    "stop_id": "(バス)豆島渡船入口",
@@ -5013,7 +5136,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:09:00",
    "departure_time": "10:09:00",
    "stop_id": "(バス)大岩駅入口",
@@ -5022,7 +5145,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:10:00",
    "departure_time": "10:10:00",
    "stop_id": "(バス)新咲市場",
@@ -5031,7 +5154,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0072_43",
+   "trip_id": "bus_3B0072_44",
    "arrival_time": "10:15:00",
    "departure_time": "10:15:00",
    "stop_id": "(バス)咲東崎灯台公園",
@@ -5040,7 +5163,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0171_44",
+   "trip_id": "bus_3B0171_45",
    "arrival_time": "10:17:00",
    "departure_time": "10:17:00",
    "stop_id": "(バス)咲東崎灯台公園",
@@ -5049,7 +5172,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0171_44",
+   "trip_id": "bus_3B0171_45",
    "arrival_time": "10:18:00",
    "departure_time": "10:18:00",
    "stop_id": "(バス)新咲市場",
@@ -5058,7 +5181,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0171_44",
+   "trip_id": "bus_3B0171_45",
    "arrival_time": "10:19:00",
    "departure_time": "10:19:00",
    "stop_id": "(バス)大岩駅入口",
@@ -5067,7 +5190,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0171_44",
+   "trip_id": "bus_3B0171_45",
    "arrival_time": "10:20:00",
    "departure_time": "10:20:00",
    "stop_id": "(バス)豆島渡船前",
@@ -5076,7 +5199,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0171_44",
+   "trip_id": "bus_3B0171_45",
    "arrival_time": "10:20:00",
    "departure_time": "10:20:00",
    "stop_id": "(バス)元港駅跡",
@@ -5085,7 +5208,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0171_44",
+   "trip_id": "bus_3B0171_45",
    "arrival_time": "10:24:00",
    "departure_time": "10:24:00",
    "stop_id": "(バス)咲島港駅",
@@ -5094,7 +5217,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0271_45",
+   "trip_id": "bus_3B0271_46",
    "arrival_time": "10:27:00",
    "departure_time": "10:27:00",
    "stop_id": "(バス)咲島港駅",
@@ -5103,7 +5226,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0271_45",
+   "trip_id": "bus_3B0271_46",
    "arrival_time": "10:28:00",
    "departure_time": "10:28:00",
    "stop_id": "(バス)元港駅跡",
@@ -5112,7 +5235,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0271_45",
+   "trip_id": "bus_3B0271_46",
    "arrival_time": "10:29:00",
    "departure_time": "10:29:00",
    "stop_id": "(バス)豆島渡船入口",
@@ -5121,7 +5244,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0271_45",
+   "trip_id": "bus_3B0271_46",
    "arrival_time": "10:29:00",
    "departure_time": "10:29:00",
    "stop_id": "(バス)大岩駅入口",
@@ -5130,7 +5253,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0271_45",
+   "trip_id": "bus_3B0271_46",
    "arrival_time": "10:30:00",
    "departure_time": "10:30:00",
    "stop_id": "(バス)新咲市場",
@@ -5139,7 +5262,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0271_45",
+   "trip_id": "bus_3B0271_46",
    "arrival_time": "10:34:00",
    "departure_time": "10:34:00",
    "stop_id": "(バス)咲東崎灯台公園",
@@ -5148,7 +5271,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:36:00",
    "departure_time": "10:36:00",
    "stop_id": "(バス)咲東崎灯台公園",
@@ -5157,7 +5280,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:37:00",
    "departure_time": "10:37:00",
    "stop_id": "(バス)新咲市場",
@@ -5166,7 +5289,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:38:00",
    "departure_time": "10:38:00",
    "stop_id": "(バス)大岩駅入口",
@@ -5175,7 +5298,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:39:00",
    "departure_time": "10:39:00",
    "stop_id": "(バス)豆島渡船前",
@@ -5184,7 +5307,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:39:00",
    "departure_time": "10:39:00",
    "stop_id": "(バス)元港駅跡",
@@ -5193,7 +5316,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:41:00",
    "departure_time": "10:41:00",
    "stop_id": "(バス)咲島港駅",
@@ -5202,7 +5325,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:41:00",
    "departure_time": "10:41:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -5211,7 +5334,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:42:00",
    "departure_time": "10:42:00",
    "stop_id": "(バス)助浜交差点",
@@ -5220,7 +5343,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:43:00",
    "departure_time": "10:43:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -5229,7 +5352,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:45:00",
    "departure_time": "10:45:00",
    "stop_id": "(バス)咲西浜",
@@ -5238,7 +5361,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:46:00",
    "departure_time": "10:46:00",
    "stop_id": "(バス)下砥",
@@ -5247,7 +5370,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:47:00",
    "departure_time": "10:47:00",
    "stop_id": "(バス)島北出坂駅西口",
@@ -5256,7 +5379,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:47:00",
    "departure_time": "10:47:00",
    "stop_id": "(バス)中砥",
@@ -5265,7 +5388,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B0372_46",
+   "trip_id": "bus_3B0372_47",
    "arrival_time": "10:52:00",
    "departure_time": "10:52:00",
    "stop_id": "(バス)砥島",
@@ -5274,7 +5397,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0101_47",
+   "trip_id": "bus_4B0101_48",
    "arrival_time": "10:01:00",
    "departure_time": "10:01:00",
    "stop_id": "(バス)中原台駅前",
@@ -5283,7 +5406,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0101_47",
+   "trip_id": "bus_4B0101_48",
    "arrival_time": "10:01:00",
    "departure_time": "10:01:00",
    "stop_id": "(バス)富田駅前",
@@ -5292,7 +5415,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0101_47",
+   "trip_id": "bus_4B0101_48",
    "arrival_time": "10:02:00",
    "departure_time": "10:02:00",
    "stop_id": "(バス)元港駅跡",
@@ -5301,7 +5424,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0101_47",
+   "trip_id": "bus_4B0101_48",
    "arrival_time": "10:03:00",
    "departure_time": "10:03:00",
    "stop_id": "(バス)咲島港駅",
@@ -5310,7 +5433,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0101_47",
+   "trip_id": "bus_4B0101_48",
    "arrival_time": "10:04:00",
    "departure_time": "10:04:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -5319,7 +5442,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0101_47",
+   "trip_id": "bus_4B0101_48",
    "arrival_time": "10:04:00",
    "departure_time": "10:04:00",
    "stop_id": "(バス)咲島警察署",
@@ -5328,7 +5451,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0101_47",
+   "trip_id": "bus_4B0101_48",
    "arrival_time": "10:05:00",
    "departure_time": "10:05:00",
    "stop_id": "(バス)八つ橋駅前",
@@ -5337,7 +5460,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0101_47",
+   "trip_id": "bus_4B0101_48",
    "arrival_time": "10:05:00",
    "departure_time": "10:05:00",
    "stop_id": "(バス)咲島BT",
@@ -5346,7 +5469,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0101_47",
+   "trip_id": "bus_4B0101_48",
    "arrival_time": "10:06:00",
    "departure_time": "10:06:00",
    "stop_id": "(バス)葛敷駅入口",
@@ -5355,7 +5478,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0101_47",
+   "trip_id": "bus_4B0101_48",
    "arrival_time": "10:07:00",
    "departure_time": "10:07:00",
    "stop_id": "(バス)大学寮横",
@@ -5364,7 +5487,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0101_47",
+   "trip_id": "bus_4B0101_48",
    "arrival_time": "10:09:00",
    "departure_time": "10:09:00",
    "stop_id": "(バス)中原台駅前",
@@ -5373,7 +5496,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0201_48",
+   "trip_id": "bus_4B0201_49",
    "arrival_time": "10:11:00",
    "departure_time": "10:11:00",
    "stop_id": "(バス)中原台駅前",
@@ -5382,7 +5505,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0201_48",
+   "trip_id": "bus_4B0201_49",
    "arrival_time": "10:11:00",
    "departure_time": "10:11:00",
    "stop_id": "(バス)富田駅前",
@@ -5391,7 +5514,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0201_48",
+   "trip_id": "bus_4B0201_49",
    "arrival_time": "10:12:00",
    "departure_time": "10:12:00",
    "stop_id": "(バス)元港駅跡",
@@ -5400,7 +5523,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0201_48",
+   "trip_id": "bus_4B0201_49",
    "arrival_time": "10:13:00",
    "departure_time": "10:13:00",
    "stop_id": "(バス)咲島港駅",
@@ -5409,7 +5532,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0201_48",
+   "trip_id": "bus_4B0201_49",
    "arrival_time": "10:14:00",
    "departure_time": "10:14:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -5418,7 +5541,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0201_48",
+   "trip_id": "bus_4B0201_49",
    "arrival_time": "10:14:00",
    "departure_time": "10:14:00",
    "stop_id": "(バス)咲島警察署",
@@ -5427,7 +5550,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0201_48",
+   "trip_id": "bus_4B0201_49",
    "arrival_time": "10:15:00",
    "departure_time": "10:15:00",
    "stop_id": "(バス)八つ橋駅前",
@@ -5436,7 +5559,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0201_48",
+   "trip_id": "bus_4B0201_49",
    "arrival_time": "10:15:00",
    "departure_time": "10:15:00",
    "stop_id": "(バス)咲島BT",
@@ -5445,7 +5568,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0201_48",
+   "trip_id": "bus_4B0201_49",
    "arrival_time": "10:16:00",
    "departure_time": "10:16:00",
    "stop_id": "(バス)葛敷駅入口",
@@ -5454,7 +5577,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0201_48",
+   "trip_id": "bus_4B0201_49",
    "arrival_time": "10:17:00",
    "departure_time": "10:17:00",
    "stop_id": "(バス)大学寮横",
@@ -5463,7 +5586,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0201_48",
+   "trip_id": "bus_4B0201_49",
    "arrival_time": "10:19:00",
    "departure_time": "10:19:00",
    "stop_id": "(バス)中原台駅前",
@@ -5472,7 +5595,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0301_49",
+   "trip_id": "bus_4B0301_50",
    "arrival_time": "10:21:00",
    "departure_time": "10:21:00",
    "stop_id": "(バス)中原台駅前",
@@ -5481,7 +5604,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0301_49",
+   "trip_id": "bus_4B0301_50",
    "arrival_time": "10:21:00",
    "departure_time": "10:21:00",
    "stop_id": "(バス)富田駅前",
@@ -5490,7 +5613,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0301_49",
+   "trip_id": "bus_4B0301_50",
    "arrival_time": "10:22:00",
    "departure_time": "10:22:00",
    "stop_id": "(バス)元港駅跡",
@@ -5499,7 +5622,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0301_49",
+   "trip_id": "bus_4B0301_50",
    "arrival_time": "10:23:00",
    "departure_time": "10:23:00",
    "stop_id": "(バス)咲島港駅",
@@ -5508,7 +5631,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0301_49",
+   "trip_id": "bus_4B0301_50",
    "arrival_time": "10:24:00",
    "departure_time": "10:24:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -5517,7 +5640,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0301_49",
+   "trip_id": "bus_4B0301_50",
    "arrival_time": "10:24:00",
    "departure_time": "10:24:00",
    "stop_id": "(バス)咲島警察署",
@@ -5526,7 +5649,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0301_49",
+   "trip_id": "bus_4B0301_50",
    "arrival_time": "10:25:00",
    "departure_time": "10:25:00",
    "stop_id": "(バス)八つ橋駅前",
@@ -5535,7 +5658,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0301_49",
+   "trip_id": "bus_4B0301_50",
    "arrival_time": "10:25:00",
    "departure_time": "10:25:00",
    "stop_id": "(バス)咲島BT",
@@ -5544,7 +5667,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0301_49",
+   "trip_id": "bus_4B0301_50",
    "arrival_time": "10:26:00",
    "departure_time": "10:26:00",
    "stop_id": "(バス)葛敷駅入口",
@@ -5553,7 +5676,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0301_49",
+   "trip_id": "bus_4B0301_50",
    "arrival_time": "10:27:00",
    "departure_time": "10:27:00",
    "stop_id": "(バス)大学寮横",
@@ -5562,7 +5685,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0301_49",
+   "trip_id": "bus_4B0301_50",
    "arrival_time": "10:29:00",
    "departure_time": "10:29:00",
    "stop_id": "(バス)中原台駅前",
@@ -5571,7 +5694,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0401_50",
+   "trip_id": "bus_4B0401_51",
    "arrival_time": "10:31:00",
    "departure_time": "10:31:00",
    "stop_id": "(バス)中原台駅前",
@@ -5580,7 +5703,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0401_50",
+   "trip_id": "bus_4B0401_51",
    "arrival_time": "10:31:00",
    "departure_time": "10:31:00",
    "stop_id": "(バス)富田駅前",
@@ -5589,7 +5712,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0401_50",
+   "trip_id": "bus_4B0401_51",
    "arrival_time": "10:32:00",
    "departure_time": "10:32:00",
    "stop_id": "(バス)元港駅跡",
@@ -5598,7 +5721,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0401_50",
+   "trip_id": "bus_4B0401_51",
    "arrival_time": "10:33:00",
    "departure_time": "10:33:00",
    "stop_id": "(バス)咲島港駅",
@@ -5607,7 +5730,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0401_50",
+   "trip_id": "bus_4B0401_51",
    "arrival_time": "10:34:00",
    "departure_time": "10:34:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -5616,7 +5739,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0401_50",
+   "trip_id": "bus_4B0401_51",
    "arrival_time": "10:34:00",
    "departure_time": "10:34:00",
    "stop_id": "(バス)咲島警察署",
@@ -5625,7 +5748,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0401_50",
+   "trip_id": "bus_4B0401_51",
    "arrival_time": "10:35:00",
    "departure_time": "10:35:00",
    "stop_id": "(バス)八つ橋駅前",
@@ -5634,7 +5757,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0401_50",
+   "trip_id": "bus_4B0401_51",
    "arrival_time": "10:35:00",
    "departure_time": "10:35:00",
    "stop_id": "(バス)咲島BT",
@@ -5643,7 +5766,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0401_50",
+   "trip_id": "bus_4B0401_51",
    "arrival_time": "10:36:00",
    "departure_time": "10:36:00",
    "stop_id": "(バス)葛敷駅入口",
@@ -5652,7 +5775,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0401_50",
+   "trip_id": "bus_4B0401_51",
    "arrival_time": "10:37:00",
    "departure_time": "10:37:00",
    "stop_id": "(バス)大学寮横",
@@ -5661,7 +5784,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B0401_50",
+   "trip_id": "bus_4B0401_51",
    "arrival_time": "10:39:00",
    "departure_time": "10:39:00",
    "stop_id": "(バス)中原台駅前",
@@ -5670,7 +5793,106 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0171_51",
+   "trip_id": "bus_4B0501_52",
+   "arrival_time": "10:41:00",
+   "departure_time": "10:41:00",
+   "stop_id": "(バス)中原台駅前",
+   "stop_sequence": 1,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B0501_52",
+   "arrival_time": "10:41:00",
+   "departure_time": "10:41:00",
+   "stop_id": "(バス)富田駅前",
+   "stop_sequence": 2,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B0501_52",
+   "arrival_time": "10:42:00",
+   "departure_time": "10:42:00",
+   "stop_id": "(バス)元港駅跡",
+   "stop_sequence": 3,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B0501_52",
+   "arrival_time": "10:43:00",
+   "departure_time": "10:43:00",
+   "stop_id": "(バス)咲島港駅",
+   "stop_sequence": 4,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B0501_52",
+   "arrival_time": "10:44:00",
+   "departure_time": "10:44:00",
+   "stop_id": "(バス)なみなかアリーナ",
+   "stop_sequence": 5,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B0501_52",
+   "arrival_time": "10:44:00",
+   "departure_time": "10:44:00",
+   "stop_id": "(バス)咲島警察署",
+   "stop_sequence": 6,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B0501_52",
+   "arrival_time": "10:45:00",
+   "departure_time": "10:45:00",
+   "stop_id": "(バス)八つ橋駅前",
+   "stop_sequence": 7,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B0501_52",
+   "arrival_time": "10:45:00",
+   "departure_time": "10:45:00",
+   "stop_id": "(バス)咲島BT",
+   "stop_sequence": 8,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B0501_52",
+   "arrival_time": "10:46:00",
+   "departure_time": "10:46:00",
+   "stop_id": "(バス)葛敷駅入口",
+   "stop_sequence": 9,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B0501_52",
+   "arrival_time": "10:47:00",
+   "departure_time": "10:47:00",
+   "stop_id": "(バス)大学寮横",
+   "stop_sequence": 10,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B0501_52",
+   "arrival_time": "10:49:00",
+   "departure_time": "10:49:00",
+   "stop_id": "(バス)中原台駅前",
+   "stop_sequence": 11,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_5B0171_53",
    "arrival_time": "10:00:00",
    "departure_time": "10:00:00",
    "stop_id": "(バス)新咲市場",
@@ -5679,7 +5901,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0171_51",
+   "trip_id": "bus_5B0171_53",
    "arrival_time": "10:01:00",
    "departure_time": "10:01:00",
    "stop_id": "(バス)大岩駅入口",
@@ -5688,7 +5910,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0171_51",
+   "trip_id": "bus_5B0171_53",
    "arrival_time": "10:02:00",
    "departure_time": "10:02:00",
    "stop_id": "(バス)豆島渡船前",
@@ -5697,7 +5919,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0171_51",
+   "trip_id": "bus_5B0171_53",
    "arrival_time": "10:02:00",
    "departure_time": "10:02:00",
    "stop_id": "(バス)元港駅跡",
@@ -5706,7 +5928,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0171_51",
+   "trip_id": "bus_5B0171_53",
    "arrival_time": "10:04:00",
    "departure_time": "10:04:00",
    "stop_id": "(バス)咲島港駅",
@@ -5715,7 +5937,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0171_51",
+   "trip_id": "bus_5B0171_53",
    "arrival_time": "10:04:00",
    "departure_time": "10:04:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -5724,7 +5946,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0171_51",
+   "trip_id": "bus_5B0171_53",
    "arrival_time": "10:05:00",
    "departure_time": "10:05:00",
    "stop_id": "(バス)助浜交差点",
@@ -5733,7 +5955,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0171_51",
+   "trip_id": "bus_5B0171_53",
    "arrival_time": "10:06:00",
    "departure_time": "10:06:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -5742,7 +5964,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0171_51",
+   "trip_id": "bus_5B0171_53",
    "arrival_time": "10:10:00",
    "departure_time": "10:10:00",
    "stop_id": "(バス)咲西浜",
@@ -5751,7 +5973,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0271_52",
+   "trip_id": "bus_5B0271_54",
    "arrival_time": "10:12:00",
    "departure_time": "10:12:00",
    "stop_id": "(バス)咲西浜",
@@ -5760,7 +5982,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0271_52",
+   "trip_id": "bus_5B0271_54",
    "arrival_time": "10:12:00",
    "departure_time": "10:12:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -5769,7 +5991,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0271_52",
+   "trip_id": "bus_5B0271_54",
    "arrival_time": "10:14:00",
    "departure_time": "10:14:00",
    "stop_id": "(バス)助浜交差点",
@@ -5778,7 +6000,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0271_52",
+   "trip_id": "bus_5B0271_54",
    "arrival_time": "10:14:00",
    "departure_time": "10:14:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -5787,7 +6009,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0271_52",
+   "trip_id": "bus_5B0271_54",
    "arrival_time": "10:16:00",
    "departure_time": "10:16:00",
    "stop_id": "(バス)咲島港駅",
@@ -5796,7 +6018,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0271_52",
+   "trip_id": "bus_5B0271_54",
    "arrival_time": "10:17:00",
    "departure_time": "10:17:00",
    "stop_id": "(バス)元港駅跡",
@@ -5805,7 +6027,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0271_52",
+   "trip_id": "bus_5B0271_54",
    "arrival_time": "10:18:00",
    "departure_time": "10:18:00",
    "stop_id": "(バス)豆島渡船入口",
@@ -5814,7 +6036,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0271_52",
+   "trip_id": "bus_5B0271_54",
    "arrival_time": "10:18:00",
    "departure_time": "10:18:00",
    "stop_id": "(バス)大岩駅入口",
@@ -5823,7 +6045,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0271_52",
+   "trip_id": "bus_5B0271_54",
    "arrival_time": "10:22:00",
    "departure_time": "10:22:00",
    "stop_id": "(バス)新咲市場",
@@ -5832,7 +6054,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0371_53",
+   "trip_id": "bus_5B0371_55",
    "arrival_time": "10:24:00",
    "departure_time": "10:24:00",
    "stop_id": "(バス)新咲市場",
@@ -5841,7 +6063,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0371_53",
+   "trip_id": "bus_5B0371_55",
    "arrival_time": "10:25:00",
    "departure_time": "10:25:00",
    "stop_id": "(バス)大岩駅入口",
@@ -5850,7 +6072,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0371_53",
+   "trip_id": "bus_5B0371_55",
    "arrival_time": "10:26:00",
    "departure_time": "10:26:00",
    "stop_id": "(バス)豆島渡船前",
@@ -5859,7 +6081,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0371_53",
+   "trip_id": "bus_5B0371_55",
    "arrival_time": "10:26:00",
    "departure_time": "10:26:00",
    "stop_id": "(バス)元港駅跡",
@@ -5868,7 +6090,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0371_53",
+   "trip_id": "bus_5B0371_55",
    "arrival_time": "10:28:00",
    "departure_time": "10:28:00",
    "stop_id": "(バス)咲島港駅",
@@ -5877,7 +6099,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0371_53",
+   "trip_id": "bus_5B0371_55",
    "arrival_time": "10:28:00",
    "departure_time": "10:28:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -5886,7 +6108,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0371_53",
+   "trip_id": "bus_5B0371_55",
    "arrival_time": "10:29:00",
    "departure_time": "10:29:00",
    "stop_id": "(バス)助浜交差点",
@@ -5895,7 +6117,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0371_53",
+   "trip_id": "bus_5B0371_55",
    "arrival_time": "10:30:00",
    "departure_time": "10:30:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -5904,7 +6126,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0371_53",
+   "trip_id": "bus_5B0371_55",
    "arrival_time": "10:34:00",
    "departure_time": "10:34:00",
    "stop_id": "(バス)咲西浜",
@@ -5913,7 +6135,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0471_54",
+   "trip_id": "bus_5B0471_56",
    "arrival_time": "10:40:00",
    "departure_time": "10:40:00",
    "stop_id": "(バス)咲西浜",
@@ -5922,7 +6144,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0471_54",
+   "trip_id": "bus_5B0471_56",
    "arrival_time": "10:40:00",
    "departure_time": "10:40:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -5931,7 +6153,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0471_54",
+   "trip_id": "bus_5B0471_56",
    "arrival_time": "10:42:00",
    "departure_time": "10:42:00",
    "stop_id": "(バス)助浜交差点",
@@ -5940,7 +6162,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0471_54",
+   "trip_id": "bus_5B0471_56",
    "arrival_time": "10:42:00",
    "departure_time": "10:42:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -5949,7 +6171,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0471_54",
+   "trip_id": "bus_5B0471_56",
    "arrival_time": "10:44:00",
    "departure_time": "10:44:00",
    "stop_id": "(バス)咲島港駅",
@@ -5958,7 +6180,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0471_54",
+   "trip_id": "bus_5B0471_56",
    "arrival_time": "10:45:00",
    "departure_time": "10:45:00",
    "stop_id": "(バス)元港駅跡",
@@ -5967,7 +6189,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0471_54",
+   "trip_id": "bus_5B0471_56",
    "arrival_time": "10:46:00",
    "departure_time": "10:46:00",
    "stop_id": "(バス)豆島渡船入口",
@@ -5976,7 +6198,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0471_54",
+   "trip_id": "bus_5B0471_56",
    "arrival_time": "10:46:00",
    "departure_time": "10:46:00",
    "stop_id": "(バス)大岩駅入口",
@@ -5985,7 +6207,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B0471_54",
+   "trip_id": "bus_5B0471_56",
    "arrival_time": "10:50:00",
    "departure_time": "10:50:00",
    "stop_id": "(バス)新咲市場",
@@ -5994,7 +6216,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1071_55",
+   "trip_id": "bus_1B1071_57",
    "arrival_time": "11:01:00",
    "departure_time": "11:01:00",
    "stop_id": "(バス)咲島港駅",
@@ -6003,7 +6225,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1071_55",
+   "trip_id": "bus_1B1071_57",
    "arrival_time": "11:02:00",
    "departure_time": "11:02:00",
    "stop_id": "(バス)元港駅跡",
@@ -6012,7 +6234,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1071_55",
+   "trip_id": "bus_1B1071_57",
    "arrival_time": "11:03:00",
    "departure_time": "11:03:00",
    "stop_id": "(バス)豆島渡船入口",
@@ -6021,7 +6243,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1071_55",
+   "trip_id": "bus_1B1071_57",
    "arrival_time": "11:03:00",
    "departure_time": "11:03:00",
    "stop_id": "(バス)大岩駅入口",
@@ -6030,7 +6252,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1071_55",
+   "trip_id": "bus_1B1071_57",
    "arrival_time": "11:04:00",
    "departure_time": "11:04:00",
    "stop_id": "(バス)新咲市場",
@@ -6039,7 +6261,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1071_55",
+   "trip_id": "bus_1B1071_57",
    "arrival_time": "11:05:00",
    "departure_time": "11:05:00",
    "stop_id": "(バス)咲東崎灯台",
@@ -6048,7 +6270,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1071_55",
+   "trip_id": "bus_1B1071_57",
    "arrival_time": "11:05:00",
    "departure_time": "11:05:00",
    "stop_id": "(バス)影崎",
@@ -6057,7 +6279,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1071_55",
+   "trip_id": "bus_1B1071_57",
    "arrival_time": "11:06:00",
    "departure_time": "11:06:00",
    "stop_id": "(バス)寺前海岸",
@@ -6066,7 +6288,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1071_55",
+   "trip_id": "bus_1B1071_57",
    "arrival_time": "11:09:00",
    "departure_time": "11:09:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -6075,7 +6297,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:13:00",
    "departure_time": "11:13:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -6084,7 +6306,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:14:00",
    "departure_time": "11:14:00",
    "stop_id": "(バス)寺前海岸",
@@ -6093,7 +6315,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:14:00",
    "departure_time": "11:14:00",
    "stop_id": "(バス)影崎",
@@ -6102,7 +6324,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:14:00",
    "departure_time": "11:14:00",
    "stop_id": "(バス)咲東崎灯台",
@@ -6111,7 +6333,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:15:00",
    "departure_time": "11:15:00",
    "stop_id": "(バス)新咲市場",
@@ -6120,7 +6342,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:16:00",
    "departure_time": "11:16:00",
    "stop_id": "(バス)大岩駅入口",
@@ -6129,7 +6351,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:17:00",
    "departure_time": "11:17:00",
    "stop_id": "(バス)豆島渡船前",
@@ -6138,7 +6360,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:17:00",
    "departure_time": "11:17:00",
    "stop_id": "(バス)元港駅跡",
@@ -6147,7 +6369,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:19:00",
    "departure_time": "11:19:00",
    "stop_id": "(バス)咲島港駅",
@@ -6156,7 +6378,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:19:00",
    "departure_time": "11:19:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -6165,7 +6387,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:20:00",
    "departure_time": "11:20:00",
    "stop_id": "(バス)助浜交差点",
@@ -6174,7 +6396,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:21:00",
    "departure_time": "11:21:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -6183,7 +6405,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1171_56",
+   "trip_id": "bus_1B1171_58",
    "arrival_time": "11:25:00",
    "departure_time": "11:25:00",
    "stop_id": "(バス)咲西浜",
@@ -6192,7 +6414,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1225_57",
+   "trip_id": "bus_1B1225_59",
    "arrival_time": "11:34:00",
    "departure_time": "11:34:00",
    "stop_id": "(バス)咲西浜",
@@ -6201,7 +6423,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1225_57",
+   "trip_id": "bus_1B1225_59",
    "arrival_time": "11:35:00",
    "departure_time": "11:35:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -6210,7 +6432,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1225_57",
+   "trip_id": "bus_1B1225_59",
    "arrival_time": "11:36:00",
    "departure_time": "11:36:00",
    "stop_id": "(バス)助浜交差点",
@@ -6219,7 +6441,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1225_57",
+   "trip_id": "bus_1B1225_59",
    "arrival_time": "11:36:00",
    "departure_time": "11:36:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -6228,7 +6450,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1225_57",
+   "trip_id": "bus_1B1225_59",
    "arrival_time": "11:38:00",
    "departure_time": "11:38:00",
    "stop_id": "(バス)咲島港駅",
@@ -6237,7 +6459,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1225_57",
+   "trip_id": "bus_1B1225_59",
    "arrival_time": "11:38:00",
    "departure_time": "11:38:00",
    "stop_id": "(バス)元港駅跡",
@@ -6246,7 +6468,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1225_57",
+   "trip_id": "bus_1B1225_59",
    "arrival_time": "11:39:00",
    "departure_time": "11:39:00",
    "stop_id": "(バス)富田駅前",
@@ -6255,7 +6477,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1225_57",
+   "trip_id": "bus_1B1225_59",
    "arrival_time": "11:44:00",
    "departure_time": "11:44:00",
    "stop_id": "(バス)中原台駅前",
@@ -6264,7 +6486,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1308_58",
+   "trip_id": "bus_1B1308_60",
    "arrival_time": "11:44:00",
    "departure_time": "11:44:00",
    "stop_id": "(バス)中原台駅前",
@@ -6273,7 +6495,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1308_58",
+   "trip_id": "bus_1B1308_60",
    "arrival_time": "11:45:00",
    "departure_time": "11:45:00",
    "stop_id": "(バス)富田駅前",
@@ -6282,7 +6504,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1308_58",
+   "trip_id": "bus_1B1308_60",
    "arrival_time": "11:46:00",
    "departure_time": "11:46:00",
    "stop_id": "(バス)元港駅跡",
@@ -6291,7 +6513,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1308_58",
+   "trip_id": "bus_1B1308_60",
    "arrival_time": "11:47:00",
    "departure_time": "11:47:00",
    "stop_id": "(バス)咲島港駅",
@@ -6300,7 +6522,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1308_58",
+   "trip_id": "bus_1B1308_60",
    "arrival_time": "11:48:00",
    "departure_time": "11:48:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -6309,7 +6531,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1308_58",
+   "trip_id": "bus_1B1308_60",
    "arrival_time": "11:49:00",
    "departure_time": "11:49:00",
    "stop_id": "(バス)咲島警察署",
@@ -6318,7 +6540,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1308_58",
+   "trip_id": "bus_1B1308_60",
    "arrival_time": "11:49:00",
    "departure_time": "11:49:00",
    "stop_id": "(バス)八つ橋駅前",
@@ -6327,7 +6549,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_1B1308_58",
+   "trip_id": "bus_1B1308_60",
    "arrival_time": "11:52:00",
    "departure_time": "11:52:00",
    "stop_id": "(バス)咲島営業所",
@@ -6336,7 +6558,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:00:00",
    "departure_time": "11:00:00",
    "stop_id": "(バス)中原台駅前",
@@ -6345,7 +6567,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:03:00",
    "departure_time": "11:03:00",
    "stop_id": "(バス)豆島渡船入口",
@@ -6354,7 +6576,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:04:00",
    "departure_time": "11:04:00",
    "stop_id": "(バス)大岩駅入口",
@@ -6363,7 +6585,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:05:00",
    "departure_time": "11:05:00",
    "stop_id": "(バス)新咲市場",
@@ -6372,7 +6594,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:05:00",
    "departure_time": "11:05:00",
    "stop_id": "(バス)咲東崎灯台",
@@ -6381,7 +6603,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:06:00",
    "departure_time": "11:06:00",
    "stop_id": "(バス)影崎",
@@ -6390,7 +6612,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:06:00",
    "departure_time": "11:06:00",
    "stop_id": "(バス)寺前海岸",
@@ -6399,7 +6621,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:08:00",
    "departure_time": "11:09:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -6408,7 +6630,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:10:00",
    "departure_time": "11:10:00",
    "stop_id": "(バス)天玉寺",
@@ -6417,7 +6639,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:10:00",
    "departure_time": "11:10:00",
    "stop_id": "(バス)寺見",
@@ -6426,7 +6648,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:12:00",
    "departure_time": "11:12:00",
    "stop_id": "(バス)長池貯水池",
@@ -6435,7 +6657,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:14:00",
    "departure_time": "11:14:00",
    "stop_id": "(バス)笠丘駅前",
@@ -6444,7 +6666,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:14:00",
    "departure_time": "11:14:00",
    "stop_id": "(バス)笠丘駅入口",
@@ -6453,7 +6675,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:16:00",
    "departure_time": "11:18:00",
    "stop_id": "(バス)船上湯本駅前",
@@ -6462,7 +6684,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:18:00",
    "departure_time": "11:18:00",
    "stop_id": "(バス)上砥駅前",
@@ -6471,7 +6693,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:20:00",
    "departure_time": "11:20:00",
    "stop_id": "(バス)中砥",
@@ -6480,7 +6702,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:22:00",
    "departure_time": "11:22:00",
    "stop_id": "(バス)島北出坂駅西口",
@@ -6489,7 +6711,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:23:00",
    "departure_time": "11:23:00",
    "stop_id": "(バス)下砥",
@@ -6498,7 +6720,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:24:00",
    "departure_time": "11:24:00",
    "stop_id": "(バス)咲西浜",
@@ -6507,7 +6729,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:25:00",
    "departure_time": "11:25:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -6516,7 +6738,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:26:00",
    "departure_time": "11:26:00",
    "stop_id": "(バス)助浜交差点",
@@ -6525,7 +6747,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:26:00",
    "departure_time": "11:26:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -6534,7 +6756,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:28:00",
    "departure_time": "11:28:00",
    "stop_id": "(バス)咲島港駅",
@@ -6543,7 +6765,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:28:00",
    "departure_time": "11:28:00",
    "stop_id": "(バス)元港駅跡",
@@ -6552,7 +6774,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:29:00",
    "departure_time": "11:29:00",
    "stop_id": "(バス)富田駅前",
@@ -6561,7 +6783,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1055_59",
+   "trip_id": "bus_2B1055_61",
    "arrival_time": "11:33:00",
    "departure_time": "11:33:00",
    "stop_id": "(バス)中原台駅前",
@@ -6570,7 +6792,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1101_60",
+   "trip_id": "bus_2B1101_62",
    "arrival_time": "11:34:00",
    "departure_time": "11:34:00",
    "stop_id": "(バス)中原台駅前",
@@ -6579,7 +6801,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1101_60",
+   "trip_id": "bus_2B1101_62",
    "arrival_time": "11:34:00",
    "departure_time": "11:34:00",
    "stop_id": "(バス)富田駅前",
@@ -6588,7 +6810,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1101_60",
+   "trip_id": "bus_2B1101_62",
    "arrival_time": "11:35:00",
    "departure_time": "11:35:00",
    "stop_id": "(バス)元港駅跡",
@@ -6597,7 +6819,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1101_60",
+   "trip_id": "bus_2B1101_62",
    "arrival_time": "11:36:00",
    "departure_time": "11:36:00",
    "stop_id": "(バス)咲島港駅",
@@ -6606,7 +6828,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1101_60",
+   "trip_id": "bus_2B1101_62",
    "arrival_time": "11:37:00",
    "departure_time": "11:37:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -6615,7 +6837,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1101_60",
+   "trip_id": "bus_2B1101_62",
    "arrival_time": "11:37:00",
    "departure_time": "11:37:00",
    "stop_id": "(バス)咲島警察署",
@@ -6624,7 +6846,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1101_60",
+   "trip_id": "bus_2B1101_62",
    "arrival_time": "11:38:00",
    "departure_time": "11:38:00",
    "stop_id": "(バス)八つ橋駅前",
@@ -6633,7 +6855,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1101_60",
+   "trip_id": "bus_2B1101_62",
    "arrival_time": "11:38:00",
    "departure_time": "11:38:00",
    "stop_id": "(バス)咲島BT",
@@ -6642,7 +6864,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1101_60",
+   "trip_id": "bus_2B1101_62",
    "arrival_time": "11:39:00",
    "departure_time": "11:39:00",
    "stop_id": "(バス)葛敷駅入口",
@@ -6651,7 +6873,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1101_60",
+   "trip_id": "bus_2B1101_62",
    "arrival_time": "11:40:00",
    "departure_time": "11:40:00",
    "stop_id": "(バス)大学寮横",
@@ -6660,7 +6882,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1101_60",
+   "trip_id": "bus_2B1101_62",
    "arrival_time": "11:42:00",
    "departure_time": "11:42:00",
    "stop_id": "(バス)中原台駅前",
@@ -6669,7 +6891,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1305_61",
+   "trip_id": "bus_2B1305_63",
    "arrival_time": "11:44:00",
    "departure_time": "11:44:00",
    "stop_id": "(バス)中原台駅前",
@@ -6678,7 +6900,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1305_61",
+   "trip_id": "bus_2B1305_63",
    "arrival_time": "11:44:00",
    "departure_time": "11:44:00",
    "stop_id": "(バス)大学寮横",
@@ -6687,7 +6909,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1305_61",
+   "trip_id": "bus_2B1305_63",
    "arrival_time": "11:45:00",
    "departure_time": "11:45:00",
    "stop_id": "(バス)葛敷駅入口",
@@ -6696,7 +6918,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_2B1305_61",
+   "trip_id": "bus_2B1305_63",
    "arrival_time": "11:47:00",
    "departure_time": "11:47:00",
    "stop_id": "(バス)咲島営業所",
@@ -6705,7 +6927,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1176_62",
+   "trip_id": "bus_3B1176_64",
    "arrival_time": "11:00:00",
    "departure_time": "11:00:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -6714,7 +6936,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1176_62",
+   "trip_id": "bus_3B1176_64",
    "arrival_time": "11:00:00",
    "departure_time": "11:00:00",
    "stop_id": "(バス)出浦",
@@ -6723,7 +6945,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1176_62",
+   "trip_id": "bus_3B1176_64",
    "arrival_time": "11:01:00",
    "departure_time": "11:01:00",
    "stop_id": "(バス)木置",
@@ -6732,7 +6954,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1176_62",
+   "trip_id": "bus_3B1176_64",
    "arrival_time": "11:04:00",
    "departure_time": "11:04:00",
    "stop_id": "(バス)船上湯本駅前",
@@ -6741,7 +6963,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1276_63",
+   "trip_id": "bus_3B1276_65",
    "arrival_time": "11:06:00",
    "departure_time": "11:06:00",
    "stop_id": "(バス)船上湯本駅前",
@@ -6750,7 +6972,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1276_63",
+   "trip_id": "bus_3B1276_65",
    "arrival_time": "11:07:00",
    "departure_time": "11:07:00",
    "stop_id": "(バス)木置",
@@ -6759,7 +6981,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1276_63",
+   "trip_id": "bus_3B1276_65",
    "arrival_time": "11:08:00",
    "departure_time": "11:08:00",
    "stop_id": "(バス)出浦",
@@ -6768,7 +6990,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1276_63",
+   "trip_id": "bus_3B1276_65",
    "arrival_time": "11:11:00",
    "departure_time": "11:11:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -6777,7 +6999,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1376_64",
+   "trip_id": "bus_3B1376_66",
    "arrival_time": "11:12:00",
    "departure_time": "11:12:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -6786,7 +7008,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1376_64",
+   "trip_id": "bus_3B1376_66",
    "arrival_time": "11:12:00",
    "departure_time": "11:12:00",
    "stop_id": "(バス)出浦",
@@ -6795,7 +7017,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1376_64",
+   "trip_id": "bus_3B1376_66",
    "arrival_time": "11:13:00",
    "departure_time": "11:13:00",
    "stop_id": "(バス)木置",
@@ -6804,7 +7026,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1376_64",
+   "trip_id": "bus_3B1376_66",
    "arrival_time": "11:14:00",
    "departure_time": "11:14:00",
    "stop_id": "(バス)船上湯本駅前",
@@ -6813,7 +7035,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1376_64",
+   "trip_id": "bus_3B1376_66",
    "arrival_time": "11:15:00",
    "departure_time": "11:15:00",
    "stop_id": "(バス)笠丘駅入口",
@@ -6822,7 +7044,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1376_64",
+   "trip_id": "bus_3B1376_66",
    "arrival_time": "11:16:00",
    "departure_time": "11:16:00",
    "stop_id": "(バス)入九葉神社前",
@@ -6831,7 +7053,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1376_64",
+   "trip_id": "bus_3B1376_66",
    "arrival_time": "11:17:00",
    "departure_time": "11:17:00",
    "stop_id": "(バス)上瀬橋",
@@ -6840,7 +7062,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1376_64",
+   "trip_id": "bus_3B1376_66",
    "arrival_time": "11:17:00",
    "departure_time": "11:17:00",
    "stop_id": "(バス)木古川駅西口",
@@ -6849,7 +7071,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1376_64",
+   "trip_id": "bus_3B1376_66",
    "arrival_time": "11:19:00",
    "departure_time": "11:19:00",
    "stop_id": "(バス)咲島営業所",
@@ -6858,7 +7080,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1376_64",
+   "trip_id": "bus_3B1376_66",
    "arrival_time": "11:23:00",
    "departure_time": "11:23:00",
    "stop_id": "(バス)助が丘駅北口",
@@ -6867,7 +7089,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1408_65",
+   "trip_id": "bus_3B1408_67",
    "arrival_time": "11:26:00",
    "departure_time": "11:26:00",
    "stop_id": "(バス)助が丘駅北口",
@@ -6876,7 +7098,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1408_65",
+   "trip_id": "bus_3B1408_67",
    "arrival_time": "11:27:00",
    "departure_time": "11:27:00",
    "stop_id": "(バス)咲島営業所",
@@ -6885,7 +7107,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1408_65",
+   "trip_id": "bus_3B1408_67",
    "arrival_time": "11:28:00",
    "departure_time": "11:28:00",
    "stop_id": "(バス)八つ橋駅前",
@@ -6894,7 +7116,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1408_65",
+   "trip_id": "bus_3B1408_67",
    "arrival_time": "11:29:00",
    "departure_time": "11:29:00",
    "stop_id": "(バス)咲島警察署",
@@ -6903,7 +7125,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1408_65",
+   "trip_id": "bus_3B1408_67",
    "arrival_time": "11:29:00",
    "departure_time": "11:29:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -6912,7 +7134,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_3B1408_65",
+   "trip_id": "bus_3B1408_67",
    "arrival_time": "11:32:00",
    "departure_time": "11:32:00",
    "stop_id": "(バス)咲島港駅",
@@ -6921,7 +7143,61 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1076_66",
+   "trip_id": "bus_3B1618_68",
+   "arrival_time": "11:38:00",
+   "departure_time": "11:38:00",
+   "stop_id": "(バス)なみなかアリーナ",
+   "stop_sequence": 1,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_3B1618_68",
+   "arrival_time": "11:40:00",
+   "departure_time": "11:40:00",
+   "stop_id": "(バス)咲島港駅",
+   "stop_sequence": 2,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_3B1618_68",
+   "arrival_time": "11:44:10",
+   "departure_time": "11:44:10",
+   "stop_id": "(バス)中原台駅前",
+   "stop_sequence": 3,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_3B1618_68",
+   "arrival_time": "11:47:00",
+   "departure_time": "11:47:00",
+   "stop_id": "(バス)入九葉神社前",
+   "stop_sequence": 4,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_3B1618_68",
+   "arrival_time": "11:48:00",
+   "departure_time": "11:48:00",
+   "stop_id": "(バス)笠丘駅入口",
+   "stop_sequence": 5,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_3B1618_68",
+   "arrival_time": "11:52:00",
+   "departure_time": "11:52:00",
+   "stop_id": "(バス)船上湯本駅前",
+   "stop_sequence": 6,
+   "platform_code": "",
+   "drop_off_type": 0
+  },
+  {
+   "trip_id": "bus_4B1076_69",
    "arrival_time": "11:05:00",
    "departure_time": "11:05:00",
    "stop_id": "(バス)助が丘駅北口",
@@ -6930,7 +7206,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1076_66",
+   "trip_id": "bus_4B1076_69",
    "arrival_time": "11:06:00",
    "departure_time": "11:06:00",
    "stop_id": "(バス)咲島営業所",
@@ -6939,7 +7215,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1076_66",
+   "trip_id": "bus_4B1076_69",
    "arrival_time": "11:07:00",
    "departure_time": "11:07:00",
    "stop_id": "(バス)木古川駅西口",
@@ -6948,7 +7224,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1076_66",
+   "trip_id": "bus_4B1076_69",
    "arrival_time": "11:08:00",
    "departure_time": "11:08:00",
    "stop_id": "(バス)上瀬橋",
@@ -6957,7 +7233,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1076_66",
+   "trip_id": "bus_4B1076_69",
    "arrival_time": "11:08:00",
    "departure_time": "11:08:00",
    "stop_id": "(バス)入九葉神社前",
@@ -6966,7 +7242,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1076_66",
+   "trip_id": "bus_4B1076_69",
    "arrival_time": "11:09:00",
    "departure_time": "11:09:00",
    "stop_id": "(バス)笠丘駅入口",
@@ -6975,7 +7251,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1076_66",
+   "trip_id": "bus_4B1076_69",
    "arrival_time": "11:13:00",
    "departure_time": "11:13:00",
    "stop_id": "(バス)船上湯本駅前",
@@ -6984,7 +7260,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1112_67",
+   "trip_id": "bus_4B1112_70",
    "arrival_time": "11:18:00",
    "departure_time": "11:18:00",
    "stop_id": "(バス)笠丘駅前",
@@ -6993,7 +7269,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1112_67",
+   "trip_id": "bus_4B1112_70",
    "arrival_time": "11:19:00",
    "departure_time": "11:19:00",
    "stop_id": "(バス)入九葉神社前",
@@ -7002,7 +7278,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1112_67",
+   "trip_id": "bus_4B1112_70",
    "arrival_time": "11:20:00",
    "departure_time": "11:20:00",
    "stop_id": "(バス)茶の畑",
@@ -7011,7 +7287,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1112_67",
+   "trip_id": "bus_4B1112_70",
    "arrival_time": "11:21:00",
    "departure_time": "11:21:00",
    "stop_id": "(バス)出坂団地北",
@@ -7020,7 +7296,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1112_67",
+   "trip_id": "bus_4B1112_70",
    "arrival_time": "11:22:00",
    "departure_time": "11:22:00",
    "stop_id": "(バス)島北出坂駅東口",
@@ -7029,7 +7305,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1112_67",
+   "trip_id": "bus_4B1112_70",
    "arrival_time": "11:23:00",
    "departure_time": "11:23:00",
    "stop_id": "(バス)中砥",
@@ -7038,7 +7314,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1112_67",
+   "trip_id": "bus_4B1112_70",
    "arrival_time": "11:27:00",
    "departure_time": "11:27:00",
    "stop_id": "(バス)砥島",
@@ -7047,7 +7323,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "arrival_time": "11:29:00",
    "departure_time": "11:29:00",
    "stop_id": "(バス)砥島",
@@ -7056,7 +7332,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "arrival_time": "11:31:00",
    "departure_time": "11:31:00",
    "stop_id": "(バス)中砥",
@@ -7065,7 +7341,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "arrival_time": "11:31:00",
    "departure_time": "11:31:00",
    "stop_id": "(バス)島北出坂駅西口",
@@ -7074,7 +7350,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "arrival_time": "11:32:00",
    "departure_time": "11:32:00",
    "stop_id": "(バス)下砥",
@@ -7083,7 +7359,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "arrival_time": "11:33:00",
    "departure_time": "11:33:00",
    "stop_id": "(バス)咲西浜",
@@ -7092,7 +7368,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "arrival_time": "11:34:00",
    "departure_time": "11:34:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -7101,7 +7377,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "arrival_time": "11:35:00",
    "departure_time": "11:35:00",
    "stop_id": "(バス)助浜交差点",
@@ -7110,7 +7386,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "arrival_time": "11:35:00",
    "departure_time": "11:35:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -7119,7 +7395,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "arrival_time": "11:37:00",
    "departure_time": "11:37:00",
    "stop_id": "(バス)咲島港駅",
@@ -7128,7 +7404,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "arrival_time": "11:37:00",
    "departure_time": "11:37:00",
    "stop_id": "(バス)元港駅跡",
@@ -7137,7 +7413,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "arrival_time": "11:38:00",
    "departure_time": "11:38:00",
    "stop_id": "(バス)富田駅前",
@@ -7146,7 +7422,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1225_68",
+   "trip_id": "bus_4B1225_71",
    "arrival_time": "11:43:00",
    "departure_time": "11:43:00",
    "stop_id": "(バス)中原台駅前",
@@ -7155,7 +7431,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1301_69",
+   "trip_id": "bus_4B1301_72",
    "arrival_time": "11:44:00",
    "departure_time": "11:44:00",
    "stop_id": "(バス)中原台駅前",
@@ -7164,7 +7440,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1301_69",
+   "trip_id": "bus_4B1301_72",
    "arrival_time": "11:44:00",
    "departure_time": "11:44:00",
    "stop_id": "(バス)富田駅前",
@@ -7173,7 +7449,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1301_69",
+   "trip_id": "bus_4B1301_72",
    "arrival_time": "11:45:00",
    "departure_time": "11:45:00",
    "stop_id": "(バス)元港駅跡",
@@ -7182,7 +7458,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1301_69",
+   "trip_id": "bus_4B1301_72",
    "arrival_time": "11:46:00",
    "departure_time": "11:46:00",
    "stop_id": "(バス)咲島港駅",
@@ -7191,7 +7467,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1301_69",
+   "trip_id": "bus_4B1301_72",
    "arrival_time": "11:47:00",
    "departure_time": "11:47:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -7200,7 +7476,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1301_69",
+   "trip_id": "bus_4B1301_72",
    "arrival_time": "11:47:00",
    "departure_time": "11:47:00",
    "stop_id": "(バス)咲島警察署",
@@ -7209,7 +7485,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1301_69",
+   "trip_id": "bus_4B1301_72",
    "arrival_time": "11:48:00",
    "departure_time": "11:48:00",
    "stop_id": "(バス)八つ橋駅前",
@@ -7218,7 +7494,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1301_69",
+   "trip_id": "bus_4B1301_72",
    "arrival_time": "11:48:00",
    "departure_time": "11:48:00",
    "stop_id": "(バス)咲島BT",
@@ -7227,7 +7503,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1301_69",
+   "trip_id": "bus_4B1301_72",
    "arrival_time": "11:49:00",
    "departure_time": "11:49:00",
    "stop_id": "(バス)葛敷駅入口",
@@ -7236,7 +7512,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1301_69",
+   "trip_id": "bus_4B1301_72",
    "arrival_time": "11:50:00",
    "departure_time": "11:50:00",
    "stop_id": "(バス)大学寮横",
@@ -7245,7 +7521,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_4B1301_69",
+   "trip_id": "bus_4B1301_72",
    "arrival_time": "11:52:00",
    "departure_time": "11:52:00",
    "stop_id": "(バス)中原台駅前",
@@ -7254,7 +7530,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:01:00",
    "departure_time": "11:01:00",
    "stop_id": "(バス)天玉寺駅前",
@@ -7263,7 +7539,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:02:00",
    "departure_time": "11:02:00",
    "stop_id": "(バス)寺前海岸",
@@ -7272,7 +7548,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:02:00",
    "departure_time": "11:02:00",
    "stop_id": "(バス)影崎",
@@ -7281,7 +7557,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:02:00",
    "departure_time": "11:02:00",
    "stop_id": "(バス)咲東崎灯台",
@@ -7290,7 +7566,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:03:00",
    "departure_time": "11:03:00",
    "stop_id": "(バス)新咲市場",
@@ -7299,7 +7575,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:04:00",
    "departure_time": "11:04:00",
    "stop_id": "(バス)大岩駅入口",
@@ -7308,7 +7584,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:05:00",
    "departure_time": "11:05:00",
    "stop_id": "(バス)豆島渡船前",
@@ -7317,7 +7593,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:05:00",
    "departure_time": "11:05:00",
    "stop_id": "(バス)元港駅跡",
@@ -7326,7 +7602,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:07:00",
    "departure_time": "11:07:00",
    "stop_id": "(バス)咲島港駅",
@@ -7335,7 +7611,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:07:00",
    "departure_time": "11:07:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -7344,7 +7620,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:08:00",
    "departure_time": "11:08:00",
    "stop_id": "(バス)助浜交差点",
@@ -7353,7 +7629,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:09:00",
    "departure_time": "11:09:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -7362,7 +7638,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:11:00",
    "departure_time": "11:11:00",
    "stop_id": "(バス)咲西浜",
@@ -7371,7 +7647,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:12:00",
    "departure_time": "11:12:00",
    "stop_id": "(バス)下砥",
@@ -7380,7 +7656,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:13:00",
    "departure_time": "11:13:00",
    "stop_id": "(バス)島北出坂駅西口",
@@ -7389,7 +7665,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:13:00",
    "departure_time": "11:13:00",
    "stop_id": "(バス)中砥",
@@ -7398,7 +7674,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1172_70",
+   "trip_id": "bus_5B1172_73",
    "arrival_time": "11:19:00",
    "departure_time": "11:19:00",
    "stop_id": "(バス)砥島",
@@ -7407,7 +7683,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1225_71",
+   "trip_id": "bus_5B1225_74",
    "arrival_time": "11:21:00",
    "departure_time": "11:21:00",
    "stop_id": "(バス)砥島",
@@ -7416,7 +7692,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1225_71",
+   "trip_id": "bus_5B1225_74",
    "arrival_time": "11:23:00",
    "departure_time": "11:23:00",
    "stop_id": "(バス)中砥",
@@ -7425,7 +7701,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1225_71",
+   "trip_id": "bus_5B1225_74",
    "arrival_time": "11:23:00",
    "departure_time": "11:23:00",
    "stop_id": "(バス)島北出坂駅西口",
@@ -7434,7 +7710,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1225_71",
+   "trip_id": "bus_5B1225_74",
    "arrival_time": "11:24:00",
    "departure_time": "11:24:00",
    "stop_id": "(バス)下砥",
@@ -7443,7 +7719,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1225_71",
+   "trip_id": "bus_5B1225_74",
    "arrival_time": "11:25:00",
    "departure_time": "11:25:00",
    "stop_id": "(バス)咲西浜",
@@ -7452,7 +7728,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1225_71",
+   "trip_id": "bus_5B1225_74",
    "arrival_time": "11:26:00",
    "departure_time": "11:26:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -7461,7 +7737,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1225_71",
+   "trip_id": "bus_5B1225_74",
    "arrival_time": "11:27:00",
    "departure_time": "11:27:00",
    "stop_id": "(バス)助浜交差点",
@@ -7470,7 +7746,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1225_71",
+   "trip_id": "bus_5B1225_74",
    "arrival_time": "11:27:00",
    "departure_time": "11:27:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -7479,7 +7755,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1225_71",
+   "trip_id": "bus_5B1225_74",
    "arrival_time": "11:31:00",
    "departure_time": "11:31:00",
    "stop_id": "(バス)咲島港駅",
@@ -7488,7 +7764,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1355_72",
+   "trip_id": "bus_5B1355_75",
    "arrival_time": "11:33:45",
    "departure_time": "11:33:45",
    "stop_id": "(バス)咲島港駅",
@@ -7497,7 +7773,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1355_72",
+   "trip_id": "bus_5B1355_75",
    "arrival_time": "11:34:00",
    "departure_time": "11:34:00",
    "stop_id": "(バス)なみなかアリーナ",
@@ -7506,7 +7782,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1355_72",
+   "trip_id": "bus_5B1355_75",
    "arrival_time": "11:35:00",
    "departure_time": "11:35:00",
    "stop_id": "(バス)助浜交差点",
@@ -7515,7 +7791,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1355_72",
+   "trip_id": "bus_5B1355_75",
    "arrival_time": "11:36:00",
    "departure_time": "11:36:00",
    "stop_id": "(バス)助が丘団地裏",
@@ -7524,7 +7800,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1355_72",
+   "trip_id": "bus_5B1355_75",
    "arrival_time": "11:36:00",
    "departure_time": "11:36:00",
    "stop_id": "(バス)咲西浜",
@@ -7533,7 +7809,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1355_72",
+   "trip_id": "bus_5B1355_75",
    "arrival_time": "11:38:00",
    "departure_time": "11:38:00",
    "stop_id": "(バス)下砥",
@@ -7542,7 +7818,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1355_72",
+   "trip_id": "bus_5B1355_75",
    "arrival_time": "11:39:50",
    "departure_time": "11:39:50",
    "stop_id": "(バス)島北出坂駅西口",
@@ -7551,7 +7827,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1355_72",
+   "trip_id": "bus_5B1355_75",
    "arrival_time": "11:40:30",
    "departure_time": "11:40:30",
    "stop_id": "(バス)中砥",
@@ -7560,7 +7836,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1355_72",
+   "trip_id": "bus_5B1355_75",
    "arrival_time": "11:42:00",
    "departure_time": "11:42:00",
    "stop_id": "(バス)上砥駅前",
@@ -7569,7 +7845,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1355_72",
+   "trip_id": "bus_5B1355_75",
    "arrival_time": "11:44:00",
    "departure_time": "11:44:00",
    "stop_id": "(バス)船上湯本駅前",
@@ -7578,7 +7854,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1576_73",
+   "trip_id": "bus_5B1576_76",
    "arrival_time": "11:45:00",
    "departure_time": "11:45:00",
    "stop_id": "(バス)船上湯本駅前",
@@ -7587,7 +7863,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1576_73",
+   "trip_id": "bus_5B1576_76",
    "arrival_time": "11:46:00",
    "departure_time": "11:46:00",
    "stop_id": "(バス)笠丘駅入口",
@@ -7596,7 +7872,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1576_73",
+   "trip_id": "bus_5B1576_76",
    "arrival_time": "11:47:00",
    "departure_time": "11:47:00",
    "stop_id": "(バス)入九葉神社前",
@@ -7605,7 +7881,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1576_73",
+   "trip_id": "bus_5B1576_76",
    "arrival_time": "11:48:00",
    "departure_time": "11:48:00",
    "stop_id": "(バス)上瀬橋",
@@ -7614,7 +7890,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1576_73",
+   "trip_id": "bus_5B1576_76",
    "arrival_time": "11:48:00",
    "departure_time": "11:48:00",
    "stop_id": "(バス)木古川駅西口",
@@ -7623,7 +7899,7 @@
    "drop_off_type": 0
   },
   {
-   "trip_id": "bus_5B1576_73",
+   "trip_id": "bus_5B1576_76",
    "arrival_time": "11:52:00",
    "departure_time": "11:52:00",
    "stop_id": "(バス)咲島営業所",

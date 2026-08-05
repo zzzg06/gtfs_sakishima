@@ -5,7 +5,7 @@
 //   node scripts/convert-bus.mjs --source data/2024natsusakishima_staff_20240502.xlsx
 //   node scripts/convert-bus.mjs --include-deadhead   (回送/送り込みも含める。出入は既定で営業扱い)
 //
-// 行路表の「バス　運用XX」ブロック(4レーン=最大4便)から、停留所と時刻を抽出。
+// 行路表の「バス　運用XX」ブロック(レーン=便。4レーンが基本だが5レーン以上もある)から、停留所と時刻を抽出。
 // 停留所名は徒歩リストの「(バス)〇〇」表記に合わせる（表記揺れはALIASで吸収）。
 
 import { writeFileSync, mkdirSync } from "node:fs"
@@ -162,7 +162,14 @@ for (const sheetName of SHEETS) {
     if (rowTrainNo < 0 || rowType < 0 || rowDest < 0 || rowHeader < 0) continue
     const operationNo = String(rows[rowOperation]?.[1] || "").trim() // 運用番号（バスN）※レーン共通
 
-    for (const off of [0, 8, 16, 24]) {
+    // レーン数はブロックによって違う（4レーンが基本だが5レーン以上の運用もある）ため、
+    // 列車番号セルが埋まっている限り8列ごとに読み進める。
+    const lanes = []
+    for (let off = 0; off <= 96; off += 8) {
+      if (String(rows[rowTrainNo]?.[off + 1] || "").trim()) lanes.push(off)
+    }
+
+    for (const off of lanes) {
       const trainNo = String(rows[rowTrainNo]?.[off + 1] || "").trim()
       if (!trainNo) continue
       const type = String(rows[rowType]?.[off + 1] || "").trim()
