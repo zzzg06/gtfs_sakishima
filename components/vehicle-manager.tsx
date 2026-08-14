@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Plus, Edit, Trash2, Car, Bus, Train, ArrowLeft, Upload, X, FileSpreadsheet, Download } from "lucide-react"
 import { vehicleManager, type Vehicle } from "@/lib/vehicle-manager"
+import { DEFAULT_ICON_TO_VEHICLE } from "@/lib/dynmap-vehicle-icons"
 import { parseVehicleFile, downloadVehicleTemplate } from "@/lib/vehicle-import"
 
 interface VehicleManagerProps {
@@ -29,6 +30,7 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
     description: "",
     color: "#3b82f6",
     iconUrl: "",
+    dynmapIcon: "",
   })
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
@@ -80,6 +82,7 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
       description: formData.description.trim() || undefined,
       color: formData.color,
       iconUrl: formData.iconUrl || undefined,
+      dynmapIcon: formData.dynmapIcon.trim() || undefined,
     }
 
     if (!vehicleData.name || !vehicleData.type) {
@@ -142,6 +145,7 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
       description: vehicle.description || "",
       color: vehicle.color || "#3b82f6",
       iconUrl: vehicle.iconUrl || "",
+      dynmapIcon: vehicle.dynmapIcon || "",
     })
     if (vehicle.iconUrl) {
       setImagePreview(vehicle.iconUrl)
@@ -168,6 +172,7 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
       description: "",
       color: "#3b82f6",
       iconUrl: "",
+      dynmapIcon: "",
     })
     setEditingVehicle(null)
     setIsEditing(false)
@@ -238,6 +243,24 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
+              <div>
+                <Label htmlFor="dynmapIcon">Dynmapアイコン名</Label>
+                <Input
+                  id="dynmapIcon"
+                  value={formData.dynmapIcon}
+                  onChange={(e) => setFormData({ ...formData, dynmapIcon: e.target.value })}
+                  placeholder="例：kr3000_32（実位置でこの車両として表示）"
+                  list="dynmap-icon-suggestions"
+                />
+                <datalist id="dynmap-icon-suggestions">
+                  {Object.keys(DEFAULT_ICON_TO_VEHICLE).map((icon) => (
+                    <option key={icon} value={icon} />
+                  ))}
+                </datalist>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Dynmapのマーカーがこのアイコンなら、走行位置でこの車両として表示します（空欄なら車両名で自動判定）。
+                </p>
               </div>
               <div>
                 <Label htmlFor="capacity">定員</Label>

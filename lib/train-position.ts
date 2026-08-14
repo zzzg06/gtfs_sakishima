@@ -63,6 +63,8 @@ export interface TrainRunState {
   coupledWith?: { operationId: string; trainNumber?: string }[]
   // 終着到着後の居残り表示（terminalDwellMinutes による延命）。同じ運用が次の便を走り始めていたら捨てる。
   terminalDwell?: boolean
+  // Dynmap実位置のみ: マーカーのアイコン名（例 kr3000_32）。どの車両かの判定に使う。
+  dynmapIcon?: string
 }
 
 // 座標つき（Dynmapマーカー等で使用）

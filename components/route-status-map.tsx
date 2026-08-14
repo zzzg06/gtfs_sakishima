@@ -18,6 +18,7 @@ import { buildOperationSchedule } from "@/lib/estimate-delay"
 import { isBusOperationNumber } from "@/lib/operation-number"
 import { liveSettingsManager, type LivePositionSource } from "@/lib/live-settings"
 import { vehicleManager } from "@/lib/vehicle-manager"
+import { resolveDisplayVehicle } from "@/lib/dynmap-vehicle-icons"
 import { abbrevSyubetsu, routeColor, vehicleIconUrl } from "@/lib/train-display"
 import { TrainDetailModal } from "@/components/train-detail-modal"
 import { stationCoordinateManager, type StationCoordinates } from "@/lib/station-coordinates"
@@ -546,8 +547,10 @@ export function RouteStatusMap() {
                 const angle = (Math.atan2(pos.dirY, pos.dirX) * 180) / Math.PI
                 const delayed = t.delayMinutes > 0 // 早着は扱わない
                 const isSel = selected?.operationId === t.operationId && selected?.tripId === t.tripId
+                // Dynmapのアイコンで形式が分かればその車両、分からなければ運用の割当
                 const img = vehicleIconUrl(
-                  vehicleManager.getCachedVehicleForOperation(t.operationId)?.iconUrl,
+                  resolveDisplayVehicle(t.dynmapIcon, vehicleManager.getCachedVehicleForOperation(t.operationId))
+                    ?.iconUrl,
                   t.routeType,
                 )
                 const badge = abbrevSyubetsu(t.routeName) || t.operationId

@@ -15,6 +15,7 @@ import { stationCoordinateManager, type StationCoordinates } from "@/lib/station
 import { buildApproachingBus, buildStrip, dedupeConsecutive, type ApproachingBus } from "@/lib/bus-locate"
 import { vehicleManager } from "@/lib/vehicle-manager"
 import { liveSettingsManager } from "@/lib/live-settings"
+import { resolveDisplayVehicle } from "@/lib/dynmap-vehicle-icons"
 import { busMapSettingsManager, type BusMapSettings } from "@/lib/bus-map"
 import { buildOperationSchedule, type ScheduleLeg } from "@/lib/estimate-delay"
 import {
@@ -685,8 +686,9 @@ export function TrainLocationBoard() {
   const Pin = ({ t }: { t: TrainRunState }) => {
     const color = stat.routeColorById.get(t.routeId) || "#0891b2"
     const d = delayInfo(t.status, t.delayMinutes)
-    // 車両アイコン: 運用に割り当てた車両の画像。未割当・未設定は既定(列車2900.png/バスbus.png)。
-    const vehicle = vehicleManager.getCachedVehicleForOperation(t.operationId)
+    // 車両アイコン: Dynmapのマーカーアイコンで形式が分かればその車両、分からなければ運用に割り当てた車両。
+    // どちらも無ければ既定(列車2900.png/バスbus.png)。
+    const vehicle = resolveDisplayVehicle(t.dynmapIcon, vehicleManager.getCachedVehicleForOperation(t.operationId))
     const img = vehicle?.iconUrl || (t.routeType === 3 ? "/vehicles/bus.png" : "/vehicles/2900.png")
     const coupled = (t.coupledWith?.length || 0) > 0
     const allTrainNos = [t.trainNumber, ...(t.coupledWith?.map((c) => c.trainNumber) || [])].filter(Boolean)

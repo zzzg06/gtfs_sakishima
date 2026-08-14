@@ -1,6 +1,7 @@
 "use client"
 
 import { vehicleManager } from "@/lib/vehicle-manager"
+import { vehicleForDynmapIcon, vehicleNameForDynmapIcon } from "@/lib/dynmap-vehicle-icons"
 import { abbrevSyubetsu, delayInfo } from "@/lib/train-display"
 import type { TrainRunState } from "@/lib/train-position"
 import { X } from "lucide-react"
@@ -68,8 +69,13 @@ export function TrainDetailModal({
           <dd className="font-medium">{t.headsign || "—"}</dd>
           <dt className="text-muted-foreground">使用車両</dt>
           <dd className="flex flex-col gap-1 font-medium">
-            {members.map((m) => {
-              const v = vehicleManager.getCachedVehicleForOperation(m.operationId)
+            {members.map((m, mi) => {
+              const assigned = vehicleManager.getCachedVehicleForOperation(m.operationId)
+              // 先頭(自列車)のみDynmapのアイコンから形式を判定できる場合がある
+              const byIcon = mi === 0 ? vehicleForDynmapIcon(t.dynmapIcon) : null
+              // アイコンで形式が分かる場合は、車両未登録でもそちらを優先（運用割当は予定にすぎない）
+              const iconName = mi === 0 && !byIcon ? vehicleNameForDynmapIcon(t.dynmapIcon) : null
+              const v = byIcon || (iconName ? null : assigned)
               return (
                 <span key={m.operationId} className="flex items-center gap-1.5">
                   {isCoupled && (
@@ -82,6 +88,13 @@ export function TrainDetailModal({
                     <span>
                       {v.name}
                       {v.type ? <span className="text-muted-foreground">（{v.type}）</span> : null}
+                      {byIcon && <span className="ml-1 rounded bg-muted px-1 text-[10px] text-muted-foreground">実車両</span>}
+                    </span>
+                  ) : iconName ? (
+                    // 車両管理に未登録でも、アイコンから形式名だけは分かる
+                    <span>
+                      {iconName}
+                      <span className="ml-1 rounded bg-muted px-1 text-[10px] text-muted-foreground">未登録</span>
                     </span>
                   ) : (
                     <span className="text-muted-foreground">未割当</span>

@@ -5,6 +5,7 @@
 
 import { locateOnNetwork } from "./locate-on-network"
 import { isBusOperationNumber, matchOperationByHeadsign, resolveOperationNumber } from "./operation-number"
+import { isBusIcon } from "./dynmap-vehicle-icons"
 import { resolveScheduledLeg, type OperationSchedule } from "./estimate-delay"
 import type { StationCoordinates } from "./station-coordinates"
 import type { TrainRunState } from "./train-position"
@@ -25,9 +26,10 @@ export interface RtmBusMarker extends RtmMarker {
   prev?: { x: number; z: number }
 }
 
-// マーカーがバスか（運用番号が B0x／「バス」を含む、または車種アイコンが bus）。列車は K0x。
+// マーカーがバスか（運用番号が B0x／「バス」を含む、またはバスのアイコン）。列車は K0x。
+// バスは車両登録をしないため、アイコンでバスと分かれば十分（形式は特定しない）。
 export function isBusMarker(m: { runNo?: string; icon?: string }): boolean {
-  return isBusOperationNumber(m.runNo || "") || m.icon === "bus"
+  return isBusOperationNumber(m.runNo || "") || isBusIcon(m.icon)
 }
 
 export interface LocateRtmResult {
@@ -96,6 +98,7 @@ export function locateRtmMarkers(params: {
       toStop: loc.atStation ? loc.station || loc.aName : loc.bName,
       nextStop: undefined,
       progress: loc.t,
+      dynmapIcon: tr.icon,
     })
   }
   return { states, unmapped, buses }

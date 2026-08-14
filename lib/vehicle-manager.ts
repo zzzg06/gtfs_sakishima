@@ -8,6 +8,7 @@ export interface Vehicle {
   description?: string // 説明
   color?: string // 車両カラー（表示用）
   iconUrl?: string // 車両アイコン画像のURL
+  dynmapIcon?: string // Dynmap(RTM)マーカーのアイコン名（例: kr3000_32）。実位置表示でこの車両として扱う
 }
 
 // 車両の割り当ては「運用（trip_short_name）」単位。1運用＝複数列車・複数サイクルにまとめて適用される。
@@ -81,6 +82,10 @@ class VehicleManager {
   }
 
   // 運用番号から割り当て車両を同期取得（キャッシュ参照）
+  getCachedVehicles(): Vehicle[] {
+    return [...cachedVehicles.values()]
+  }
+
   getCachedVehicleForOperation(operationId?: string): Vehicle | null {
     if (!operationId) return null
     const vid = cachedAssignments.get(operationId)
@@ -164,3 +169,8 @@ class VehicleManager {
 }
 
 export const vehicleManager = new VehicleManager()
+
+// モジュールキャッシュ上の全車両（Dynmapアイコンから車両を引く用途）
+export function getCachedVehicles(): Vehicle[] {
+  return [...cachedVehicles.values()]
+}
