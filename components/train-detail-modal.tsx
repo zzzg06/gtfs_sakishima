@@ -2,7 +2,7 @@
 
 import { vehicleManager } from "@/lib/vehicle-manager"
 import { vehicleForDynmapIcon, vehicleNameForDynmapIcon } from "@/lib/dynmap-vehicle-icons"
-import { abbrevSyubetsu, delayInfo } from "@/lib/train-display"
+import { abbrevSyubetsu, delayInfo, formatHeadsign } from "@/lib/train-display"
 import type { TrainRunState } from "@/lib/train-position"
 import { X } from "lucide-react"
 
@@ -39,7 +39,7 @@ export function TrainDetailModal({
           >
             {abbrevSyubetsu(t.routeName) || t.operationId}
           </span>
-          <span className="min-w-0 truncate text-base font-bold">{t.headsign || ""}</span>
+          <span className="min-w-0 truncate text-base font-bold">{formatHeadsign(t.headsign, t.headsignNote)}</span>
           {t.isExtra && (
             <span className="whitespace-nowrap rounded bg-rose-600 px-1.5 py-0.5 text-xs font-bold text-white">
               臨時
@@ -74,7 +74,7 @@ export function TrainDetailModal({
             {t.isExtra && <span className="ml-1 text-xs text-muted-foreground">（Dynmapの表示）</span>}
           </dd>
           <dt className="text-muted-foreground">行先</dt>
-          <dd className="font-medium">{t.headsign || "—"}</dd>
+          <dd className="font-medium">{formatHeadsign(t.headsign, t.headsignNote) || "—"}</dd>
           <dt className="text-muted-foreground">使用車両</dt>
           <dd className="flex flex-col gap-1 font-medium">
             {members.map((m, mi) => {

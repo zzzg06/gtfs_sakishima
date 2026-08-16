@@ -48,6 +48,7 @@ export interface TrainRunState {
   routeName: string
   routeType: number // 1=列車系, 3=バス
   headsign?: string
+  headsignNote?: string // 行先の注記（Dynmap表示の「(咲西浜臨停)」など）。行先の後ろに括弧書きで出す
   direction: number // 0=下り, 1=上り
   status: TrainDelay["status"]
   delayMinutes: number

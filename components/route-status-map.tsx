@@ -19,7 +19,7 @@ import { isBusOperationNumber } from "@/lib/operation-number"
 import { liveSettingsManager, type LivePositionSource } from "@/lib/live-settings"
 import { vehicleManager } from "@/lib/vehicle-manager"
 import { resolveDisplayVehicle } from "@/lib/dynmap-vehicle-icons"
-import { abbrevSyubetsu, routeColor, vehicleIconUrl } from "@/lib/train-display"
+import { abbrevSyubetsu, formatHeadsign, routeColor, vehicleIconUrl } from "@/lib/train-display"
 import { TrainDetailModal } from "@/components/train-detail-modal"
 import { stationCoordinateManager, type StationCoordinates } from "@/lib/station-coordinates"
 import {
@@ -462,7 +462,7 @@ export function RouteStatusMap() {
                   {rtmUnmapped.map((t) => (
                     <li key={t.id} className="flex items-center justify-between gap-2">
                       <span className="font-medium">{t.runNo || "(運用なし)"}</span>
-                      <span className="truncate text-muted-foreground">{t.dest}</span>
+                      <span className="truncate text-muted-foreground">{formatHeadsign(t.dest, t.destNote)}</span>
                     </li>
                   ))}
                 </ul>
@@ -562,7 +562,9 @@ export function RouteStatusMap() {
                     onClick={() => setSelected(t)}
                     transform={`translate(${cx},${cy})`}
                   >
-                    <title>{`${t.isExtra ? "[臨時] " : ""}${t.operationId} ${t.routeName}${t.headsign ? " " + t.headsign : ""} / ${
+                    <title>{`${t.isExtra ? "[臨時] " : ""}${t.operationId} ${t.routeName}${
+                      t.headsign ? " " + formatHeadsign(t.headsign, t.headsignNote) : ""
+                    } / ${
                       t.atStation ? `${t.fromStop} 停車中` : `${t.fromStop}→${t.toStop} 走行中`
                     }${delayed ? ` / +${t.delayMinutes}分` : ""}`}</title>
                     {/* 線とアイコンをつなぐ引き出し線 */}

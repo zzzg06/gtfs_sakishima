@@ -30,6 +30,16 @@ const SYUBETSU_ABBREV: Record<string, string> = {
 }
 export const abbrevSyubetsu = (name: string) => SYUBETSU_ABBREV[name] || name
 
+// 行先の表示文字列。「行き」が付いていなければ補い、注記があれば括弧書きで後ろに添える。
+// 例: ("電鉄坊崎", "咲西浜臨停") → 「電鉄坊崎行き（咲西浜臨停）」／("咲島港行き") → 「咲島港行き」
+export function formatHeadsign(headsign?: string, note?: string): string {
+  const base = (headsign || "").trim()
+  if (!base) return ""
+  const withSuffix = /(行き|ゆき|行)$/.test(base) ? base : `${base}行き`
+  const n = (note || "").trim()
+  return n ? `${withSuffix}（${n}）` : withSuffix
+}
+
 // 運用に割り当てた車両の画像（未割当・未設定は既定アイコン）
 export function vehicleIconUrl(iconUrl: string | undefined, routeType: number): string {
   return iconUrl || (routeType === 3 ? "/vehicles/bus.png" : "/vehicles/2900.png")

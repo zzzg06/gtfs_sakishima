@@ -22,6 +22,7 @@ export interface RtmMarker {
   runNo: string
   type: string
   dest: string
+  destNote?: string // 行先の注記（「咲西浜臨停」など）。突き合わせには使わず表示だけに使う
   icon?: string
   x: number
   y: number
@@ -95,6 +96,7 @@ export function locateRtmMarkers(params: {
       routeName: tr.type,
       routeType: 1,
       headsign: tr.dest,
+      headsignNote: tr.destNote,
       direction,
       status: "on-time",
       delayMinutes: 0,

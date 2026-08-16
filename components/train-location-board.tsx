@@ -25,7 +25,7 @@ import {
   matchOperationByHeadsign,
   resolveOperationNumber,
 } from "@/lib/operation-number"
-import { abbrevSyubetsu, delayInfo, routeColor, vehicleIconUrl } from "@/lib/train-display"
+import { abbrevSyubetsu, delayInfo, formatHeadsign, routeColor, vehicleIconUrl } from "@/lib/train-display"
 import { TrainDetailModal } from "@/components/train-detail-modal"
 import { StopMapPicker } from "@/components/stop-map-picker"
 import { Train, Bus, RefreshCw, Map as MapIcon } from "lucide-react"
@@ -603,7 +603,7 @@ export function TrainLocationBoard() {
         const r = buildApproachingBus({
           id: bus.id,
           line: leg?.routeName || bus.type,
-          dest: leg?.headsign || bus.dest,
+          dest: formatHeadsign(leg?.headsign || bus.dest, bus.destNote),
           x: bus.x,
           z: bus.z,
           seq: dedupeConsecutive(seq),
@@ -710,7 +710,9 @@ export function TrainLocationBoard() {
           }
         }}
         className="group pointer-events-auto relative z-10 inline-flex flex-shrink-0 cursor-pointer flex-col items-center gap-0.5"
-        title={`${t.isExtra ? "[臨時] " : ""}${t.routeName} 運用${t.operationId}${t.headsign ? " " + t.headsign : ""}${
+        title={`${t.isExtra ? "[臨時] " : ""}${t.routeName} 運用${t.operationId}${
+          t.headsign ? " " + formatHeadsign(t.headsign, t.headsignNote) : ""
+        }${
           coupled ? `\n増結: 列車番号 ${allTrainNos.join(" + ")}` : ""
         }\n${
           t.atStation ? `${t.fromStop} 停車中` : `${t.fromStop}→${t.toStop} 走行中`
@@ -757,7 +759,7 @@ export function TrainLocationBoard() {
               className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-1 -translate-x-1/2 whitespace-nowrap rounded border bg-white px-1.5 py-0.5 text-[11px] font-medium opacity-0 shadow-md transition-opacity group-hover:opacity-100"
               style={{ borderColor: color, color }}
             >
-              {t.headsign}
+              {formatHeadsign(t.headsign, t.headsignNote)}
             </span>
           )}
         </span>
@@ -1218,7 +1220,7 @@ export function TrainLocationBoard() {
                   <div key={t.id} className="flex flex-wrap items-center gap-2 text-xs">
                     <span className="font-bold">{t.runNo}</span>
                     {t.type && <span className="font-medium text-foreground">{t.type}</span>}
-                    {t.dest && <span className="text-muted-foreground">{t.dest}</span>}
+                    {t.dest && <span className="text-muted-foreground">{formatHeadsign(t.dest, t.destNote)}</span>}
                     <span className="tabular-nums text-muted-foreground">
                       ({Math.round(t.x)}, {Math.round(t.z)})
                     </span>
@@ -1237,7 +1239,7 @@ export function TrainLocationBoard() {
                 {busView.unlocated.map((b) => (
                   <div key={b.id} className="flex flex-wrap items-center gap-2 text-xs">
                     <span className="rounded bg-green-700 px-1.5 py-0.5 font-bold text-white">{b.type}</span>
-                    {b.dest && <span className="text-muted-foreground">{b.dest}</span>}
+                    {b.dest && <span className="text-muted-foreground">{formatHeadsign(b.dest, b.destNote)}</span>}
                   </div>
                 ))}
               </div>
