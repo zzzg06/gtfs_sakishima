@@ -6,6 +6,7 @@ import { delayManager } from "@/lib/delay-manager"
 import { computeTrainRunStates, type TrainRunState, type TrainDelay } from "@/lib/train-position"
 import { RAIL_LINES } from "@/lib/rail-lines"
 import {
+  isDeadheadMarker,
   locateRtmMarkers,
   resolveRtmStatesWithSchedule,
   type RtmBusMarker,
@@ -180,7 +181,13 @@ function placeInSegment(stops: string[], states: TrainRunState[]): SegPlacement 
 // 連結後は時刻が完全一致するため在線位置も一致し、1ピンに統合される（連結前は位置が違うので別々のまま）。
 function mergeCoupledStates(states: TrainRunState[]): TrainRunState[] {
   const groups = new Map<string, TrainRunState[]>()
+  const singles: TrainRunState[] = []
   for (const s of states) {
+    // 回送はまとめず、増結表記も出さない（同じ位置に並んでいても各車をそのまま出す）
+    if (s.isDeadhead) {
+      singles.push(s)
+      continue
+    }
     const key = [
       s.routeName,
       s.direction,
@@ -194,7 +201,7 @@ function mergeCoupledStates(states: TrainRunState[]): TrainRunState[] {
     if (g) g.push(s)
     else groups.set(key, [s])
   }
-  const out: TrainRunState[] = []
+  const out: TrainRunState[] = [...singles]
   for (const g of groups.values()) {
     if (g.length === 1) {
       out.push(g[0])
@@ -552,6 +559,7 @@ export function TrainLocationBoard() {
     const unlocated: RtmBus[] = []
     if (source === "dynmap") {
       for (const bus of rtmBuses) {
+        if (isDeadheadMarker(bus)) continue // 回送は営業便ではないので接近案内に出さない
         // 運用の特定:
         // (1)運用番号(B0x)の数字一致。その運用の便が幕(行先)と噛み合えばそれを採用
         // (2)噛み合わない（ダイヤと違う運用に入っている等）ときは、幕と一致する運行中の運用へ
@@ -1219,8 +1227,15 @@ export function TrainLocationBoard() {
                 {rtmUnmapped.map((t) => (
                   <div key={t.id} className="flex flex-wrap items-center gap-2 text-xs">
                     <span className="font-bold">{t.runNo}</span>
-                    {t.type && <span className="font-medium text-foreground">{t.type}</span>}
-                    {t.dest && <span className="text-muted-foreground">{formatHeadsign(t.dest, t.destNote)}</span>}
+                    {/* 回送は種別「回送」だけにまとめる（行先は出さない） */}
+                    {isDeadheadMarker(t) ? (
+                      <span className="font-medium text-foreground">回送</span>
+                    ) : (
+                      <>
+                        {t.type && <span className="font-medium text-foreground">{t.type}</span>}
+                        {t.dest && <span className="text-muted-foreground">{formatHeadsign(t.dest, t.destNote)}</span>}
+                      </>
+                    )}
                     <span className="tabular-nums text-muted-foreground">
                       ({Math.round(t.x)}, {Math.round(t.z)})
                     </span>

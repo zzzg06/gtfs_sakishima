@@ -68,6 +68,8 @@ export interface TrainRunState {
   dynmapIcon?: string
   // 臨時列車。ダイヤ上の便に該当せず、Dynmapで設定された種別・行先をそのまま表示していることを示す。
   isExtra?: boolean
+  // 回送。種別「回送」でまとめて表示し、行先・遅延・到着予想・増結表記は出さない。
+  isDeadhead?: boolean
 }
 
 // 座標つき（Dynmapマーカー等で使用）

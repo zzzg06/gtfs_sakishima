@@ -132,7 +132,9 @@ export function TrainDetailModal({
           </div>
         ) : (
           <p className="mt-3 text-xs text-muted-foreground">
-            {t.isExtra
+            {t.isDeadhead
+              ? "回送のため、行先・到着予想は表示しません。"
+              : t.isExtra
               ? "ダイヤ上に該当の便が無い臨時列車のため、到着予想を表示できません（種別・行先は実車の表示によります）。"
               : fromDynmap
                 ? "この運用はダイヤ上に見つからないため到着予想を表示できません。"

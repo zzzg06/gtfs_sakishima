@@ -40,6 +40,12 @@ export function isBusMarker(m: { runNo?: string; icon?: string }): boolean {
   return isBusOperationNumber(m.runNo || "") || isBusIcon(m.icon)
 }
 
+// 回送か（種別・行先のどちらかに「回送」が入っていれば回送とみなす）。
+// 回送は営業列車ではないため、種別「回送」だけにまとめ、行先やダイヤ突き合わせは行わない。
+export function isDeadheadMarker(m: { type?: string; dest?: string }): boolean {
+  return `${m.type || ""}${m.dest || ""}`.normalize("NFKC").includes("回送")
+}
+
 export interface LocateRtmResult {
   states: TrainRunState[] // 線区に対応づいた列車
   unmapped: RtmMarker[] // 駅座標不足・線区から離れた位置で対応づかない列車
@@ -89,14 +95,17 @@ export function locateRtmMarkers(params: {
         lastDir.set(tr.id, direction)
       }
     }
+    // 回送は種別「回送」に統一し、行先は出さない
+    const deadhead = isDeadheadMarker(tr)
     states.push({
       operationId: tr.runNo,
       tripId: tr.id,
       routeId: "__rtm__",
-      routeName: tr.type,
+      routeName: deadhead ? "回送" : tr.type,
       routeType: 1,
-      headsign: tr.dest,
-      headsignNote: tr.destNote,
+      headsign: deadhead ? "" : tr.dest,
+      headsignNote: deadhead ? undefined : tr.destNote,
+      isDeadhead: deadhead || undefined,
       direction,
       status: "on-time",
       delayMinutes: 0,
@@ -127,6 +136,12 @@ export function resolveRtmStatesWithSchedule(params: {
 }): TrainRunState[] {
   const { states, operationSchedule, trainOperationIds, scheduleStates, coords, positionById, nowMinutes } = params
   return states.map((s) => {
+    // 回送はダイヤ上の便に当てない（種別「回送」のまま。行先・遅延・到着予想は出さない）。
+    // 運用番号だけは車両割当が引けるよう正規化する。
+    if (s.isDeadhead) {
+      const op = resolveOperationNumber(s.operationId, trainOperationIds) || s.operationId
+      return op === s.operationId ? s : { ...s, operationId: op }
+    }
     const opId =
       resolveOperationNumber(s.operationId, trainOperationIds) ||
       matchOperationByHeadsign(s.headsign || "", false, scheduleStates, coords, positionById?.get(s.tripId)) ||

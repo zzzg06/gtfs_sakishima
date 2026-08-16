@@ -23,6 +23,7 @@ import { abbrevSyubetsu, formatHeadsign, routeColor, vehicleIconUrl } from "@/li
 import { TrainDetailModal } from "@/components/train-detail-modal"
 import { stationCoordinateManager, type StationCoordinates } from "@/lib/station-coordinates"
 import {
+  isDeadheadMarker,
   locateRtmMarkers,
   resolveRtmStatesWithSchedule,
   type RtmMarker,
@@ -462,7 +463,10 @@ export function RouteStatusMap() {
                   {rtmUnmapped.map((t) => (
                     <li key={t.id} className="flex items-center justify-between gap-2">
                       <span className="font-medium">{t.runNo || "(運用なし)"}</span>
-                      <span className="truncate text-muted-foreground">{formatHeadsign(t.dest, t.destNote)}</span>
+                      <span className="truncate text-muted-foreground">
+                        {/* 回送は種別「回送」だけにまとめる（行先は出さない） */}
+                        {isDeadheadMarker(t) ? "回送" : formatHeadsign(t.dest, t.destNote)}
+                      </span>
                     </li>
                   ))}
                 </ul>
