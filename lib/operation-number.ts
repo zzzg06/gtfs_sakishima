@@ -8,6 +8,7 @@
 
 import type { TrainRunState } from "./train-position"
 import type { StationCoordinates } from "./station-coordinates"
+import { abbrevSyubetsu } from "./train-display"
 
 export type OperationKind = "train" | "bus" | "other"
 
@@ -101,6 +102,16 @@ export function headsignMatchLevel(a: string, b: string): 0 | 1 | null {
 
 export function headsignMatches(a: string, b: string): boolean {
   return headsignMatchLevel(a, b) !== null
+}
+
+// 種別が同じとみなせるか。全角/半角・空白と「各駅停車＝各停」等の短縮表記の違いを吸収する。
+// 片方が空（Dynmap側で種別未設定・ダイヤ側に種別名なし）のときは判定できないため一致扱いにする。
+export function syubetsuMatches(a: string, b: string): boolean {
+  const norm = (s: string) => abbrevSyubetsu((s || "").normalize("NFKC").replace(/\s/g, ""))
+  const x = norm(a)
+  const y = norm(b)
+  if (!x || !y) return true
+  return x === y
 }
 
 // Dynmapに表示されている行先から運用を特定する（運用番号で突き合わせできないときの補助）。

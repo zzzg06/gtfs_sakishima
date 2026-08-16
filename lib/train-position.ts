@@ -65,6 +65,8 @@ export interface TrainRunState {
   terminalDwell?: boolean
   // Dynmap実位置のみ: マーカーのアイコン名（例 kr3000_32）。どの車両かの判定に使う。
   dynmapIcon?: string
+  // 臨時列車。ダイヤ上の便に該当せず、Dynmapで設定された種別・行先をそのまま表示していることを示す。
+  isExtra?: boolean
 }
 
 // 座標つき（Dynmapマーカー等で使用）

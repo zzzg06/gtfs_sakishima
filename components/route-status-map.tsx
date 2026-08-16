@@ -562,7 +562,7 @@ export function RouteStatusMap() {
                     onClick={() => setSelected(t)}
                     transform={`translate(${cx},${cy})`}
                   >
-                    <title>{`${t.operationId} ${t.routeName}${t.headsign ? " " + t.headsign : ""} / ${
+                    <title>{`${t.isExtra ? "[臨時] " : ""}${t.operationId} ${t.routeName}${t.headsign ? " " + t.headsign : ""} / ${
                       t.atStation ? `${t.fromStop} 停車中` : `${t.fromStop}→${t.toStop} 走行中`
                     }${delayed ? ` / +${t.delayMinutes}分` : ""}`}</title>
                     {/* 線とアイコンをつなぐ引き出し線 */}
@@ -608,6 +608,15 @@ export function RouteStatusMap() {
                     >
                       {badge}
                     </text>
+                    {/* 臨時列車（ダイヤ外。Dynmapの種別・行先をそのまま表示）。カード左上に小さく出す */}
+                    {t.isExtra && (
+                      <g transform={`translate(${-ICON_W / 2},${-ICON_H / 2})`}>
+                        <rect x={-4} y={-7} width={24} height={13} rx={6} fill="#e11d48" stroke="#ffffff" strokeWidth={1.5} />
+                        <text x={8} y={0} textAnchor="middle" dominantBaseline="central" fontSize={9} fontWeight={700} fill="#ffffff">
+                          臨時
+                        </text>
+                      </g>
+                    )}
                     {/* 進行方向の矢印。終着駅に停車中（次駅なし）は向きが定まらないため出さない */}
                     {!(t.atStation && !t.nextStop) && (
                       <g transform={`rotate(${angle}) translate(${ICON_W / 2 + 9},0)`}>

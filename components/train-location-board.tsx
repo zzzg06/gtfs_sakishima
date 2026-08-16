@@ -710,7 +710,7 @@ export function TrainLocationBoard() {
           }
         }}
         className="group pointer-events-auto relative z-10 inline-flex flex-shrink-0 cursor-pointer flex-col items-center gap-0.5"
-        title={`${t.routeName} 運用${t.operationId}${t.headsign ? " " + t.headsign : ""}${
+        title={`${t.isExtra ? "[臨時] " : ""}${t.routeName} 運用${t.operationId}${t.headsign ? " " + t.headsign : ""}${
           coupled ? `\n増結: 列車番号 ${allTrainNos.join(" + ")}` : ""
         }\n${
           t.atStation ? `${t.fromStop} 停車中` : `${t.fromStop}→${t.toStop} 走行中`
@@ -721,6 +721,12 @@ export function TrainLocationBoard() {
           className="relative inline-flex flex-col items-center gap-0.5 rounded-lg border bg-white px-1.5 py-1 text-center shadow-sm"
           style={{ borderColor: color, outline: d.delayed ? `2px solid ${d.color}` : "none" }}
         >
+          {/* 臨時列車（ダイヤ外。Dynmapで設定された種別・行先をそのまま表示している） */}
+          {t.isExtra && (
+            <span className="absolute -left-1.5 -top-1.5 z-30 rounded-full border border-white bg-rose-600 px-1 text-[9px] font-bold leading-tight text-white shadow">
+              臨時
+            </span>
+          )}
           {/* 増結（途中駅で連結した併結列車）。1ピンにまとめて表示中であることを示す */}
           {coupled && (
             <span className="absolute -right-1.5 -top-1.5 z-30 rounded-full border border-white bg-amber-500 px-1 text-[9px] font-bold leading-tight text-white shadow">

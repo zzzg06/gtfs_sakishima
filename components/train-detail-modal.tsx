@@ -40,6 +40,11 @@ export function TrainDetailModal({
             {abbrevSyubetsu(t.routeName) || t.operationId}
           </span>
           <span className="min-w-0 truncate text-base font-bold">{t.headsign || ""}</span>
+          {t.isExtra && (
+            <span className="whitespace-nowrap rounded bg-rose-600 px-1.5 py-0.5 text-xs font-bold text-white">
+              臨時
+            </span>
+          )}
           {isCoupled && (
             <span className="whitespace-nowrap rounded bg-amber-500 px-1.5 py-0.5 text-xs font-bold text-white">
               増結
@@ -64,7 +69,10 @@ export function TrainDetailModal({
             </>
           )}
           <dt className="text-muted-foreground">種別</dt>
-          <dd className="font-medium">{t.routeName}</dd>
+          <dd className="font-medium">
+            {t.routeName}
+            {t.isExtra && <span className="ml-1 text-xs text-muted-foreground">（Dynmapの表示）</span>}
+          </dd>
           <dt className="text-muted-foreground">行先</dt>
           <dd className="font-medium">{t.headsign || "—"}</dd>
           <dt className="text-muted-foreground">使用車両</dt>
@@ -124,9 +132,11 @@ export function TrainDetailModal({
           </div>
         ) : (
           <p className="mt-3 text-xs text-muted-foreground">
-            {fromDynmap
-              ? "この運用はダイヤ上に見つからないため到着予想を表示できません。"
-              : "この先の停車駅情報がありません。"}
+            {t.isExtra
+              ? "ダイヤ上に該当の便が無い臨時列車のため、到着予想を表示できません（種別・行先は実車の表示によります）。"
+              : fromDynmap
+                ? "この運用はダイヤ上に見つからないため到着予想を表示できません。"
+                : "この先の停車駅情報がありません。"}
           </p>
         )}
       </div>

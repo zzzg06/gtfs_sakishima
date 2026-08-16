@@ -4,7 +4,14 @@
 // 呼び出し側は prevPos / lastDir を ref 等で保持して渡す（進行方向の判定に前回座標が要るため）。
 
 import { locateOnNetwork } from "./locate-on-network"
-import { isBusOperationNumber, matchOperationByHeadsign, resolveOperationNumber } from "./operation-number"
+import {
+  headsignMatches,
+  isBusOperationNumber,
+  matchOperationByHeadsign,
+  normalizeHeadsign,
+  resolveOperationNumber,
+  syubetsuMatches,
+} from "./operation-number"
 import { isBusIcon } from "./dynmap-vehicle-icons"
 import { resolveScheduledLeg, type OperationSchedule } from "./estimate-delay"
 import type { StationCoordinates } from "./station-coordinates"
@@ -127,8 +134,21 @@ export function resolveRtmStatesWithSchedule(params: {
       operationSchedule,
       nowMinutes,
     )
+    // Dynmapのマーカーで種別・行先が設定されているか（臨時列車の判定に使う）
+    const hasDynInfo = (s.routeName || "").trim() !== "" && normalizeHeadsign(s.headsign || "") !== ""
     // 種別/行先/遅延はダイヤで裏づけが取れたときだけ上書きする
-    if (!r.matched) return opId === s.operationId ? s : { ...s, operationId: opId }
+    if (!r.matched) {
+      const base = opId === s.operationId ? s : { ...s, operationId: opId }
+      // ダイヤ上に該当便が無くても、Dynmapで種別・行先が設定されていれば臨時列車として表示する
+      return hasDynInfo ? { ...base, isExtra: true } : base
+    }
+    // 運用番号ではダイヤ上の便に当たるが、Dynmapの種別・行先が食い違う場合は
+    // その運用で走らせているスタフ外の列車とみなし、Dynmapの表示を優先する（遅延・到着予想は出さない）。
+    // ダイヤ側に行先が無い便は突き合わせようがないので一致扱い（種別も syubetsuMatches が同様に扱う）
+    const destOk = !normalizeHeadsign(r.headsign || "") || headsignMatches(s.headsign || "", r.headsign || "")
+    if (hasDynInfo && !(destOk && syubetsuMatches(s.routeName, r.routeName || ""))) {
+      return { ...s, operationId: opId, isExtra: true }
+    }
     return {
       ...s,
       // 車両割当や運用詳細が時刻表の運用番号で引けるよう、正規化後の番号を使う
