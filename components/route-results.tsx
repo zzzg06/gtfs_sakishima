@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
+import { ShareResultButton } from "@/components/share-result-button"
 import { Clock, RefreshCw, AlertCircle, AlertTriangle, Train, Bus, Search, Circle, Car, ChevronLeft, ChevronRight, Send, CheckCircle2, Navigation } from "lucide-react"
 import type { TransitRoute, TransitSegment, WalkingSegment, RouteBadge } from "@/lib/route-finder"
 import type { RouteQuery } from "@/hooks/use-route-search"
@@ -37,9 +38,10 @@ interface RouteResultsProps {
   onLater?: () => void
   onNewSearch: () => void
   onStationClick?: (stop: GTFSStop) => void // 駅名クリックで時刻表へ
+  shareUrl?: string // 共有リンクのパス（/result?...）。渡すとヘッダーに共有ボタンが出る
 }
 
-// 検索条件のヘッダー（出発地→到着地・日時・1本前/1本後）
+// 検索条件のヘッダー（出発地→到着地・日時・共有・1本前/1本後）
 function ResultHeader({
   query,
   canEarlier,
@@ -47,6 +49,7 @@ function ResultHeader({
   onEarlier,
   onLater,
   onNewSearch,
+  shareUrl,
 }: {
   query?: RouteQuery | null
   canEarlier?: boolean
@@ -54,6 +57,7 @@ function ResultHeader({
   onEarlier?: () => void
   onLater?: () => void
   onNewSearch: () => void
+  shareUrl?: string
 }) {
   const now = new Date()
   const weekday = ["日", "月", "火", "水", "木", "金", "土"][now.getDay()]
@@ -77,15 +81,25 @@ function ResultHeader({
             </>
           )}
         </div>
-        <Button
-          size="sm"
-          variant="secondary"
-          onClick={onNewSearch}
-          className="h-7 bg-orange-500 px-3 text-white hover:bg-orange-600"
-        >
-          <Search className="mr-1 h-3.5 w-3.5" />
-          再検索
-        </Button>
+        <div className="flex items-center gap-2">
+          {/* 共有: いまの検索条件からリンクを作ってコピーできる */}
+          {shareUrl && (
+            <ShareResultButton
+              path={shareUrl}
+              title={query ? `${query.fromName}→${query.toName}` : undefined}
+              className="h-7 bg-white/15 px-3 text-white hover:bg-white/25"
+            />
+          )}
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={onNewSearch}
+            className="h-7 bg-orange-500 px-3 text-white hover:bg-orange-600"
+          >
+            <Search className="mr-1 h-3.5 w-3.5" />
+            再検索
+          </Button>
+        </div>
       </div>
 
       {/* 1本前 / 日時 / 1本後 */}
@@ -153,6 +167,7 @@ export function RouteResults({
   onLater,
   onNewSearch,
   onStationClick,
+  shareUrl,
 }: RouteResultsProps) {
   if (!hasSearched && !isLoading) {
     return null
@@ -221,6 +236,7 @@ export function RouteResults({
         onEarlier={onEarlier}
         onLater={onLater}
         onNewSearch={onNewSearch}
+        shareUrl={shareUrl}
       />
 
       {routes.map((route, index) => (
