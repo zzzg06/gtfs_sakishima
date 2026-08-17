@@ -32,6 +32,13 @@ export function parseOperationNumber(raw: string): ParsedOperationNumber {
   return { raw, kind, num }
 }
 
+// 臨時運用の番号。K99(列車)/B99(バス)はダイヤ上の特定の運用ではなく「臨時」を表す約束。
+const EXTRA_OPERATION_NUMBER = 99
+export function isExtraOperationNumber(raw: string): boolean {
+  const p = parseOperationNumber(raw)
+  return p.num === EXTRA_OPERATION_NUMBER && p.kind !== "other"
+}
+
 export function isBusOperationNumber(raw: string): boolean {
   return parseOperationNumber(raw).kind === "bus"
 }

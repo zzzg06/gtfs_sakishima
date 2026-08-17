@@ -7,6 +7,7 @@ import { locateOnNetwork } from "./locate-on-network"
 import {
   headsignMatches,
   isBusOperationNumber,
+  isExtraOperationNumber,
   matchOperationByHeadsign,
   normalizeHeadsign,
   resolveOperationNumber,
@@ -73,6 +74,9 @@ export function locateRtmMarkers(params: {
       buses.push({ ...tr, prev })
       continue
     }
+    // 運用番号が未設定（ラベルが "[ ]"）の車両は走行位置に出さない。
+    // 運用に紐づかず、どの列車か特定できないため（回送・入換等の車両）。
+    if (!(tr.runNo || "").trim()) continue
     const loc = locateOnNetwork(tr.x, tr.z, coords)
     // 駅間が広い/曲線区間ほど直線への垂直距離が大きくなるため、区間長に応じた可変しきい値
     const thresh = loc ? Math.max(60, loc.chordLen * 0.6) : 0
@@ -142,6 +146,8 @@ export function resolveRtmStatesWithSchedule(params: {
       const op = resolveOperationNumber(s.operationId, trainOperationIds) || s.operationId
       return op === s.operationId ? s : { ...s, operationId: op }
     }
+    // K99 は臨時運用の番号。ダイヤ上の運用ではないので突き合わせず、Dynmapの種別・行先をそのまま出す
+    if (isExtraOperationNumber(s.operationId)) return { ...s, isExtra: true }
     const opId =
       resolveOperationNumber(s.operationId, trainOperationIds) ||
       matchOperationByHeadsign(s.headsign || "", false, scheduleStates, coords, positionById?.get(s.tripId)) ||

@@ -22,6 +22,7 @@ import { buildOperationSchedule, type ScheduleLeg } from "@/lib/estimate-delay"
 import {
   headsignMatchLevel,
   isBusOperationNumber,
+  isExtraOperationNumber,
   isSameOperation,
   matchOperationByHeadsign,
   resolveOperationNumber,
@@ -560,6 +561,9 @@ export function TrainLocationBoard() {
     if (source === "dynmap") {
       for (const bus of rtmBuses) {
         if (isDeadheadMarker(bus)) continue // 回送は営業便ではないので接近案内に出さない
+        // B99 は臨時便。運用の突き合わせ（停車順の特定）はそのまま行うが、
+        // 表示する系統・行先はダイヤではなくDynmapの表示を優先し、「臨時」として出す。
+        const isExtraBus = isExtraOperationNumber(bus.runNo || "")
         // 運用の特定:
         // (1)運用番号(B0x)の数字一致。その運用の便が幕(行先)と噛み合えばそれを採用
         // (2)噛み合わない（ダイヤと違う運用に入っている等）ときは、幕と一致する運行中の運用へ
@@ -610,8 +614,11 @@ export function TrainLocationBoard() {
         if (!seq || !seq.includes(selectedBusStop)) continue // この便は選択停に停まらない
         const r = buildApproachingBus({
           id: bus.id,
-          line: leg?.routeName || bus.type,
-          dest: formatHeadsign(leg?.headsign || bus.dest, bus.destNote),
+          line: (isExtraBus ? bus.type || leg?.routeName : leg?.routeName || bus.type) || "",
+          dest: formatHeadsign(
+            (isExtraBus ? bus.dest || leg?.headsign : leg?.headsign || bus.dest) || "",
+            bus.destNote,
+          ),
           x: bus.x,
           z: bus.z,
           seq: dedupeConsecutive(seq),
@@ -620,10 +627,14 @@ export function TrainLocationBoard() {
           selectedStop: selectedBusStop,
           lookBack: 4,
         })
-        if (r.kind === "approaching") approaching.push(r.bus)
+        if (r.kind === "approaching") approaching.push(isExtraBus ? { ...r.bus, isExtra: true } : r.bus)
         // 位置不明でも、突き合わせた便の系統・行先が分かっていればそれを見せる
         else if (r.kind === "unlocated")
-          unlocated.push({ ...bus, type: leg?.routeName || bus.type, dest: leg?.headsign || bus.dest })
+          unlocated.push(
+            isExtraBus
+              ? bus
+              : { ...bus, type: leg?.routeName || bus.type, dest: leg?.headsign || bus.dest },
+          )
         // not-approaching（通過済み等）は表示しない
       }
     } else {
@@ -785,6 +796,10 @@ export function TrainLocationBoard() {
   const BusApproachRow = ({ b }: { b: ApproachingBus }) => (
     <div className="rounded-lg border border-border p-3 shadow-sm">
       <div className="mb-2 flex items-center gap-2">
+        {/* 臨時便(B99)。ダイヤに無い便なのでDynmapの系統・行先をそのまま出している */}
+        {b.isExtra && (
+          <span className="whitespace-nowrap rounded bg-rose-600 px-1.5 py-0.5 text-xs font-bold text-white">臨時</span>
+        )}
         <span className="rounded bg-green-700 px-2 py-1 text-base font-bold text-white">{b.line}</span>
         <span className="min-w-0 truncate text-lg font-bold">{b.dest}</span>
         {b.delayed && b.delayText && (

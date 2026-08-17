@@ -23,6 +23,7 @@ export interface ApproachingBus {
   strip: BusStripStop[] // 手前lookBack停〜選択停
   delayed?: boolean // ダイヤ予測のみ: 遅延あり
   delayText?: string // ダイヤ予測のみ: 遅延表示テキスト
+  isExtra?: boolean // 臨時便(B99)。ダイヤに無く、Dynmapの系統・行先をそのまま表示している
 }
 
 // 進行方向 forward で、選択停 sIdx の手前 lookBack 停〜選択停の表示窓を作る。
