@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
 import { ShareResultButton } from "@/components/share-result-button"
+import { NearbyMapButton } from "@/components/nearby-map-button"
 import { Clock, RefreshCw, AlertCircle, AlertTriangle, Train, Bus, Search, Circle, Car, ChevronLeft, ChevronRight, Send, CheckCircle2, Navigation } from "lucide-react"
 import type { TransitRoute, TransitSegment, WalkingSegment, RouteBadge } from "@/lib/route-finder"
 import type { RouteQuery } from "@/hooks/use-route-search"
@@ -666,6 +667,8 @@ function RouteCard({
           時刻表
         </button>
       )}
+      {/* 駅の周辺地図（Dynmap）。座標未登録の駅ではボタン自体が出ない */}
+      {!isTaxiOnlyPoint(stop.stop_name) && <NearbyMapButton stationName={stop.stop_name} />}
     </>
   )
 

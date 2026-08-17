@@ -5,6 +5,7 @@ import { useMemo, useState } from "react"
 import { useEffect } from "react"
 import { StationSearch } from "@/components/station-search"
 import { StopMapPicker, type PickerStop } from "@/components/stop-map-picker"
+import { NearbyMapButton } from "@/components/nearby-map-button"
 import { gtfsParser, type GTFSStop } from "@/lib/gtfs-parser"
 import { isTaxiOnlyPoint } from "@/lib/taxi-routes"
 import { stationCoordinateManager, type StationCoordinates } from "@/lib/station-coordinates"
@@ -292,6 +293,11 @@ export function TimetableResults({
             <Clock className="h-5 w-5" />
             <span className="text-base font-bold">時刻表</span>
             <span className="font-bold">{stop.stop_name}</span>
+            {/* 駅の周辺地図（Dynmap）。座標未登録の駅ではボタン自体が出ない */}
+            <NearbyMapButton
+              stationName={stop.stop_name}
+              className="inline-flex items-center gap-1 rounded bg-white/15 px-2 py-0.5 text-xs font-medium text-white hover:bg-white/25"
+            />
           </div>
           <button
             type="button"
