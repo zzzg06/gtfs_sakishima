@@ -1,6 +1,8 @@
 // Dynmap（サーバーのライブ地図）の任意地点へのリンクを組み立てる。
 // Dynmap 2.6 の map.js は ?worldname=&mapname=&x=&y=&z=&zoom= を読んで初期表示位置を決める。
-// nogui=true でチャット等のUIを消せるので、アプリ内にiframeで埋め込むときに使う。
+// 埋め込み時は nopanel=true（サイドバーを隠す）＋ nocompass=true を使う。
+// ※ nogui=true はコンポーネント(js/markers.js 等)の読み込み自体を止めるため、
+//   駅・列車などのマーカーが一切描画されなくなる。マーカーを見せたいので使わない。
 //
 // 駅座標(station-coordinates)はX/Zしか持たないため、Yはワールドの海面(64)を既定にする。
 
@@ -19,7 +21,7 @@ export interface DynmapLinkOptions {
   map?: string
   zoom?: number // 大きいほど拡大。駅周辺は 5〜6 くらいが見やすい
   y?: number
-  nogui?: boolean // 埋め込み用にDynmapのUIを隠す
+  embed?: boolean // 埋め込み用。サイドバー・コンパスを隠す（マーカーは表示したままにする）
 }
 
 export function buildDynmapUrl(x: number, z: number, options: DynmapLinkOptions = {}): string {
@@ -30,6 +32,9 @@ export function buildDynmapUrl(x: number, z: number, options: DynmapLinkOptions 
   p.set("x", String(Math.round(x)))
   p.set("y", String(Math.round(options.y ?? SEA_LEVEL)))
   p.set("z", String(Math.round(z)))
-  if (options.nogui) p.set("nogui", "true")
+  if (options.embed) {
+    p.set("nopanel", "true")
+    p.set("nocompass", "true")
+  }
   return `${DYNMAP_BASE_URL}/?${p.toString()}`
 }

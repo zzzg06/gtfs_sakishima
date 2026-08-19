@@ -22,6 +22,7 @@ import {
   Footprints,
   History,
   Inbox,
+  Info,
   Map as MapIcon,
   Bus as BusIcon,
 } from "lucide-react"
@@ -36,13 +37,24 @@ import { OperationRequestViewer } from "@/components/operation-request-viewer"
 import { StationCoordinateManager } from "@/components/station-coordinate-manager"
 import { RouteStatusMap } from "@/components/route-status-map"
 import { BusMapCalibrator } from "@/components/bus-map-calibrator"
+import { StatusSettingsManager } from "@/components/status-settings-manager"
 
 interface AdminDataManagerProps {
   onDataLoaded: () => void
 }
 
 // 管理画面のセクション。タブで切り替える（従来の全画面置換＋戻るボタン方式を廃止）。
-type AdminSection = "datasets" | "map" | "busmap" | "trips" | "vehicles" | "routes" | "coords" | "requests" | "history"
+type AdminSection =
+  | "datasets"
+  | "map"
+  | "busmap"
+  | "trips"
+  | "vehicles"
+  | "routes"
+  | "coords"
+  | "status"
+  | "requests"
+  | "history"
 
 const ADMIN_TABS: { key: AdminSection; label: string; icon: typeof Database; needsData?: boolean }[] = [
   { key: "datasets", label: "データ管理", icon: Database },
@@ -52,6 +64,7 @@ const ADMIN_TABS: { key: AdminSection; label: string; icon: typeof Database; nee
   { key: "vehicles", label: "車両管理", icon: Car, needsData: true },
   { key: "routes", label: "経路・徒歩設定", icon: Footprints, needsData: true },
   { key: "coords", label: "駅座標", icon: MapPin, needsData: true },
+  { key: "status", label: "運行情報", icon: Info },
   { key: "requests", label: "運用リクエスト", icon: Inbox },
   { key: "history", label: "検索履歴", icon: History },
 ]
@@ -219,6 +232,7 @@ export function AdminDataManager({ onDataLoaded }: AdminDataManagerProps) {
         {section === "vehicles" && <VehicleManager onBack={backToDatasets} />}
         {section === "routes" && <RouteSettingsManager onBack={backToDatasets} />}
         {section === "coords" && <StationCoordinateManager onBack={backToDatasets} />}
+        {section === "status" && <StatusSettingsManager onBack={backToDatasets} />}
         {section === "requests" && <OperationRequestViewer onBack={backToDatasets} />}
         {section === "history" && <SearchHistoryViewer onBack={backToDatasets} />}
       </div>

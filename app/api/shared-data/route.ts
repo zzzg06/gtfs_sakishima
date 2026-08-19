@@ -4,6 +4,7 @@ import type { TripDelayInfo, TripOperationStatus } from "@/lib/delay-manager"
 import { DEFAULT_ROUTE_SETTINGS, type RouteSettings } from "@/lib/route-settings"
 import { DEFAULT_LIVE_SETTINGS, type LiveSettings } from "@/lib/live-settings"
 import { DEFAULT_BUS_MAP_SETTINGS, type BusMapSettings } from "@/lib/bus-map"
+import { DEFAULT_STATUS_SETTINGS, normalizeStatusSettings, type StatusSettings } from "@/lib/status-settings"
 import type { StationCoordinates } from "@/lib/station-coordinates"
 import { readJsonFile, writeJsonFile } from "@/lib/server/file-store"
 import { getRequestSession } from "@/lib/server/session"
@@ -22,6 +23,7 @@ interface SharedDataStore {
   routeSettings: RouteSettings
   liveSettings: LiveSettings // 走行位置の表示元（管理者のみ変更可）
   busMap: BusMapSettings // バス停マップ（背景画像と位置合わせ）
+  statusSettings: StatusSettings // 運行情報ページの掲載設定（管理者のみ変更可）
   stationCoordinates: StationCoordinates
   lastUpdated: string
 }
@@ -38,6 +40,7 @@ function emptyStore(): SharedDataStore {
     routeSettings: { ...DEFAULT_ROUTE_SETTINGS },
     liveSettings: { ...DEFAULT_LIVE_SETTINGS },
     busMap: { ...DEFAULT_BUS_MAP_SETTINGS },
+    statusSettings: { ...DEFAULT_STATUS_SETTINGS },
     stationCoordinates: {},
     lastUpdated: new Date().toISOString(),
   }
@@ -95,6 +98,9 @@ export async function GET(request: NextRequest) {
       case "station-coordinates":
         return NextResponse.json({ success: true, data: store.stationCoordinates, lastUpdated: store.lastUpdated })
 
+      case "status-settings":
+        return NextResponse.json({ success: true, data: store.statusSettings, lastUpdated: store.lastUpdated })
+
       case "all":
         return NextResponse.json({ success: true, data: store, lastUpdated: store.lastUpdated })
 
@@ -148,6 +154,9 @@ export async function POST(request: NextRequest) {
             break
           case "station-coordinates":
             store.stationCoordinates = data || {}
+            break
+          case "status-settings":
+            store.statusSettings = normalizeStatusSettings(data)
             break
           default:
             return NextResponse.json({ success: false, error: "Invalid data type" }, { status: 400 })

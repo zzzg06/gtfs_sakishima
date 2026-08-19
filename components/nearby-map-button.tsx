@@ -50,7 +50,7 @@ export function NearbyMapButton({
   if (!coord) return null
 
   const linkUrl = buildDynmapUrl(coord.x, coord.z, { zoom: 5 })
-  const embedUrl = buildDynmapUrl(coord.x, coord.z, { zoom: 5, nogui: true })
+  const embedUrl = buildDynmapUrl(coord.x, coord.z, { zoom: 5, embed: true })
   const cls =
     className ??
     "inline-flex items-center gap-0.5 rounded border border-sky-600 px-1.5 py-0.5 text-[10px] font-medium text-sky-700 transition-colors hover:bg-sky-50"
@@ -100,7 +100,8 @@ export function NearbyMapButton({
               </a>
             </DialogTitle>
           </DialogHeader>
-          {/* Dynmapをそのまま埋め込む。読み込めない場合に備えて「別タブで開く」を上に置いている */}
+          {/* Dynmapをそのまま埋め込む（駅・列車などのマーカーも表示される）。
+              読み込めない場合に備えて「別タブで開く」を上に置いている */}
           <iframe
             src={embedUrl}
             title={`${stationName} の周辺地図`}

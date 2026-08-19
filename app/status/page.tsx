@@ -1,19 +1,16 @@
 import type { Metadata } from "next"
-import { Info } from "lucide-react"
+import { StatusView } from "./status-view"
 
 export const metadata: Metadata = { title: "運行情報" }
 
-// 運行情報ページ。現時点では掲載する情報がないためプレースホルダのみ。
+// 運行情報ページ。掲載内容は管理画面「運行情報」の設定（status-settings）に従う。
 export default function StatusPage() {
   return (
     <main className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         <div className="mx-auto max-w-2xl space-y-6">
           <h1 className="text-2xl font-bold text-foreground">運行情報</h1>
-          <div className="flex flex-col items-center gap-3 rounded-lg border border-border bg-card py-16 text-center">
-            <Info className="h-8 w-8 text-muted-foreground" />
-            <p className="text-muted-foreground">現在、お知らせする運行情報はありません。</p>
-          </div>
+          <StatusView />
         </div>
       </div>
     </main>
