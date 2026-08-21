@@ -158,8 +158,11 @@ export function resolveRtmStatesWithSchedule(params: {
     }
     // K99 は臨時運用の番号。ダイヤ上の運用ではないので突き合わせず、Dynmapの種別・行先をそのまま出す
     if (isExtraOperationNumber(s.operationId)) return { ...s, isExtra: true }
+    // ダイヤ上に実在する運用番号か（K01→K1 の表記ゆれを吸収して照合）。
+    // 実在するなら、いま位置がダイヤと噛み合っていなくても「臨時」にはしない。
+    const knownOp = resolveOperationNumber(s.operationId, trainOperationIds)
     const opId =
-      resolveOperationNumber(s.operationId, trainOperationIds) ||
+      knownOp ||
       matchOperationByHeadsign(s.headsign || "", false, scheduleStates, coords, positionById?.get(s.tripId)) ||
       s.operationId
     const r = resolveScheduledLeg(
@@ -172,15 +175,19 @@ export function resolveRtmStatesWithSchedule(params: {
     // 種別/行先/遅延はダイヤで裏づけが取れたときだけ上書きする
     if (!r.matched) {
       const base = opId === s.operationId ? s : { ...s, operationId: opId }
-      // ダイヤ上に該当便が無くても、Dynmapで種別・行先が設定されていれば臨時列車として表示する
+      // 運用番号がダイヤ上に実在する列車は臨時にしない。
+      // （折り返し前後・区間外・回り込みなどで、その瞬間だけ位置が便と噛み合わないことがあるため）
+      if (knownOp) return base
+      // ダイヤに無い運用番号でも、Dynmapで種別・行先が設定されていれば臨時列車として表示する
       return hasDynInfo ? { ...base, isExtra: true } : base
     }
-    // 運用番号ではダイヤ上の便に当たるが、Dynmapの種別・行先が食い違う場合は
-    // その運用で走らせているスタフ外の列車とみなし、Dynmapの表示を優先する（遅延・到着予想は出さない）。
-    // ダイヤ側に行先が無い便は突き合わせようがないので一致扱い（種別も syubetsuMatches が同様に扱う）
+    // Dynmapの種別・行先がダイヤの便と食い違う場合は、実車の表示を優先する（遅延・到着予想は出さない）。
+    // ダイヤ側に行先が無い便は突き合わせようがないので一致扱い（種別も syubetsuMatches が同様に扱う）。
+    // 「臨時」と呼ぶのはダイヤに無い運用番号のときだけ。既存の運用番号なら、
+    // ダイヤと違う種別・行先で走っていても臨時バッジは付けない（表示はDynmap優先のまま）。
     const destOk = !normalizeHeadsign(r.headsign || "") || headsignMatches(s.headsign || "", r.headsign || "")
     if (hasDynInfo && !(destOk && syubetsuMatches(s.routeName, r.routeName || ""))) {
-      return { ...s, operationId: opId, isExtra: true }
+      return knownOp ? { ...s, operationId: opId } : { ...s, operationId: opId, isExtra: true }
     }
     return {
       ...s,

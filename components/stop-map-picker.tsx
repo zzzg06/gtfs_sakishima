@@ -255,8 +255,9 @@ export function StopMapPicker({
             {layout.project &&
               vehicles.map((v) => {
                 const p = layout.project!(v.x, v.z)
-                const w = 34 * k
-                const h = 26 * k
+                // 枠は付けず、車両画像をそのまま大きめに置く（下の三角が実際の位置を指す）
+                const w = 52 * k
+                const h = 40 * k
                 return (
                   <g
                     key={v.id}
@@ -264,22 +265,14 @@ export function StopMapPicker({
                     onClick={() => onVehicleClick?.(v.id)}
                   >
                     <title>{v.label}</title>
-                    <rect
+                    {/* クリック領域 */}
+                    <rect x={p.x - w / 2} y={p.y - h - 6 * k} width={w} height={h + 8 * k} fill="transparent" />
+                    <image
+                      href={v.iconUrl || "/vehicles/bus.png"}
                       x={p.x - w / 2}
                       y={p.y - h - 6 * k}
                       width={w}
                       height={h}
-                      rx={5 * k}
-                      fill="#ffffff"
-                      stroke="#15803d"
-                      strokeWidth={2 * k}
-                    />
-                    <image
-                      href={v.iconUrl || "/vehicles/bus.png"}
-                      x={p.x - w / 2 + 3 * k}
-                      y={p.y - h - 3 * k}
-                      width={w - 6 * k}
-                      height={h - 6 * k}
                       preserveAspectRatio="xMidYMid meet"
                     />
                     {/* 現在地を指す小さな三角 */}

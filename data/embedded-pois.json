@@ -1,0 +1,445 @@
+{
+  "generatedAt": "2026-08-21T13:09:41.137Z",
+  "source": "dynmap marker_world.json (rtm/SakishimaDynmapExtension)",
+  "sets": [
+    "other_traffic",
+    "bicycle",
+    "stamp",
+    "tourist_spot",
+    "photo_spot"
+  ],
+  "pois": [
+    {
+      "id": "poi:bicycle:bicycle_tengyokujista",
+      "setId": "bicycle",
+      "category": "[1-7]レンタサイクル拠点",
+      "name": "天玉寺駅前",
+      "kind": "レンタサイクル",
+      "x": 970,
+      "z": -846
+    },
+    {
+      "id": "poi:bicycle:bicycle_tosenannaijyo",
+      "setId": "bicycle",
+      "category": "[1-7]レンタサイクル拠点",
+      "name": "渡船案内所",
+      "kind": "レンタサイクル",
+      "x": -1091,
+      "z": -993
+    },
+    {
+      "id": "poi:bicycle:bicycle_hayamaringyo",
+      "setId": "bicycle",
+      "category": "[1-7]レンタサイクル拠点",
+      "name": "葉山輪業",
+      "kind": "レンタサイクル",
+      "x": -199,
+      "z": 613
+    },
+    {
+      "id": "poi:other_traffic:taxi_canadianrocky",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "カナディアンロッキー",
+      "kind": "タクシー",
+      "x": -993,
+      "z": 690
+    },
+    {
+      "id": "poi:other_traffic:taxi_naminakaarena",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "なみなかアリーナ",
+      "kind": "タクシー",
+      "x": -286,
+      "z": 1154
+    },
+    {
+      "id": "poi:other_traffic:taxi_kasajima",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "笠島",
+      "kind": "連絡バス",
+      "x": 2225,
+      "z": 19
+    },
+    {
+      "id": "poi:other_traffic:taxi_kabutojima",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "兜島中央駅",
+      "kind": "連絡バス",
+      "x": 2276,
+      "z": 662
+    },
+    {
+      "id": "poi:other_traffic:ferry_gotokuko",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "五徳港",
+      "kind": "渡船",
+      "x": 2297,
+      "z": 44
+    },
+    {
+      "id": "poi:other_traffic:ferry_mukaiko",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "向港",
+      "kind": "渡船",
+      "x": 907,
+      "z": 1220
+    },
+    {
+      "id": "poi:other_traffic:taxi_mukaiko",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "向港",
+      "kind": "タクシー",
+      "x": 905,
+      "z": 1224
+    },
+    {
+      "id": "poi:other_traffic:ferry_sakishimako",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "咲島港",
+      "kind": "渡船",
+      "x": 163,
+      "z": 1408
+    },
+    {
+      "id": "poi:other_traffic:taxi_sakitosakitodai",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "咲東崎灯台",
+      "kind": "タクシー",
+      "x": 1573,
+      "z": 35
+    },
+    {
+      "id": "poi:other_traffic:ferry_idesakako",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "出坂港",
+      "kind": "渡船",
+      "x": -951,
+      "z": -535
+    },
+    {
+      "id": "poi:other_traffic:taxi_sukegaokastasouth",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "助が丘駅南口",
+      "kind": "タクシー",
+      "x": -618,
+      "z": 733
+    },
+    {
+      "id": "poi:other_traffic:taxi_shinsakishijo",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "新咲市場",
+      "kind": "タクシー",
+      "x": 1213,
+      "z": 499
+    },
+    {
+      "id": "poi:other_traffic:taxi_chanohata",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "茶の畑煉瓦橋",
+      "kind": "タクシー",
+      "x": -366,
+      "z": -595
+    },
+    {
+      "id": "poi:other_traffic:taxi_nakaharadaista",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "中原台駅",
+      "kind": "タクシー",
+      "x": 302,
+      "z": 678
+    },
+    {
+      "id": "poi:other_traffic:taxi_nagaikechosuichi",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "長池貯水池",
+      "kind": "タクシー",
+      "x": 678,
+      "z": -512
+    },
+    {
+      "id": "poi:other_traffic:ferry_tojimako",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "砥島港",
+      "kind": "渡船",
+      "x": -1074,
+      "z": -951
+    },
+    {
+      "id": "poi:other_traffic:taxi_mameshimagutista",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "豆島口駅",
+      "kind": "タクシー",
+      "x": 1497,
+      "z": 740
+    },
+    {
+      "id": "poi:other_traffic:taxi_mameshimatosennoriba",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "豆島渡船乗り場",
+      "kind": "タクシー",
+      "x": 778,
+      "z": 1056
+    },
+    {
+      "id": "poi:other_traffic:ferry_minamiomoteko",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "南表港",
+      "kind": "渡船",
+      "x": 2251,
+      "z": 905
+    },
+    {
+      "id": "poi:other_traffic:taxi_yatsuhashista",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "八つ橋駅",
+      "kind": "タクシー",
+      "x": -142,
+      "z": 683
+    },
+    {
+      "id": "poi:other_traffic:taxi_eastkajyu",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "飯洲戸果樹",
+      "kind": "タクシー",
+      "x": 494,
+      "z": -197
+    },
+    {
+      "id": "poi:other_traffic:ferry_tomihamasanbashi",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "富浜桟橋",
+      "kind": "渡船",
+      "x": 783,
+      "z": 1064
+    },
+    {
+      "id": "poi:other_traffic:taxi_kikogawaweststa",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "木古川駅西口",
+      "kind": "タクシー",
+      "x": 88,
+      "z": 18
+    },
+    {
+      "id": "poi:other_traffic:taxi_kikogawaeaststa",
+      "setId": "other_traffic",
+      "category": "[1-6]渡船・タクシー等",
+      "name": "木古川駅東口",
+      "kind": "タクシー",
+      "x": 141,
+      "z": 44
+    },
+    {
+      "id": "poi:photo_spot:photospot_nakaharadaibuilding",
+      "setId": "photo_spot",
+      "category": "[2-3]フォトスポット",
+      "name": "中原駅前ビル屋上",
+      "kind": "鉄道フォトスポット",
+      "x": 206,
+      "z": 712
+    },
+    {
+      "id": "poi:stamp:stamp_1",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "1_咲島ビッグサイト",
+      "kind": "スタンプ",
+      "x": 209,
+      "z": 1233
+    },
+    {
+      "id": "poi:stamp:stamp_10",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "10_長池貯水池",
+      "kind": "スタンプ",
+      "x": 662,
+      "z": -563
+    },
+    {
+      "id": "poi:stamp:stamp_11",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "11_天玉寺",
+      "kind": "スタンプ",
+      "x": 975,
+      "z": -678
+    },
+    {
+      "id": "poi:stamp:stamp_12",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "12_咲東崎灯台",
+      "kind": "スタンプ",
+      "x": 1565,
+      "z": 96
+    },
+    {
+      "id": "poi:stamp:stamp_13",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "13_咲島漁港",
+      "kind": "スタンプ",
+      "x": 1226,
+      "z": 504
+    },
+    {
+      "id": "poi:stamp:stamp_14",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "14_関南大学咲島キャンパス",
+      "kind": "スタンプ",
+      "x": 760,
+      "z": 410
+    },
+    {
+      "id": "poi:stamp:stamp_15",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "15_豆島渡船乗り場",
+      "kind": "スタンプ",
+      "x": 776,
+      "z": 1056
+    },
+    {
+      "id": "poi:stamp:stamp_16",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "16_咲島農協",
+      "kind": "スタンプ",
+      "x": 225,
+      "z": -5
+    },
+    {
+      "id": "poi:stamp:stamp_17",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "17_入九葉神社",
+      "kind": "スタンプ",
+      "x": -107,
+      "z": -447
+    },
+    {
+      "id": "poi:stamp:stamp_18",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "18_笠丘フラワーパーク",
+      "kind": "スタンプ",
+      "x": 215,
+      "z": -740
+    },
+    {
+      "id": "poi:stamp:stamp_2",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "2_なみなかアリーナ",
+      "kind": "スタンプ",
+      "x": -266,
+      "z": 1130
+    },
+    {
+      "id": "poi:stamp:stamp_3",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "3_八橋神社",
+      "kind": "スタンプ",
+      "x": -191,
+      "z": 566
+    },
+    {
+      "id": "poi:stamp:stamp_4",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "4_咲西浜",
+      "kind": "スタンプ",
+      "x": -964,
+      "z": 342
+    },
+    {
+      "id": "poi:stamp:stamp_5",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "5_倉急メイランド",
+      "kind": "スタンプ",
+      "x": -711,
+      "z": -535
+    },
+    {
+      "id": "poi:stamp:stamp_6",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "6_砥島城址",
+      "kind": "スタンプ",
+      "x": -1103,
+      "z": -1172
+    },
+    {
+      "id": "poi:stamp:stamp_7",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "7_茶の畑煉瓦橋",
+      "kind": "スタンプ",
+      "x": -357,
+      "z": -590
+    },
+    {
+      "id": "poi:stamp:stamp_8",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "8_上砥駅",
+      "kind": "スタンプ",
+      "x": -164,
+      "z": -1108
+    },
+    {
+      "id": "poi:stamp:stamp_9",
+      "setId": "stamp",
+      "category": "[2-1]スタンプ設置個所",
+      "name": "9_船上湯本駅",
+      "kind": "スタンプ",
+      "x": 180,
+      "z": -1055
+    },
+    {
+      "id": "poi:tourist_spot:touristspot_naminakaarena",
+      "setId": "tourist_spot",
+      "category": "[2-2]観光地",
+      "name": "なみなかアリーナ",
+      "kind": "",
+      "x": -275,
+      "z": 1076
+    },
+    {
+      "id": "poi:tourist_spot:touristspot_boshiyamatenboudai",
+      "setId": "tourist_spot",
+      "category": "[2-2]観光地",
+      "name": "帽子山展望台",
+      "kind": "",
+      "x": 1435,
+      "z": 803
+    }
+  ]
+}

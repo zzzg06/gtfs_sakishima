@@ -561,6 +561,8 @@ export function TrainLocationBoard() {
     const out: { marker: RtmBus; state: TrainRunState }[] = []
     for (const bus of rtmBuses) {
       if (isDeadheadMarker(bus)) continue // 回送は出さない
+      // 運用番号が未設定のバスは、どの便か特定できないので地図に出さない（列車と同じ扱い）
+      if (!(bus.runNo || "").trim()) continue
       const isExtraBus = isExtraOperationNumber(bus.runNo || "")
       const op = isExtraBus ? null : resolveOperationNumber(bus.runNo || "", stat.busOperationIds)
       const legs = op ? stat.operationSchedule[op] : undefined
@@ -1210,7 +1212,7 @@ export function TrainLocationBoard() {
               />
               {isDynBus && (
                 <p className="mt-1 text-xs text-muted-foreground">
-                  緑枠のバスが現在位置です（{busMapVehicles.length}台）。クリックすると行先・到着予想が出ます。
+                  地図上のバスが現在位置です（{busMapVehicles.length}台）。クリックすると行先・到着予想が出ます。
                 </p>
               )}
             </div>

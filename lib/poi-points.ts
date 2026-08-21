@@ -1,8 +1,14 @@
+import embeddedPois from "@/data/embedded-pois.json"
 import { gtfsParser, type GTFSStop } from "./gtfs-parser"
 import { getCachedStationCoordinates, stationCoordinateManager } from "./station-coordinates"
 
 // Dynmapのマーカー（施設・観光地など）を「検索地点(POI)」として扱う。
 // 駅・バス停はGTFS側にあるのでAPI側でセットごと除外済み（/api/dynmap-markers）。
+//
+// 変わらない地点（[1-6]渡船・タクシー等 / [1-7]レンタサイクル拠点 / [2-1]スタンプ /
+// [2-2]観光地 / [2-3]フォトスポット）は data/embedded-pois.json に同梱してあり、
+// Dynmapが落ちていても検索できる。それ以外（[2-5]グリココラボ・[3-1]食事・売店など
+// 入れ替わる地点）は起動後にAPIから取得して同じIDでなければ追加する。
 //
 // POIは時刻表を持たないため、GTFSの停留所としては登録せず、
 // stop_id が "poi:" で始まる疑似停留所として経路検索の発着だけに使う。
@@ -26,7 +32,11 @@ export const POI_MAX_ACCESS_STOPS = 2
 
 const POI_PREFIX = "poi:"
 
-let pois: Poi[] = []
+// 同梱ぶん（変化しない地点）。読み込み前から検索できるよう初期値にする
+const STATIC_POIS = (embeddedPois.pois as Poi[]) || []
+const STATIC_IDS = new Set(STATIC_POIS.map((p) => p.id))
+
+let pois: Poi[] = [...STATIC_POIS]
 let loaded = false
 let loading: Promise<Poi[]> | null = null
 
@@ -61,7 +71,8 @@ export async function loadPois(): Promise<Poi[]> {
     try {
       const res = await fetch("/api/dynmap-markers").then((r) => r.json())
       if (res?.success && Array.isArray(res.pois)) {
-        pois = res.pois as Poi[]
+        // 同梱ぶんを優先し、Dynmap側にしか無い地点（食事・売店など）を足す
+        pois = [...STATIC_POIS, ...(res.pois as Poi[]).filter((p) => !STATIC_IDS.has(p.id))]
         loaded = true
       }
     } catch (error) {
