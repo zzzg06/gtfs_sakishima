@@ -182,7 +182,24 @@ function searchViaPoi(params: {
       }
     }
   }
-  return buildView(candidates, mode, time, options?.preferBus === true)
+  // 同じ便を別の最寄り停留所から拾うと、同じ列車に乗る経路が何本も出てしまう。
+  // 「乗る便の並び」が同じものは所要が短い（同じなら出発が遅い）1本にまとめる。
+  const best = new Map<string, TransitRoute>()
+  for (const r of candidates) {
+    const key = r.segments
+      .filter((seg): seg is Extract<typeof seg, { type: "transit" }> => seg.type === "transit")
+      .map((seg) => seg.trip.trip_id)
+      .join("|")
+    const cur = best.get(key)
+    if (
+      !cur ||
+      r.totalDuration < cur.totalDuration ||
+      (r.totalDuration === cur.totalDuration && r.departureTime > cur.departureTime)
+    ) {
+      best.set(key, r)
+    }
+  }
+  return buildView([...best.values()], mode, time, options?.preferBus === true)
 }
 
 export function useRouteSearch() {

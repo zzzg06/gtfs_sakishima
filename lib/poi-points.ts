@@ -135,8 +135,31 @@ export interface PoiAccess {
   distance: number // 直線距離（ブロック）
 }
 
+// 鉄道が停まる停留所名（バス専用の停留所と区別する）。
+// 最寄りがバス停ばかりのPOIでも鉄道に乗れるよう、鉄道駅を1つ必ず候補に入れるために使う。
+let railNameCache: { count: number; names: Set<string> } | null = null
+function railStopNames(): Set<string> {
+  const stopTimes = gtfsParser.getStopTimes()
+  if (railNameCache && railNameCache.count === stopTimes.length) return railNameCache.names
+  const stopById = new Map(gtfsParser.getStops().map((s) => [s.stop_id, s]))
+  const routeIdByTrip = new Map(gtfsParser.getTrips().map((t) => [t.trip_id, t.route_id]))
+  const routeById = new Map(gtfsParser.getRoutes().map((r) => [r.route_id, r]))
+  const names = new Set<string>()
+  for (const st of stopTimes) {
+    const routeId = routeIdByTrip.get(st.trip_id)
+    const route = routeId ? routeById.get(routeId) : undefined
+    if (!route || route.route_type === 3 || route.route_id === "TAXI") continue
+    const stop = stopById.get(st.stop_id)
+    if (stop) names.add(stop.stop_name)
+  }
+  railNameCache = { count: stopTimes.length, names }
+  return names
+}
+
 // POIから徒歩で行ける停留所（最寄りから POI_MAX_ACCESS_STOPS 件、POI_MAX_WALK_MINUTES 以内）。
 // 駅座標(station-coordinates)に登録がある停留所だけが対象。
+// 最寄りがバス停だけだと鉄道に乗り継げない（徒歩の重複を避けるため乗継徒歩を使わない）ので、
+// 鉄道駅が1つも入らない場合に限り、徒歩圏内で最も近い鉄道駅を1件だけ足す。
 export function poiAccessStops(p: Poi): PoiAccess[] {
   const coords = getCachedStationCoordinates()
   const byName = new Map<string, GTFSStop>()
@@ -152,7 +175,13 @@ export function poiAccessStops(p: Poi): PoiAccess[] {
     cands.push({ stop, minutes, distance })
   }
   cands.sort((a, b) => a.distance - b.distance)
-  return cands.slice(0, POI_MAX_ACCESS_STOPS)
+  const picked = cands.slice(0, POI_MAX_ACCESS_STOPS)
+  const rail = railStopNames()
+  if (!picked.some((c) => rail.has(c.stop.stop_name))) {
+    const nearestRail = cands.find((c) => rail.has(c.stop.stop_name))
+    if (nearestRail) picked.push(nearestRail)
+  }
+  return picked
 }
 
 // 経路検索の前に、POIと駅座標を読み込んでおく
