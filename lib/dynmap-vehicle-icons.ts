@@ -13,20 +13,38 @@ import { getCachedVehicles, type Vehicle } from "./vehicle-manager"
 // （Vehicle.dynmapIcon）。そちらが優先される。
 
 // アイコン名 → 車両名（管理画面「車両管理」に登録されている名前と突き合わせる）
+// MC側 sakishimadynmapextension.cfg の modelIconMappings に合わせて更新すること。
 export const DEFAULT_ICON_TO_VEHICLE: Record<string, string> = {
-  kr1000_32: "倉急1000系",
+  kr1000_32: "倉急1000系", // Kr1000
+  kr1000yo_32: "倉急1000系（夜明け）", // Kraft1000-Yoake
   kr2000_32: "倉急2000系", // Kr2000 / Kr2300 が同じアイコン
-  kr2500_32: "倉急2500系",
-  kr2900_32: "倉急2900系",
+  kr2500_32: "倉急2500系", // Kr2500
+  kr2900_32: "倉急2900系", // Kr2900
   kr2900g_32: "倉急2900系（グリコラッピング）", // Org_Kr2900rap_fes
-  kr3000_32: "倉急3000系",
-  kr3500_32: "倉急3500系",
-  kr20000_32: "倉急20000系",
-  kiritramicon32: "桐立トラム",
+  kr3000_32: "倉急3000系", // kr3000
+  kr3500_32: "倉急3500系", // kr3500
+  kr20000_32: "倉急20000系", // Kr20000
+  kr21000_32: "倉急21000系", // Kr_21000
+  kr205_32: "倉急205系", // Kraft205
+  kiha82_32: "キハ82系", // kiha82
+  kiha110_32: "キハ110系", // kiha110
+  kiha600_32: "キハ600形", // kiha600
+  seta2200_32: "瀬田2200系", // TZ2200
+  toda1000_32: "砥田1000系", // todaRNFC1000
+  kiritramicon32: "桐立トラム", // 旧アイコン（現在のcfgには無いが、残っているマーカー向けに保持）
 }
 
 // バスのアイコン。バスは車両登録をしないので形式は特定せず「バスである」ことだけ分かればよい。
 export const BUS_ICONS = new Set(["krbus32", "bus"])
+
+// 鉄道でもバスでもない乗り物のアイコン（渡船・タクシー）。
+// cfg では YukiyukiFerry / tofu_tosen / ASTA_namikaidoFerry / ASTA_JetFoil929 / unsraft_mi → tosen_32、
+// Saki_Taxi → taxi_32。走行位置（在線盤・運行状況マップ）は鉄道の盤なので対象外にする。
+export const NON_TRAIN_ICONS = new Set(["tosen_32", "taxi_32"])
+
+export function isNonTrainIcon(icon?: string): boolean {
+  return !!icon && NON_TRAIN_ICONS.has(icon)
+}
 
 export function isBusIcon(icon?: string): boolean {
   return !!icon && BUS_ICONS.has(icon)

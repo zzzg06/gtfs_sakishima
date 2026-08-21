@@ -13,7 +13,7 @@ import {
   resolveOperationNumber,
   syubetsuMatches,
 } from "./operation-number"
-import { isBusIcon } from "./dynmap-vehicle-icons"
+import { isBusIcon, isNonTrainIcon } from "./dynmap-vehicle-icons"
 import { resolveScheduledLeg, type OperationSchedule } from "./estimate-delay"
 import type { StationCoordinates } from "./station-coordinates"
 import type { TrainRunState } from "./train-position"
@@ -74,6 +74,8 @@ export function locateRtmMarkers(params: {
       buses.push({ ...tr, prev })
       continue
     }
+    // 渡船・タクシー（tosen_32 / taxi_32）は鉄道の盤に載せない
+    if (isNonTrainIcon(tr.icon)) continue
     // 運用番号が未設定（ラベルが "[ ]"）の車両は走行位置に出さない。
     // 運用に紐づかず、どの列車か特定できないため（回送・入換等の車両）。
     if (!(tr.runNo || "").trim()) continue

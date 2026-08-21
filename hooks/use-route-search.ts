@@ -9,7 +9,7 @@ import { vehicleManager } from "@/lib/vehicle-manager"
 import { stationCoordinateManager } from "@/lib/station-coordinates"
 import { logSearch, type SearchLogTrip } from "@/lib/search-log"
 import { getPoi, poiAccessStops, preparePois, type Poi, type PoiAccess } from "@/lib/poi-points"
-import { attachPoiWalks, hasWalkingSegment, shiftDepartureTime } from "@/lib/poi-routing"
+import { attachPoiWalks, shiftDepartureTime } from "@/lib/poi-routing"
 import type { GTFSStop } from "@/lib/gtfs-parser"
 
 export type SearchMode = "departure" | "arrival" | "none"
@@ -168,9 +168,23 @@ function searchViaPoi(params: {
       if (transferRoutes.length === 0) {
         transferRoutes = routeFinder.findRoutesWithTwoTransfers(a.stop.stop_id, b.stop.stop_id, searchTime, options)
       }
-      const found = [...direct, ...dedupeByTransitPattern(transferRoutes)]
+      // 駅⇄バス停の連絡徒歩（例: (バス)上砥駅前⇄上砥 1分）を使う乗継も候補にする。
+      // これが無いと、鉄道に乗り継げばよい場面でバスに乗り続ける経路しか出ない。
+      const allowWalking = options?.allowWalking !== false
+      const walkTransferRoutes = allowWalking
+        ? routeFinder.findRoutesWithTransitWalkTransit(a.stop.stop_id, b.stop.stop_id, searchTime, options)
+        : []
+      const walkRoutes = allowWalking
+        ? routeFinder.findRoutesWithWalking(a.stop.stop_id, b.stop.stop_id, searchTime, options)
+        : []
+      const found = [...direct, ...dedupeByTransitPattern([...transferRoutes, ...walkTransferRoutes, ...walkRoutes])]
         .filter((r) => !hasDuplicateTrip(r))
-        .filter((r) => !hasWalkingSegment(r)) // 徒歩が重なる経路は出さない
+        // 乗物に乗らない（徒歩だけの）経路はPOIの徒歩と合わせて延々歩くことになるので出さない
+        .filter((r) => r.segments.some((seg) => seg.type === "transit"))
+        // 「徒歩が重なる経路は出さない」= POIの徒歩に別の徒歩が続く形を禁止する。
+        // 経路の途中にある乗換の徒歩（駅⇄バス停の連絡など）は許可する。
+        .filter((r) => !(fromPoi && r.segments[0]?.type === "walking"))
+        .filter((r) => !(toPoi && r.segments[r.segments.length - 1]?.type === "walking"))
       for (const r of found) {
         candidates.push(
           attachPoiWalks(
