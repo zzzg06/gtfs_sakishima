@@ -41,6 +41,14 @@ export function isBusMarker(m: { runNo?: string; icon?: string }): boolean {
   return isBusOperationNumber(m.runNo || "") || isBusIcon(m.icon)
 }
 
+// 渡船・タクシーなど、鉄道でもバスでもない乗り物か。走行位置（在線盤・運行状況マップ）には出さない。
+// アイコン（cfgの tosen_32 / taxi_32）で判定し、モデル未登録などでアイコンが既定になった場合に備えて
+// ラベルの種別・行先に「渡船」等が入っていれば同様に除外する。
+export function isNonTrainMarker(m: { icon?: string; type?: string; dest?: string }): boolean {
+  if (isNonTrainIcon(m.icon)) return true
+  return /渡船|フェリー/.test(`${m.type || ""}${m.dest || ""}`.normalize("NFKC"))
+}
+
 // 回送か（種別・行先のどちらかに「回送」が入っていれば回送とみなす）。
 // 回送は営業列車ではないため、種別「回送」だけにまとめ、行先やダイヤ突き合わせは行わない。
 export function isDeadheadMarker(m: { type?: string; dest?: string }): boolean {
@@ -66,6 +74,8 @@ export function locateRtmMarkers(params: {
   const buses: RtmBusMarker[] = []
 
   for (const tr of markers) {
+    // 渡船・タクシーは鉄道でもバスでもないので、どちらのビューにも出さない
+    if (isNonTrainMarker(tr)) continue
     // バス運用(B0x/「バス」)は鉄道盤・列車実位置から除外し、バス専用ビューへ回す。
     // ※暫定処置: 運用番号がバスならDynmapのアイコン種別に関わらず列車側には出さない。
     if (isBusMarker(tr)) {
@@ -74,8 +84,6 @@ export function locateRtmMarkers(params: {
       buses.push({ ...tr, prev })
       continue
     }
-    // 渡船・タクシー（tosen_32 / taxi_32）は鉄道の盤に載せない
-    if (isNonTrainIcon(tr.icon)) continue
     // 運用番号が未設定（ラベルが "[ ]"）の車両は走行位置に出さない。
     // 運用に紐づかず、どの列車か特定できないため（回送・入換等の車両）。
     if (!(tr.runNo || "").trim()) continue
