@@ -156,12 +156,8 @@ export function TripManager({ onBack, onShowVehicleManager }: TripManagerProps) 
     }
   }, [tripGroups, selectedOperation])
 
-  const getVehicleIcon = (type: string) => {
-    const lower = (type || "").toLowerCase()
-    if (lower.includes("バス")) return <Bus className="h-3.5 w-3.5" />
-    if (lower.includes("電車") || lower.includes("特急")) return <Train className="h-3.5 w-3.5" />
-    return <Car className="h-3.5 w-3.5" />
-  }
+  // 車両画像が未設定のときの既定アイコン（車両タイプは廃止）
+  const getVehicleIcon = () => <Train className="h-3.5 w-3.5" />
 
   const getRouteColor = (route: GTFSRoute) => {
     if (!route) return "#6b7280"
@@ -282,7 +278,7 @@ export function TripManager({ onBack, onShowVehicleManager }: TripManagerProps) 
                           {vehicle.iconUrl ? (
                             <img src={vehicle.iconUrl} alt="" className="h-4 w-auto object-contain" />
                           ) : (
-                            getVehicleIcon(vehicle.type)
+                            getVehicleIcon()
                           )}
                           {vehicle.name}
                         </div>

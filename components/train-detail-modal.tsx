@@ -95,7 +95,6 @@ export function TrainDetailModal({
                   {v ? (
                     <span>
                       {v.name}
-                      {v.type ? <span className="text-muted-foreground">（{v.type}）</span> : null}
                       {byIcon && <span className="ml-1 rounded bg-muted px-1 text-[10px] text-muted-foreground">実車両</span>}
                     </span>
                   ) : iconName ? (
@@ -112,7 +111,13 @@ export function TrainDetailModal({
             })}
           </dd>
           <dt className="text-muted-foreground">現在地</dt>
-          <dd className="font-medium">{t.atStation ? `${t.fromStop} 停車中` : `${t.fromStop} → ${t.toStop} 走行中`}</dd>
+          <dd className="font-medium">
+            {t.approxPosition
+              ? `${t.fromStop} 付近`
+              : t.atStation
+                ? `${t.fromStop} 停車中`
+                : `${t.fromStop} → ${t.toStop} 走行中`}
+          </dd>
           <dt className="text-muted-foreground">遅延</dt>
           <dd className="font-medium" style={{ color: d.delayed ? d.color : undefined }}>
             {d.text}

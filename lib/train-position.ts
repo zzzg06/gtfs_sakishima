@@ -70,6 +70,9 @@ export interface TrainRunState {
   isExtra?: boolean
   // 回送。種別「回送」でまとめて表示し、行先・遅延・到着予想・増結表記は出さない。
   isDeadhead?: boolean
+  // 現在地が「最寄りの停留所から推定した位置」であることを示す（Dynmap実位置のバス）。
+  // 表示は「〇〇 停車中」ではなく「〇〇 付近」にする。
+  approxPosition?: boolean
 }
 
 // 座標つき（Dynmapマーカー等で使用）

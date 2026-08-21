@@ -18,7 +18,7 @@ import { vehicleManager } from "@/lib/vehicle-manager"
 import { liveSettingsManager } from "@/lib/live-settings"
 import { resolveDisplayVehicle } from "@/lib/dynmap-vehicle-icons"
 import { busMapSettingsManager, type BusMapSettings } from "@/lib/bus-map"
-import { buildOperationSchedule, type ScheduleLeg } from "@/lib/estimate-delay"
+import { buildOperationSchedule, resolveScheduledLeg, type ScheduleLeg } from "@/lib/estimate-delay"
 import {
   headsignMatchLevel,
   isBusOperationNumber,
@@ -29,7 +29,7 @@ import {
 } from "@/lib/operation-number"
 import { abbrevSyubetsu, delayInfo, formatHeadsign, routeColor, vehicleIconUrl } from "@/lib/train-display"
 import { TrainDetailModal } from "@/components/train-detail-modal"
-import { StopMapPicker } from "@/components/stop-map-picker"
+import { StopMapPicker, type PickerVehicle } from "@/components/stop-map-picker"
 import { Train, Bus, RefreshCw, Map as MapIcon } from "lucide-react"
 
 type RtmTrain = RtmMarker
@@ -553,6 +553,88 @@ export function TrainLocationBoard() {
 
   // バス: 選択したバス停に接近中のバス（手前数停＋現在位置）。
   // Dynmap実位置はライブ座標から、ダイヤ予測は時刻表(runStates)から現在位置を求める。
+  // Dynmap実位置のバスを地図に重ねるためのデータ。
+  // 最寄りの停留所を現在地とみなし、その運用の時刻表と突き合わせて遅延・これからの停車予定を出す。
+  const liveBuses = useMemo(() => {
+    if (!stat || source !== "dynmap" || mode !== "bus") return [] as { marker: RtmBus; state: TrainRunState }[]
+    void tick
+    const out: { marker: RtmBus; state: TrainRunState }[] = []
+    for (const bus of rtmBuses) {
+      if (isDeadheadMarker(bus)) continue // 回送は出さない
+      const isExtraBus = isExtraOperationNumber(bus.runNo || "")
+      const op = isExtraBus ? null : resolveOperationNumber(bus.runNo || "", stat.busOperationIds)
+      const legs = op ? stat.operationSchedule[op] : undefined
+      const leg = legs && legs.length > 0 ? pickBusLeg(legs, now, bus.dest || "") : null
+
+      // 現在地: その運用の停車順のうち、座標がいちばん近い停留所
+      let nearest: { name: string; dist: number } | null = null
+      for (const name of leg?.stops || []) {
+        const c = coords[name]
+        if (!c) continue
+        const dist = Math.hypot(bus.x - c.x, bus.z - c.z)
+        if (!nearest || dist < nearest.dist) nearest = { name, dist }
+      }
+      // 便が特定できないときは全バス停から最寄りを探して現在地だけ出す
+      if (!nearest) {
+        for (const s of stat.busStops) {
+          const c = coords[s.name]
+          if (!c) continue
+          const dist = Math.hypot(bus.x - c.x, bus.z - c.z)
+          if (!nearest || dist < nearest.dist) nearest = { name: s.name, dist }
+        }
+      }
+      const r =
+        op && nearest
+          ? resolveScheduledLeg(
+              { operationId: op, fromStop: nearest.name, toStop: nearest.name, atStation: true, progress: 0 },
+              stat.operationSchedule,
+              now,
+            )
+          : null
+      out.push({
+        marker: bus,
+        state: {
+          operationId: bus.runNo || "(運用なし)",
+          tripId: bus.id,
+          routeId: "__rtm_bus__",
+          routeName: (isExtraBus ? bus.type : leg?.routeName || bus.type) || "バス",
+          routeType: 3,
+          headsign: (isExtraBus ? bus.dest : leg?.headsign || bus.dest) || "",
+          headsignNote: bus.destNote,
+          direction: 0,
+          status: r?.matched ? r.status : "on-time",
+          delayMinutes: r?.matched ? r.delayMinutes : 0,
+          atStation: true,
+          fromStopId: "",
+          toStopId: "",
+          fromStop: nearest?.name || "",
+          toStop: nearest?.name || "",
+          nextStop: r?.matched ? r.nextStop : undefined,
+          upcoming: r?.matched && r.upcoming && r.upcoming.length > 0 ? r.upcoming : undefined,
+          progress: 0,
+          isExtra: isExtraBus || undefined,
+          approxPosition: true, // 最寄り停留所から推定した現在地
+          dynmapIcon: bus.icon,
+        },
+      })
+    }
+    return out
+  }, [stat, source, mode, rtmBuses, coords, now, tick])
+
+  // 地図に重ねる車両（現在地の座標が分かるものだけ）
+  const busMapVehicles = useMemo<PickerVehicle[]>(
+    () =>
+      liveBuses.map((b) => ({
+        id: b.marker.id,
+        x: b.marker.x,
+        z: b.marker.z,
+        label: `${b.state.routeName} ${formatHeadsign(b.state.headsign, b.state.headsignNote)}${
+          b.state.fromStop ? ` / ${b.state.fromStop} 付近` : ""
+        }`,
+      })),
+    [liveBuses],
+  )
+
   const busView = useMemo(() => {
     const empty = { approaching: [] as ApproachingBus[], unlocated: [] as RtmBus[] }
     if (!stat || mode !== "bus" || !selectedBusStop) return empty
@@ -1037,7 +1119,8 @@ export function TrainLocationBoard() {
   )
 
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-3">
+    // バスの地図を開いているときは、PCで地図を大きく見せるため横幅を広げる
+    <div className={`mx-auto w-full space-y-3 ${isBusStopView && showBusMap ? "max-w-6xl" : "max-w-3xl"}`}>
       {/* ヘッダー */}
       <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-card px-4 py-2.5 shadow-sm">
         <div className="flex items-center gap-2">
@@ -1117,7 +1200,19 @@ export function TrainLocationBoard() {
                   setSelectedBusStop(n)
                   setBusStopQuery("")
                 }}
+                // 実位置表示のときは走行中のバスを重ねる。クリックで運用詳細（到着予想）を出す
+                vehicles={isDynBus ? busMapVehicles : []}
+                onVehicleClick={(id) => {
+                  const hit = liveBuses.find((b) => b.marker.id === id)
+                  if (hit) setSelectedTrain(hit.state)
+                }}
+                large
               />
+              {isDynBus && (
+                <p className="mt-1 text-xs text-muted-foreground">
+                  緑枠のバスが現在位置です（{busMapVehicles.length}台）。クリックすると行先・到着予想が出ます。
+                </p>
+              )}
             </div>
           )}
           {(() => {

@@ -3,7 +3,6 @@ import { adminAuthHeaders } from "./admin-session"
 export interface Vehicle {
   id: string
   name: string // 車両名（例：「1001号車」「新型車両A」）
-  type: string // 車両タイプ（例：「電車」「バス」「特急」）
   capacity?: number // 定員
   description?: string // 説明
   color?: string // 車両カラー（表示用）
@@ -158,13 +157,6 @@ class VehicleManager {
   async removeVehicleFromOperation(operationId: string): Promise<void> {
     cachedAssignments.delete(operationId)
     await this.saveAssignments(this.assignmentsFromCache())
-  }
-
-  // 車両タイプの一覧を取得
-  async getVehicleTypes(): Promise<string[]> {
-    const vehicles = await this.loadVehicles()
-    const types = new Set(vehicles.map((v) => v.type))
-    return Array.from(types).sort()
   }
 }
 

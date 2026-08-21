@@ -23,6 +23,15 @@ export interface PickerStop {
   kind: StopKind // 鉄道駅=四角、バス停=丸で描き分ける
 }
 
+// 地図上に重ねる実位置の車両（Dynmapのバス等）。クリックで詳細を出す。
+export interface PickerVehicle {
+  id: string
+  x: number // ワールド座標
+  z: number
+  label: string // 吹き出し（系統・行先）
+  iconUrl?: string // 車両画像。無ければ既定のバス画像
+}
+
 interface Props {
   coords: StationCoordinates
   stops: PickerStop[] // 対象の駅・バス停
@@ -30,6 +39,9 @@ interface Props {
   selected: string
   onSelect: (name: string) => void
   busMap?: BusMapSettings // 背景画像＋位置合わせ（未設定なら座標だけの簡易図）
+  vehicles?: PickerVehicle[] // 実位置の車両を重ねて表示する（省略時は出さない）
+  onVehicleClick?: (id: string) => void
+  large?: boolean // PCで広く使いたいとき（高さの上限を広げる）
 }
 
 const VIEW_W = 900
@@ -39,7 +51,17 @@ const PADDING = 46 // 端の停留所名がはみ出さないよう余白を取�
 // 表示用の短い名前（先頭の「(バス)」を落とす）
 const shortName = (n: string) => n.replace(/^\(バス\)/, "")
 
-export function StopMapPicker({ coords, stops, routes, selected, onSelect, busMap }: Props) {
+export function StopMapPicker({
+  coords,
+  stops,
+  routes,
+  selected,
+  onSelect,
+  busMap,
+  vehicles = [],
+  onVehicleClick,
+  large = false,
+}: Props) {
   const stopNames = useMemo(() => stops.map((s) => s.name), [stops])
   const kindOf = useMemo(() => new Map(stops.map((s) => [s.name, s.kind])), [stops])
   const [zoom, setZoom] = useState(1)
@@ -73,11 +95,13 @@ export function StopMapPicker({ coords, stops, routes, selected, onSelect, busMa
     const missing = stopNames.filter((n) => !coords[n])
     if (useImage && transform) {
       // 背景画像上へワールド座標を変換して配置する
+      const project = (x: number, z: number) => worldToPixel(transform, x, z)
       const pts = new Map<string, { x: number; y: number }>()
-      for (const n of placed) pts.set(n, worldToPixel(transform, coords[n].x, coords[n].z))
-      return { pts, missing, scale: 1 }
+      for (const n of placed) pts.set(n, project(coords[n].x, coords[n].z))
+      return { pts, missing, scale: 1, project }
     }
-    if (placed.length === 0) return { pts: new Map<string, { x: number; y: number }>(), missing, scale: 1 }
+    if (placed.length === 0)
+      return { pts: new Map<string, { x: number; y: number }>(), missing, scale: 1, project: null }
     const xs = placed.map((n) => coords[n].x)
     const zs = placed.map((n) => coords[n].z)
     const minX = Math.min(...xs)
@@ -88,11 +112,10 @@ export function StopMapPicker({ coords, stops, routes, selected, onSelect, busMa
     const scale = Math.min((VIEW_W - PADDING * 2) / Math.max(1, maxX - minX), (VIEW_H - PADDING * 2) / Math.max(1, maxZ - minZ))
     const offX = (VIEW_W - (maxX - minX) * scale) / 2
     const offY = (VIEW_H - (maxZ - minZ) * scale) / 2
+    const project = (x: number, z: number) => ({ x: (x - minX) * scale + offX, y: (z - minZ) * scale + offY })
     const pts = new Map<string, { x: number; y: number }>()
-    for (const n of placed) {
-      pts.set(n, { x: (coords[n].x - minX) * scale + offX, y: (coords[n].z - minZ) * scale + offY })
-    }
-    return { pts, missing, scale }
+    for (const n of placed) pts.set(n, project(coords[n].x, coords[n].z))
+    return { pts, missing, scale, project }
   }, [coords, stopNames, useImage, transform])
 
   const measure = useCallback(() => {
@@ -117,8 +140,11 @@ export function StopMapPicker({ coords, stops, routes, selected, onSelect, busMa
 
   const viewW = useImage && imgSize ? imgSize.w : VIEW_W
   const viewH = useImage && imgSize ? imgSize.h : VIEW_H
-  // 既定はパネル幅に収まる倍率（狭い画面ほど縮む）。ここにズームを掛ける
-  const baseScale = panelWidth > 0 ? Math.min(1, panelWidth / viewW) : useImage ? Math.min(1, VIEW_W / viewW) : 1
+  // 表示枠の高さ（large=PCで広く使う場合はビューポートに合わせて広げる）
+  const maxHeightPx = large ? Math.max(420, Math.round((typeof window !== "undefined" ? window.innerHeight : 900) * 0.72)) : 520
+  // 既定は表示枠に収まる倍率。large のときは枠いっぱいまで拡大もする（狭い画面では縮む）
+  const fitScale = panelWidth > 0 ? Math.min(panelWidth / viewW, maxHeightPx / viewH) : useImage ? Math.min(1, VIEW_W / viewW) : 1
+  const baseScale = large ? Math.max(0.2, fitScale) : Math.min(1, fitScale)
   const width = viewW * baseScale * zoom
   const height = viewH * baseScale * zoom
   // 画像モードでは図の縮尺に合わせて丸・文字の大きさを調整する
@@ -142,7 +168,11 @@ export function StopMapPicker({ coords, stops, routes, selected, onSelect, busMa
   return (
     <div className="space-y-2">
       <div className="relative">
-        <div ref={viewportRef} className="max-h-[520px] overflow-auto rounded-lg border border-border bg-white">
+        <div
+          ref={viewportRef}
+          className="overflow-auto rounded-lg border border-border bg-white"
+          style={{ maxHeight: maxHeightPx }}
+        >
           <svg width={width} height={height} viewBox={`0 0 ${viewW} ${viewH}`}>
             {/* 背景（パンフレットの路線図） */}
             {useImage && <image href={imageUrl} x={0} y={0} width={viewW} height={viewH} />}
@@ -221,6 +251,45 @@ export function StopMapPicker({ coords, stops, routes, selected, onSelect, busMa
                 </g>
               )
             })}
+            {/* 実位置の車両（Dynmapのバス）。停留所より前面に描く */}
+            {layout.project &&
+              vehicles.map((v) => {
+                const p = layout.project!(v.x, v.z)
+                const w = 34 * k
+                const h = 26 * k
+                return (
+                  <g
+                    key={v.id}
+                    className={onVehicleClick ? "cursor-pointer" : undefined}
+                    onClick={() => onVehicleClick?.(v.id)}
+                  >
+                    <title>{v.label}</title>
+                    <rect
+                      x={p.x - w / 2}
+                      y={p.y - h - 6 * k}
+                      width={w}
+                      height={h}
+                      rx={5 * k}
+                      fill="#ffffff"
+                      stroke="#15803d"
+                      strokeWidth={2 * k}
+                    />
+                    <image
+                      href={v.iconUrl || "/vehicles/bus.png"}
+                      x={p.x - w / 2 + 3 * k}
+                      y={p.y - h - 3 * k}
+                      width={w - 6 * k}
+                      height={h - 6 * k}
+                      preserveAspectRatio="xMidYMid meet"
+                    />
+                    {/* 現在地を指す小さな三角 */}
+                    <polygon
+                      points={`${p.x - 4 * k},${p.y - 6 * k} ${p.x + 4 * k},${p.y - 6 * k} ${p.x},${p.y}`}
+                      fill="#15803d"
+                    />
+                  </g>
+                )
+              })}
           </svg>
         </div>
 

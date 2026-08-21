@@ -449,11 +449,8 @@ function RouteCard({
       )
     }
 
-    // デフォルトアイコン
-    const lowerType = (vehicle.type || "").toLowerCase()
-    if (lowerType.includes("バス")) return <Bus className="h-4 w-4" />
-    if (lowerType.includes("電車") || lowerType.includes("特急")) return <Train className="h-4 w-4" />
-    return <Car className="h-4 w-4" />
+    // デフォルトアイコン（車両タイプは廃止したので一律で列車アイコン）
+    return <Train className="h-4 w-4" />
   }
 
   const StationIcon = ({ type }: { type: "departure" | "transfer" | "arrival" }) => {
@@ -940,23 +937,20 @@ function RouteCard({
                                           }}
                                         />
                                         <span className="hidden">
-                                          {(() => {
-                                            const lowerType = (assignedVehicle.type || "").toLowerCase()
-                                            if (lowerType.includes("バス")) return <Bus className="h-3 w-3" />
-                                            if (lowerType.includes("電車") || lowerType.includes("特急"))
-                                              return <Train className="h-3 w-3" />
-                                            return <Car className="h-3 w-3" />
-                                          })()}
+                                          {segment.route.route_type === 3 ? (
+                                            <Bus className="h-3 w-3" />
+                                          ) : (
+                                            <Train className="h-3 w-3" />
+                                          )}
                                         </span>
                                       </>
                                     ) : (
-                                      (() => {
-                                        const lowerType = (assignedVehicle.type || "").toLowerCase()
-                                        if (lowerType.includes("バス")) return <Bus className="h-3 w-3" />
-                                        if (lowerType.includes("電車") || lowerType.includes("特急"))
-                                          return <Train className="h-3 w-3" />
-                                        return <Car className="h-3 w-3" />
-                                      })()
+                                      // 画像未設定の車両は便の種別（鉄道/バス）でアイコンを出す
+                                      segment.route.route_type === 3 ? (
+                                        <Bus className="h-3 w-3" />
+                                      ) : (
+                                        <Train className="h-3 w-3" />
+                                      )
                                     )}
                                   </div>
                                   <span className="text-xs text-muted-foreground font-medium">

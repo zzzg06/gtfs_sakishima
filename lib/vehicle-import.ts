@@ -4,23 +4,19 @@ import { readFileWithEncoding } from "./encoding-detector"
 // 車両データのExcel(.xlsx)/CSV一括インポート
 //
 // 1行目をヘッダーとして読み取る。認識するカラム（日本語/英語どちらでも可）:
-//   車両名(必須) / 車両タイプ(必須) / 定員 / 説明 / 表示色(#RRGGBB)
+//   車両名(必須) / 定員 / 説明 / 表示色(#RRGGBB) / アイコンURL
 
 export interface VehicleImportResult {
   vehicles: Omit<Vehicle, "id">[]
   errors: string[]
 }
 
-type VehicleField = "name" | "type" | "capacity" | "description" | "color" | "iconUrl"
+type VehicleField = "name" | "capacity" | "description" | "color" | "iconUrl"
 
 const HEADER_ALIASES: Record<string, VehicleField> = {
   車両名: "name",
   名前: "name",
   name: "name",
-  車両タイプ: "type",
-  タイプ: "type",
-  種別: "type",
-  type: "type",
   定員: "capacity",
   capacity: "capacity",
   説明: "description",
@@ -76,10 +72,10 @@ export async function parseVehicleFile(file: File): Promise<VehicleImportResult>
     if (field) headerMap.set(key, field)
   }
 
-  if (![...headerMap.values()].includes("name") || ![...headerMap.values()].includes("type")) {
+  if (![...headerMap.values()].includes("name")) {
     return {
       vehicles: [],
-      errors: ["ヘッダーに「車両名」と「車両タイプ」の列が必要です（テンプレートを参照してください）"],
+      errors: ["ヘッダーに「車両名」の列が必要です（テンプレートを参照してください）"],
     }
   }
 
@@ -101,11 +97,6 @@ export async function parseVehicleFile(file: File): Promise<VehicleImportResult>
       errors.push(`${rowNumber}行目: 車両名が空のためスキップしました`)
       return
     }
-    if (!record.type) {
-      errors.push(`${rowNumber}行目: 車両タイプが空のためスキップしました`)
-      return
-    }
-
     let capacity: number | undefined
     if (record.capacity) {
       const parsed = Number.parseInt(record.capacity, 10)
@@ -123,7 +114,6 @@ export async function parseVehicleFile(file: File): Promise<VehicleImportResult>
 
     vehicles.push({
       name: record.name,
-      type: record.type,
       capacity,
       description: record.description || undefined,
       color: color || "#3b82f6",
@@ -139,11 +129,11 @@ export async function downloadVehicleTemplate(): Promise<void> {
   const XLSX = await import("xlsx")
 
   const sheet = XLSX.utils.aoa_to_sheet([
-    ["車両名", "車両タイプ", "定員", "説明", "表示色"],
-    ["1001号車", "電車", 150, "新型車両", "#3b82f6"],
-    ["2001号車", "バス", 45, "", "#ef4444"],
+    ["車両名", "定員", "説明", "表示色", "アイコンURL"],
+    ["倉急3000系", 150, "新型車両", "#3b82f6", ""],
+    ["瀬田2200系", 120, "", "#ef4444", ""],
   ])
-  sheet["!cols"] = [{ wch: 14 }, { wch: 12 }, { wch: 8 }, { wch: 24 }, { wch: 10 }]
+  sheet["!cols"] = [{ wch: 16 }, { wch: 8 }, { wch: 24 }, { wch: 10 }, { wch: 24 }]
 
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, sheet, "車両")

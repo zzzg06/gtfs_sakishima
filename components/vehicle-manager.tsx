@@ -7,10 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Plus, Edit, Trash2, Car, Bus, Train, ArrowLeft, Upload, X, FileSpreadsheet, Download } from "lucide-react"
+import { Plus, Edit, Trash2, Train, ArrowLeft, Upload, X, FileSpreadsheet, Download } from "lucide-react"
 import { vehicleManager, type Vehicle } from "@/lib/vehicle-manager"
 import { DEFAULT_ICON_TO_VEHICLE } from "@/lib/dynmap-vehicle-icons"
 import { parseVehicleFile, downloadVehicleTemplate } from "@/lib/vehicle-import"
@@ -25,7 +23,6 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
   const [editingVehicle, setEditingVehicle] = useState<Vehicle | null>(null)
   const [formData, setFormData] = useState({
     name: "",
-    type: "",
     capacity: "",
     description: "",
     color: "#3b82f6",
@@ -77,7 +74,6 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
 
     const vehicleData = {
       name: formData.name.trim(),
-      type: formData.type.trim(),
       capacity: formData.capacity ? Number.parseInt(formData.capacity) : undefined,
       description: formData.description.trim() || undefined,
       color: formData.color,
@@ -85,8 +81,8 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
       dynmapIcon: formData.dynmapIcon.trim() || undefined,
     }
 
-    if (!vehicleData.name || !vehicleData.type) {
-      alert("車両名と車両タイプは必須です")
+    if (!vehicleData.name) {
+      alert("車両名は必須です")
       return
     }
 
@@ -140,7 +136,6 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
     setEditingVehicle(vehicle)
     setFormData({
       name: vehicle.name,
-      type: vehicle.type,
       capacity: vehicle.capacity?.toString() || "",
       description: vehicle.description || "",
       color: vehicle.color || "#3b82f6",
@@ -167,7 +162,6 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
   const resetForm = () => {
     setFormData({
       name: "",
-      type: "",
       capacity: "",
       description: "",
       color: "#3b82f6",
@@ -191,13 +185,9 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
       )
     }
 
-    const lowerType = vehicle.type.toLowerCase()
-    if (lowerType.includes("バス")) return <Bus className="h-4 w-4" />
-    if (lowerType.includes("電車") || lowerType.includes("特急")) return <Train className="h-4 w-4" />
-    return <Car className="h-4 w-4" />
+    // 画像未設定のときの既定アイコン（車両タイプは廃止）
+    return <Train className="h-4 w-4" />
   }
-
-  const predefinedTypes = ["電車", "バス", "特急", "快速", "普通", "その他"]
 
   return (
     <div className="space-y-6">
@@ -228,21 +218,6 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
                   placeholder="例：1001号車"
                   required
                 />
-              </div>
-              <div>
-                <Label htmlFor="type">車両タイプ *</Label>
-                <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="車両タイプを選択" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {predefinedTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
               </div>
               <div>
                 <Label htmlFor="dynmapIcon">Dynmapアイコン名</Label>
@@ -345,8 +320,8 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground">
             Excel（.xlsx）またはCSVファイルから車両をまとめて追加できます。 1行目はヘッダー（
-            <span className="font-mono text-xs">車両名 / 車両タイプ / 定員 / 説明 / 表示色</span>
-            ）、車両名と車両タイプは必須です。
+            <span className="font-mono text-xs">車両名 / 定員 / 説明 / 表示色 / アイコンURL</span>
+            ）、車両名だけ必須です。
           </p>
           <div className="flex flex-wrap items-center gap-2">
             <Input
@@ -417,9 +392,6 @@ export function VehicleManager({ onBack }: VehicleManagerProps) {
                           </Button>
                         </div>
                       </div>
-                      <Badge variant="secondary" className="mb-2">
-                        {vehicle.type}
-                      </Badge>
                       {vehicle.capacity && <p className="text-sm text-muted-foreground">定員: {vehicle.capacity}人</p>}
                       {vehicle.description && (
                         <p className="text-sm text-muted-foreground mt-1">{vehicle.description}</p>
