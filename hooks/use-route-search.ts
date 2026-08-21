@@ -8,6 +8,8 @@ import { routeSettingsManager } from "@/lib/route-settings"
 import { vehicleManager } from "@/lib/vehicle-manager"
 import { stationCoordinateManager } from "@/lib/station-coordinates"
 import { logSearch, type SearchLogTrip } from "@/lib/search-log"
+import { getPoi, poiAccessStops, preparePois, type Poi, type PoiAccess } from "@/lib/poi-points"
+import { attachPoiWalks, hasWalkingSegment, shiftDepartureTime } from "@/lib/poi-routing"
 import type { GTFSStop } from "@/lib/gtfs-parser"
 
 export type SearchMode = "departure" | "arrival" | "none"
@@ -138,6 +140,51 @@ function buildView(
   return { view: candidates.slice().sort(byPref), offset: 0 }
 }
 
+// POIを発着に含む検索。最寄り停留所（最大 POI_MAX_ACCESS_STOPS 件）の組み合わせで通常検索し、
+// 前後にPOIの徒歩区間を付ける。徒歩が重ならないよう、徒歩区間を含む候補は採らない
+// （＝徒歩系の探索は呼ばず、直通・乗換の候補から徒歩を含むものを除外する）。
+function searchViaPoi(params: {
+  fromStop: GTFSStop
+  toStop: GTFSStop
+  fromPoi: Poi | null
+  toPoi: Poi | null
+  mode: SearchMode
+  time: string
+  options?: TransportOptions
+}): { view: TransitRoute[]; offset: number } {
+  const { fromStop, toStop, fromPoi, toPoi, mode, time, options } = params
+  const noAccess: PoiAccess[] = [{ stop: fromStop, minutes: 0, distance: 0 }]
+  const fromAccess = fromPoi ? poiAccessStops(fromPoi) : noAccess
+  const toAccess = toPoi ? poiAccessStops(toPoi) : [{ stop: toStop, minutes: 0, distance: 0 }]
+
+  const candidates: TransitRoute[] = []
+  for (const a of fromAccess) {
+    for (const b of toAccess) {
+      if (a.stop.stop_id === b.stop.stop_id) continue
+      // 出発指定なら、POIからの徒歩ぶん遅らせた時刻以降の便を探す
+      const searchTime = mode === "none" || mode === "arrival" ? undefined : shiftDepartureTime(time, a.minutes)
+      const direct = routeFinder.getDepartureBoard(a.stop.stop_id, b.stop.stop_id, options)
+      let transferRoutes = routeFinder.findRoutesWithOneTransfer(a.stop.stop_id, b.stop.stop_id, searchTime, options)
+      if (transferRoutes.length === 0) {
+        transferRoutes = routeFinder.findRoutesWithTwoTransfers(a.stop.stop_id, b.stop.stop_id, searchTime, options)
+      }
+      const found = [...direct, ...dedupeByTransitPattern(transferRoutes)]
+        .filter((r) => !hasDuplicateTrip(r))
+        .filter((r) => !hasWalkingSegment(r)) // 徒歩が重なる経路は出さない
+      for (const r of found) {
+        candidates.push(
+          attachPoiWalks(
+            r,
+            fromPoi ? { poiStop: fromStop, access: a } : null,
+            toPoi ? { poiStop: toStop, access: b } : null,
+          ),
+        )
+      }
+    }
+  }
+  return buildView(candidates, mode, time, options?.preferBus === true)
+}
+
 export function useRouteSearch() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -161,7 +208,28 @@ export function useRouteSearch() {
           vehicleManager.loadCache(),
           // タクシーの乗車時間は着発地点の座標から概算するため、座標も読み込んでおく
           stationCoordinateManager.load(),
+          // Dynmapマーカー(POI)。発着にPOIが指定されたときの徒歩計算に使う
+          preparePois(),
         ])
+
+        // 発着がDynmapのマーカー(POI)なら、最寄り停留所までの徒歩を前後に付けて探索する
+        const fromPoi = getPoi(fromStop.stop_id)
+        const toPoi = getPoi(toStop.stop_id)
+        if (fromPoi || toPoi) {
+          const v = searchViaPoi({ fromStop, toStop, fromPoi, toPoi, mode, time, options })
+          setView(v.view)
+          setOffset(v.offset)
+          setQuery({ fromName: fromStop.stop_name, toName: toStop.stop_name, mode, time })
+          setHasSearched(true)
+          logSearch({
+            from: fromStop.stop_name,
+            to: toStop.stop_name,
+            mode,
+            time,
+            trips: extractLoggedTrips(v.view.slice(v.offset, v.offset + PAGE_SIZE)),
+          })
+          return
+        }
 
         // 直通便（発車ボード）＋乗り換え経路を候補に。乗換回数は問わず到着が早い順で並べる
         const searchTime = mode === "none" || mode === "arrival" ? undefined : time

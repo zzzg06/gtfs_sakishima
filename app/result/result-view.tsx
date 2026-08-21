@@ -9,6 +9,7 @@ import { useRouteSearch } from "@/hooks/use-route-search"
 import { useGtfsData } from "@/hooks/use-gtfs-data"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { gtfsParser, type GTFSStop } from "@/lib/gtfs-parser"
+import { getPoiByName, loadPois, poiToStop } from "@/lib/poi-points"
 import { buildResultUrl, parseSearch, type SearchType } from "@/lib/search-query"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, RefreshCw } from "lucide-react"
@@ -18,7 +19,11 @@ const MODE_TO_TYPE: Record<SearchMode, SearchType> = { departure: "dep", arrival
 
 function findStopByName(name: string): GTFSStop | null {
   if (!name) return null
-  return gtfsParser.getStops().find((s) => s.stop_name === name) || null
+  const stop = gtfsParser.getStops().find((s) => s.stop_name === name)
+  if (stop) return stop
+  // Dynmapのマーカー(POI)を発着に指定した検索。名前で引き当てる
+  const poi = getPoiByName(name)
+  return poi ? poiToStop(poi) : null
 }
 
 // 結果画面の本体（クライアント）。タイトルはページ側の generateMetadata が担当する。
@@ -37,6 +42,22 @@ export function ResultView() {
   // URLの検索条件が変わる／データ準備完了で検索を実行
   useEffect(() => {
     if (!dataLoaded || !parsed) return
+    let cancelled = false
+    // POIが発着に含まれるURLでも復元できるよう、マーカーを読み込んでから解決する
+    loadPois()
+      .catch(() => {})
+      .then(() => {
+        if (cancelled) return
+        runSearch()
+      })
+    return () => {
+      cancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataLoaded, key])
+
+  const runSearch = () => {
+    if (!parsed) return
     const fs = findStopByName(parsed.from)
     const ts = findStopByName(parsed.to)
     if (!fs || !ts) return
@@ -44,8 +65,7 @@ export function ResultView() {
     const time = parsed.type === "none" ? "" : `${parsed.time.slice(0, 2)}:${parsed.time.slice(2, 4)}`
     searchRoutes(fs, ts, mode, time, parsed.options)
     setFormOpen(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataLoaded, key])
+  }
 
   const initial: SearchFormInitial | null = useMemo(() => {
     if (!parsed) return null

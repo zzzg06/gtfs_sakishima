@@ -17,6 +17,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { ShareResultButton } from "@/components/share-result-button"
 import { NearbyMapButton } from "@/components/nearby-map-button"
+import { isPoiStop } from "@/lib/poi-points"
 import { Clock, RefreshCw, AlertCircle, AlertTriangle, Train, Bus, Search, Circle, Car, ChevronLeft, ChevronRight, Send, CheckCircle2, Navigation } from "lucide-react"
 import type { TransitRoute, TransitSegment, WalkingSegment, RouteBadge } from "@/lib/route-finder"
 import type { RouteQuery } from "@/hooks/use-route-search"
@@ -657,7 +658,8 @@ function RouteCard({
   const renderStationName = (stop: GTFSStop, className: string) => (
     <>
       <span className={className}>{stop.stop_name}</span>
-      {onStationClick && !isTaxiOnlyPoint(stop.stop_name) && (
+      {/* POI(Dynmapのマーカー)は時刻表を持たないのでリンクを出さない */}
+      {onStationClick && !isTaxiOnlyPoint(stop.stop_name) && !isPoiStop(stop) && (
         <button
           type="button"
           onClick={() => onStationClick(stop)}

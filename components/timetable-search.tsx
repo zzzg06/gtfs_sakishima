@@ -326,6 +326,8 @@ export function TimetableResults({
                 placeholder="別の駅・バス停に切り替え"
                 label="時刻表を見る駅"
                 hideLabel
+                // タクシーでしか発着しない地点は時刻表を持たないので候補から外す
+                filterStop={(s) => !isTaxiOnlyPoint(s.stop_name)}
               />
             </div>
           </div>

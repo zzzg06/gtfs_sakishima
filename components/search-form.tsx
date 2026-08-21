@@ -1,9 +1,10 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { StationSearch } from "@/components/station-search"
 import { gtfsParser, type GTFSStop } from "@/lib/gtfs-parser"
+import { getPoiByName, loadPois, poiToStop } from "@/lib/poi-points"
 import type { TransportOptions } from "@/lib/route-finder"
 import { Train, ArrowUpDown, Search, ChevronDown, ChevronUp } from "lucide-react"
 
@@ -45,10 +46,13 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
-// 名称からGTFS駅/停留所を解決（URL/初期値の復元用）
+// 名称からGTFS駅/停留所、またはDynmapのマーカー(POI)を解決（URL/初期値の復元用）
 function findStopByName(name: string): GTFSStop | null {
   if (!name) return null
-  return gtfsParser.getStops().find((s) => s.stop_name === name) || null
+  const stop = gtfsParser.getStops().find((s) => s.stop_name === name)
+  if (stop) return stop
+  const poi = getPoiByName(name)
+  return poi ? poiToStop(poi) : null
 }
 
 export function SearchForm({
@@ -76,6 +80,19 @@ export function SearchForm({
     onOpenChange?.(v)
     if (open === undefined) setInternalOpen(v)
   }
+
+  // POI(Dynmapマーカー)は非同期で読み込むため、初期値がPOI名のときは読み込み後に解決し直す
+  useEffect(() => {
+    if ((initial.from && !fromStop) || (initial.to && !toStop)) {
+      loadPois()
+        .then(() => {
+          if (initial.from && !fromStop) setFromStop(findStopByName(initial.from))
+          if (initial.to && !toStop) setToStop(findStopByName(initial.to))
+        })
+        .catch(() => {})
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initial.from, initial.to])
 
   const handleFromStationChange = (value: string, stop: GTFSStop | null) => {
     setFromStation(value)
@@ -192,9 +209,10 @@ export function SearchForm({
                   <StationSearch
                     value={fromStation}
                     onChange={handleFromStationChange}
-                    placeholder="駅、バス停"
+                    placeholder="駅、バス停、施設"
                     label="出発駅"
                     hideLabel
+                    includePoi
                   />
                 </div>
               </div>
@@ -204,9 +222,10 @@ export function SearchForm({
                   <StationSearch
                     value={toStation}
                     onChange={handleToStationChange}
-                    placeholder="駅、バス停"
+                    placeholder="駅、バス停、施設"
                     label="到着駅"
                     hideLabel
+                    includePoi
                   />
                 </div>
               </div>

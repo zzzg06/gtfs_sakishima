@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Search, MapPin, ArrowUpDown, Clock } from "lucide-react"
 import { gtfsParser, type GTFSStop } from "@/lib/gtfs-parser"
 import { getRecentStopIds, addRecentStopId } from "@/lib/station-history"
+import { isPoiStop, loadPois, poiToStop, searchPois } from "@/lib/poi-points"
 
 interface StationSearchProps {
   value: string
@@ -17,9 +18,18 @@ interface StationSearchProps {
   label: string
   hideLabel?: boolean // コンパクト表示時はラベルを外側のチップで表現するため非表示にする
   filterStop?: (stop: GTFSStop) => boolean // 候補に出す駅の絞り込み（例: 時刻表はタクシー専用地点を除く）
+  includePoi?: boolean // Dynmapのマーカー(施設・観光地など)も候補に出す（経路検索の発着のみ）
 }
 
-export function StationSearch({ value, onChange, placeholder, label, hideLabel = false, filterStop }: StationSearchProps) {
+export function StationSearch({
+  value,
+  onChange,
+  placeholder,
+  label,
+  hideLabel = false,
+  filterStop,
+  includePoi = false,
+}: StationSearchProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [searchResults, setSearchResults] = useState<GTFSStop[]>([])
   const [isRecent, setIsRecent] = useState(false) // ドロップダウンが「最近利用した駅」を表示中か
@@ -30,6 +40,11 @@ export function StationSearch({ value, onChange, placeholder, label, hideLabel =
   useEffect(() => {
     setInputValue(value)
   }, [value])
+
+  // Dynmapのマーカー(POI)は取得に通信が要るので、候補に出す設定のときだけ先に読み込む
+  useEffect(() => {
+    if (includePoi) loadPois().catch(() => {})
+  }, [includePoi])
 
   // 最近利用した駅（localStorage）を解決して返す
   const loadRecentStops = (): GTFSStop[] => {
@@ -56,13 +71,20 @@ export function StationSearch({ value, onChange, placeholder, label, hideLabel =
 
   const applyFilter = (stops: GTFSStop[]) => (filterStop ? stops.filter(filterStop) : stops)
 
+  // 駅・バス停の候補にDynmapのマーカー(POI)を足す。駅/バス停はAPI側で除外済みなので重複しない。
+  const withPois = (stops: GTFSStop[], query: string): GTFSStop[] => {
+    if (!includePoi) return stops
+    const pois = searchPois(query).map(poiToStop)
+    return [...stops, ...pois]
+  }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value
     setInputValue(newValue)
     onChange(newValue, null)
 
     if (newValue.trim().length > 0) {
-      const results = applyFilter(gtfsParser.searchStops(newValue)).slice(0, 8) // Limit to 8 results
+      const results = withPois(applyFilter(gtfsParser.searchStops(newValue)), newValue).slice(0, 8) // Limit to 8 results
       setSearchResults(results)
       setIsRecent(false)
       setIsOpen(results.length > 0)
@@ -86,7 +108,7 @@ export function StationSearch({ value, onChange, placeholder, label, hideLabel =
 
   const handleInputFocus = () => {
     if (inputValue.trim().length > 0) {
-      const results = applyFilter(gtfsParser.searchStops(inputValue)).slice(0, 8)
+      const results = withPois(applyFilter(gtfsParser.searchStops(inputValue)), inputValue).slice(0, 8)
       setSearchResults(results)
       setIsRecent(false)
       setIsOpen(results.length > 0)
@@ -153,10 +175,20 @@ export function StationSearch({ value, onChange, placeholder, label, hideLabel =
                   {isRecent ? (
                     <Clock className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                   ) : (
-                    <MapPin className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <MapPin
+                      className={`h-4 w-4 flex-shrink-0 ${isPoiStop(stop) ? "text-sky-600" : "text-muted-foreground"}`}
+                    />
                   )}
                   <div>
-                    <p className="font-medium text-sm">{stop.stop_name}</p>
+                    <p className="font-medium text-sm">
+                      {stop.stop_name}
+                      {/* 駅・バス停ではない地点であることを分かるようにする */}
+                      {isPoiStop(stop) && (
+                        <span className="ml-1.5 rounded bg-sky-100 px-1 py-0.5 text-[10px] font-medium text-sky-700">
+                          地点
+                        </span>
+                      )}
+                    </p>
                     {stop.stop_desc && <p className="text-xs text-muted-foreground">{stop.stop_desc}</p>}
                   </div>
                 </div>
