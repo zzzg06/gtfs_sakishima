@@ -10,7 +10,7 @@ import { useGtfsData } from "@/hooks/use-gtfs-data"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { gtfsParser, type GTFSStop } from "@/lib/gtfs-parser"
 import { getPoiByName, loadPois, poiToStop } from "@/lib/poi-points"
-import { buildResultUrl, parseSearch, type SearchType } from "@/lib/search-query"
+import { buildResultUrl, buildShareUrl, parseSearch, type SearchType } from "@/lib/search-query"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, RefreshCw } from "lucide-react"
 
@@ -81,14 +81,15 @@ export function ResultView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key])
 
-  // 共有リンク。URLの検索条件をそのまま使うが、出発指定のときは表示中の先頭経路の発時刻に
-  // 差し替えて、「1本前/1本後」で送ったあとの並びも共有先で再現できるようにする。
+  // 共有リンク。検索条件を1つのトークンに詰めた短縮URL(/r/<token>)を使う。
+  // 出発指定のときは表示中の先頭経路の発時刻に差し替えて、
+  // 「1本前/1本後」で送ったあとの並びも共有先で再現できるようにする。
   const shareUrl = useMemo(() => {
     if (!parsed) return ""
     const first = routes[0]
     const time =
       parsed.type === "dep" && first ? first.departureTime.slice(0, 5).replace(":", "") : parsed.time
-    return buildResultUrl(parsed.from, parsed.to, parsed.type, time, parsed.options)
+    return buildShareUrl(parsed.from, parsed.to, parsed.type, time, parsed.options)
   }, [parsed, routes])
 
   const handleSubmit = (
